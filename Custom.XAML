@@ -1,7 +1,7 @@
 <local:MyCard Title="最新公告" Margin="0,0,0,15">
     <StackPanel Margin="25,40,23,15">
 	    <TextBlock Margin="0,0,0,4"
-		           Text="八月月刊发布啦，前往QQ群文件下载阅读吧！" />
+		           Text="九月月刊发布啦，前往QQ群文件下载阅读吧！" />
 	</StackPanel>
 </local:MyCard>
 
