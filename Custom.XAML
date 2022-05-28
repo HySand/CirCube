@@ -1,7 +1,7 @@
 <local:MyCard Title="最新公告" Margin="0,0,0,15">
     <StackPanel Margin="25,40,23,15">
 	    <TextBlock Margin="0,0,0,4"
-		           Text="月刊完结啦，感谢大家的陪伴，前往QQ群文件下载阅读吧！" />
+		           Text="月刊完结啦，感谢大家的陪伴，前往群文件下载查看叭！" />
 	</StackPanel>
 </local:MyCard>
 
@@ -14,14 +14,27 @@
 		           Text="2.我们已与百度(纳斯达克代码BIDU)达成深度合作" />
 
 	    <TextBlock Margin="0,4,0,4"
-		           Text="3.进入QQ群与正确的管理员深度交流" />	
+		           Text="3.进入QQ群与管理员深度交流" />	
 				   
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-		        <local:MyButton Width="140" Height="35" Margin="0,0,10,0" HorizontalAlignment="Left" Padding="13,0,13,0"
+		        <local:MyButton Width="140" Height="35" Margin="0,5,10,0" HorizontalAlignment="Left" Padding="13,0,13,0"
                     Text="查看文档" EventType="打开网页" EventData="https://docs.circube.top/" />
-				<local:MyButton Width="140" Height="35" HorizontalAlignment="Right" Padding="13,0,13,0"
+				<local:MyButton Width="140" Height="35" Margin="0,5,0,0" HorizontalAlignment="Right" Padding="13,0,13,0"
                     Text="打开百度" EventType="打开网页" EventData="https://www.baidu.com/" />
 				
+        </StackPanel>		
+	</StackPanel>
+</local:MyCard>
+
+<local:MyCard Title="联系我们" Margin="0,0,0,15">
+    <StackPanel Margin="25,40,23,15"> 
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+		        <local:MyButton Width="120" Height="35" Margin="0,5,10,0" HorizontalAlignment="Left" Padding="13,0,13,0"
+                    Text="QQ" EventType="打开网页" EventData="https://jq.qq.com/?_wv=1027&amp;k=HZDVWHYP" />
+				<local:MyButton Width="120" Height="35" Margin="0,5,10,0" HorizontalAlignment="Center" Padding="13,0,13,0"
+                    Text="BILIBILI" EventType="打开网页" EventData="https://space.bilibili.com/1897618511" />
+				<local:MyButton Width="120" Height="35" Margin="0,5,0,0" HorizontalAlignment="Right" Padding="13,0,13,0"
+                    Text="开黑啦" EventType="打开网页" EventData="https://kaihei.co/KaADDT" />
         </StackPanel>		
 	</StackPanel>
 </local:MyCard>
