@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.zephyr.circube.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "circube.refmap.json",
+  "mixins": [
+    "create.ContraptionMixin",
+    "quark.ContributorRewardHandlerMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
