@@ -1,0 +1,7 @@
+{
+  "parent": "create:block/clutch/block",
+  "textures": {
+    "0": "circube:block/spring_off",
+    "particle": "circube:block/spring_off"
+  }
+}

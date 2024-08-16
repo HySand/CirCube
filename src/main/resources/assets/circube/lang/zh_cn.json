@@ -1,0 +1,14 @@
+{
+  "block.circube.spring": "发条盒",
+  "item.circube.incomplete_integrated_circuit": "集成电路（半成品）",
+  "item.circube.incomplete_kinetic_mechanism": "动力构件（半成品）",
+  "item.circube.incomplete_logistics_mechanism": "物流构件（半成品）",
+  "item.circube.incomplete_netherite_ingot": "下界合金锭（半成品）",
+  "item.circube.incomplete_sealed_mechanism": "密封构件（半成品）",
+  "item.circube.integrated_circuit": "集成电路",
+  "item.circube.kinetic_mechanism": "动力构件",
+  "item.circube.logistics_mechanism": "物流构件",
+  "item.circube.sealed_mechanism": "密封构件",
+  "item.circube.stabilizer": "外域之眼",
+  "itemGroup.circube": "CirCube 附加"
+}
