@@ -1,26 +1,19 @@
 package me.zephyr.circube.content.spring;
 
-import com.simibubi.create.content.kinetics.transmission.SplitShaftBlockEntity;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
+import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-import static me.zephyr.circube.content.spring.SpringBlock.POWERED;
+public class SpringBlockEntity extends GeneratingKineticBlockEntity {
 
-public class SpringBlockEntity extends SplitShaftBlockEntity {
-    private static final int TICK_INTERVAL = 3;
-    private int tickTimer = 0;
-
-    private static final int MAX_STRESS = 3;
-    private int currentStress = 0;
+    private static final float MAX_POWER = 7680;
+    private float power = 0;
 
 
     public SpringBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -28,36 +21,49 @@ public class SpringBlockEntity extends SplitShaftBlockEntity {
     }
 
     @Override
-    public float getRotationSpeedModifier(Direction face) {
-        return 1;
+    public float getGeneratedSpeed() {
+        if (power > 0) {
+            return 8;
+        } else if (power < 0) {
+            return -8;
+        } else return 0;
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-
-        if (tickTimer-- < 0) {
-            tickTimer = TICK_INTERVAL;
-            float absSpeed = Mth.abs(getSpeed());
-            if (level.isClientSide()) {
-                if (absSpeed > 0) {
-                    Vec3 loc = Vec3.atBottomCenterOf(getBlockPos());
-                    level.addParticle(ParticleTypes.LARGE_SMOKE, false, loc.x, loc.y + 0.5, loc.z, 0, 0.05, 0);
-                }
+    public void lazyTick() {
+        super.lazyTick();
+        //自然流逝
+        if (power > 0) {
+            power = Math.max(power - 8, 0);
+        } else if (power < 0) {
+            power = Math.min(power + 8, 0);
+        }
+        //充能
+        if (speed > 8.0) {
+            power = Math.min(power + (8 * (speed - 8)), MAX_POWER);
+        } else if (speed < -8.0) {
+            power = Math.max(power + (8 * (speed + 8)), -MAX_POWER);
+        }
+        //消耗
+        if (stress != 0) {
+            if (power > 0) {
+                power = Math.max(power - stress, 0);
+            } else if (power < 0) {
+                power = Math.min(power + stress, 0);
             }
         }
+        updateGeneratedRotation();
     }
 
     @Override
     public void write(CompoundTag compound, boolean clientPacket) {
-        compound.putInt("Stress", currentStress);
+        compound.putFloat("Power", power);
         super.write(compound, clientPacket);
     }
 
     @Override
     protected void read(CompoundTag compound, boolean clientPacket) {
-        currentStress = compound.getInt("Stress");
+        power = compound.getFloat("Power");
         super.read(compound, clientPacket);
     }
 }

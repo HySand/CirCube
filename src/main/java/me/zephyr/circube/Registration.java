@@ -2,8 +2,8 @@ package me.zephyr.circube;
 
 
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
-import com.simibubi.create.content.kinetics.transmission.SplitShaftInstance;
-import com.simibubi.create.content.kinetics.transmission.SplitShaftRenderer;
+import com.simibubi.create.content.kinetics.base.ShaftInstance;
+import com.simibubi.create.content.kinetics.base.ShaftRenderer;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
@@ -39,18 +39,18 @@ public class Registration {
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL))
             .addLayer(() -> RenderType::cutoutMipped)
-            .transform(BlockStressDefaults.setCapacity(16))
+            .transform(BlockStressDefaults.setCapacity(32))
             .transform(BlockStressDefaults.setGeneratorSpeed(SpringBlock::getSpeedRange))
             .transform(axeOrPickaxe())
-            .blockstate((c, p) -> BlockStateGen.axisBlock(c, p, AssetLookup.forPowered(c, p)))
+            .blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> AssetLookup.partialBaseModel(c, p)))
             .item()
             .transform(customItemModel())
             .register();
     public static final BlockEntityEntry<SpringBlockEntity> SPRING_ENTITY = REGISTRATE
             .blockEntity("spring", SpringBlockEntity::new)
-            .instance(() -> SplitShaftInstance::new, false)
+            .instance(() -> ShaftInstance::new, false)
             .validBlocks(SPRING)
-            .renderer(() -> SplitShaftRenderer::new)
+            .renderer(() -> ShaftRenderer::new)
             .register();
 
 

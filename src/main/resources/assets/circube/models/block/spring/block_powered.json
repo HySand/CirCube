@@ -1,7 +1,0 @@
-{
-  "parent": "circube:block/spring/block",
-  "textures": {
-    "0": "circube:block/spring_on",
-    "particle": "circube:block/spring_on"
-  }
-}
