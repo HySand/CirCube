@@ -64,6 +64,21 @@ public class SpringBlock extends DirectionalKineticBlock implements IBE<SpringBl
     }
 
     @Override
+    public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
+        return getBlockEntityOptional(blockAccess, pos).map(al -> al.signal).orElse(0);
+    }
+
+    @Override
+    public boolean isSignalSource(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
+        return getSignal(blockState, blockAccess, pos, side);
+    }
+
+    @Override
     public Class<SpringBlockEntity> getBlockEntityClass() {
         return SpringBlockEntity.class;
     }
@@ -71,6 +86,11 @@ public class SpringBlock extends DirectionalKineticBlock implements IBE<SpringBl
     @Override
     public BlockEntityType<? extends SpringBlockEntity> getBlockEntityType() {
         return Registration.SPRING_ENTITY.get();
+    }
+
+    @Override
+    public boolean hideStressImpact() {
+        return true;
     }
 
     public static Couple<Integer> getSpeedRange() {

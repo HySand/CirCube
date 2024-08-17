@@ -1,5 +1,6 @@
 {
   "block.circube.spring": "发条盒",
+  "circube.gui.goggles.stress_inside": "内部应力值",
   "item.circube.incomplete_integrated_circuit": "集成电路（半成品）",
   "item.circube.incomplete_kinetic_mechanism": "动力构件（半成品）",
   "item.circube.incomplete_logistics_mechanism": "物流构件（半成品）",

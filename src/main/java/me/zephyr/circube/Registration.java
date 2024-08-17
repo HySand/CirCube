@@ -1,6 +1,8 @@
 package me.zephyr.circube;
 
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.base.ShaftInstance;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
@@ -9,10 +11,13 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
 import com.simibubi.create.foundation.ponder.PonderStoryBoardEntry;
+import com.simibubi.create.foundation.utility.FilesHelper;
 import com.simibubi.create.infrastructure.ponder.AllPonderTags;
+import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -20,16 +25,25 @@ import me.zephyr.circube.spring.SpringBlock;
 import me.zephyr.circube.spring.SpringBlockEntity;
 import me.zephyr.circube.spring.SpringScenes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
@@ -45,6 +59,7 @@ public class Registration {
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL))
             .addLayer(() -> RenderType::cutoutMipped)
+            .transform(BlockStressDefaults.setImpact(8))
             .transform(BlockStressDefaults.setCapacity(32))
             .transform(BlockStressDefaults.setGeneratorSpeed(SpringBlock::getSpeedRange))
             .transform(axeOrPickaxe())
@@ -118,5 +133,36 @@ public class Registration {
     public static void register() {
         HELPER.forComponents(SPRING).addStoryBoard("spring", SpringScenes::Spring, AllPonderTags.KINETIC_SOURCES);
         PonderRegistry.TAGS.forTag(AllPonderTags.KINETIC_SOURCES).add(SPRING);
+    }
+
+    public static void gatherData(GatherDataEvent event) {
+        REGISTRATE.addDataGenerator(ProviderType.LANG, registrateLangProvider -> {
+            BiConsumer<String, String> langConsumer = registrateLangProvider::add;
+
+            provideDefaultLang("interface", langConsumer);
+            providePonderLang(langConsumer);
+        });
+    }
+
+    private static void provideDefaultLang(String fileName, BiConsumer<String, String> consumer) {
+        String path = "assets/circube/lang/default/" + fileName + ".json";
+        JsonElement jsonElement = FilesHelper.loadJsonResource(path);
+        if (jsonElement == null) {
+            throw new IllegalStateException(String.format("Could not find default lang file: %s", path));
+        }
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue().getAsString();
+            consumer.accept(key, value);
+        }
+    }
+
+    private static void providePonderLang(BiConsumer<String, String> consumer) {
+        register();
+
+        PonderLocalization.generateSceneLang();
+
+        PonderLocalization.provideLang(MODID, consumer);
     }
 }
