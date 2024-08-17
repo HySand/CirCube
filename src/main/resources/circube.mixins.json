@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "me.zephyr.circube.mixins",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "refmap": "circube.refmap.json",
   "mixins": [
     "create.ContraptionMixin",

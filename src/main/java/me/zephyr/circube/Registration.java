@@ -9,11 +9,16 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
+import com.simibubi.create.foundation.ponder.PonderRegistry;
+import com.simibubi.create.foundation.ponder.PonderStoryBoardEntry;
+import com.simibubi.create.infrastructure.ponder.AllPonderTags;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import me.zephyr.circube.content.spring.SpringBlock;
-import me.zephyr.circube.content.spring.SpringBlockEntity;
+import me.zephyr.circube.spring.SpringBlock;
+import me.zephyr.circube.spring.SpringBlockEntity;
+import me.zephyr.circube.spring.SpringScenes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -33,6 +38,7 @@ import static me.zephyr.circube.Circube.MODID;
 @SuppressWarnings("removal")
 public class Registration {
     private static final CreateRegistrate REGISTRATE = Circube.getRegistrate();
+    static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(MODID);
 
     public static final BlockEntry<SpringBlock> SPRING = REGISTRATE
             .block("spring", SpringBlock::new)
@@ -107,5 +113,10 @@ public class Registration {
 
     public static void register(IEventBus modEventBus) {
         REGISTER.register(modEventBus);
+    }
+
+    public static void register() {
+        HELPER.forComponents(SPRING).addStoryBoard("spring", SpringScenes::Spring, AllPonderTags.KINETIC_SOURCES);
+        PonderRegistry.TAGS.forTag(AllPonderTags.KINETIC_SOURCES).add(SPRING);
     }
 }

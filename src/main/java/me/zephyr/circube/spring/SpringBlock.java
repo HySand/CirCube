@@ -1,10 +1,8 @@
-package me.zephyr.circube.content.spring;
+package me.zephyr.circube.spring;
 
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
-import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.Couple;
-import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.foundation.utility.worldWrappers.WrappedWorld;
 import me.zephyr.circube.Registration;
 import net.minecraft.core.BlockPos;
