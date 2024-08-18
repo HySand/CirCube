@@ -10,7 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import java.util.Arrays;
 import java.util.List;
 
-import static me.zephyr.circube.Circube.MODID;
+import static me.zephyr.circube.CirCube.MODID;
 
 public class AntiCheat {
     private static final List<String> BANNED_MODS = Arrays.asList("xray", "atianxray", "forgeautofish", "tweakerge", "tweakeroo");

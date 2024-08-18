@@ -1,10 +1,10 @@
-package me.zephyr.circube.spring;
+package me.zephyr.circube.content.spring;
 
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.Couple;
 import com.simibubi.create.foundation.utility.worldWrappers.WrappedWorld;
-import me.zephyr.circube.Registration;
+import me.zephyr.circube.CirCubeBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -85,7 +85,7 @@ public class SpringBlock extends DirectionalKineticBlock implements IBE<SpringBl
 
     @Override
     public BlockEntityType<? extends SpringBlockEntity> getBlockEntityType() {
-        return Registration.SPRING_ENTITY.get();
+        return CirCubeBlocks.SPRING_ENTITY.get();
     }
 
     @Override

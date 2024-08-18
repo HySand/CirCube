@@ -3,7 +3,7 @@ package me.zephyr.circube;
 import com.simibubi.create.foundation.utility.LangBuilder;
 import com.simibubi.create.foundation.utility.LangNumberFormat;
 
-import static me.zephyr.circube.Circube.MODID;
+import static me.zephyr.circube.CirCube.MODID;
 
 public class Lang {
 

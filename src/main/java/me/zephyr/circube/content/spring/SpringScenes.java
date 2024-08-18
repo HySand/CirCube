@@ -1,14 +1,11 @@
-package me.zephyr.circube.spring;
+package me.zephyr.circube.content.spring;
 
-import com.simibubi.create.content.kinetics.waterwheel.WaterWheelBlockEntity;
-import com.simibubi.create.foundation.ponder.*;
+import com.simibubi.create.foundation.ponder.SceneBuilder;
+import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
-import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.utility.Pointing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
 public class SpringScenes {

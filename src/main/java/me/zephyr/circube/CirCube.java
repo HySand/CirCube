@@ -6,18 +6,21 @@ import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import me.zephyr.circube.config.CCConfigs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-@Mod(Circube.MODID)
-public class Circube {
+@Mod(CirCube.MODID)
+public class CirCube {
     public static final String MODID = "circube";
     public static final Logger LOGGER = LogUtils.getLogger();
 
@@ -29,13 +32,17 @@ public class Circube {
                 .andThen(TooltipModifier.mapNull(KineticStats.create(item))));
     }
 
-    public Circube() {
+    public CirCube() {
         modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         MinecraftForge.EVENT_BUS.register(this);
 
         REGISTRATE.registerEventListeners(modEventBus);
-        Registration.register(modEventBus);
+        CirCubeBlocks.register();
+        CirCubeItems.register();
+        CirCubeFluids.register();
+        CirCubeCreativeTabs.register(modEventBus);
+        CCConfigs.register(ModLoadingContext.get());
         modEventBus.addListener(EventPriority.LOWEST, Registration::gatherData);
     }
 
@@ -44,11 +51,15 @@ public class Circube {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            Registration.register();
+            CirCubePonders.register();
         }
     }
 
     public static CreateRegistrate getRegistrate() {
         return REGISTRATE;
+    }
+
+    public static ResourceLocation asResource(String path) {
+        return new ResourceLocation(MODID, path);
     }
 }
