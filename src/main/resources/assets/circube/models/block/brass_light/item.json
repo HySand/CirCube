@@ -2,9 +2,9 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-    "0": "circube:block/spring",
+    "0": "circube:block/brass_light",
     "1": "create:block/gearbox",
-    "4": "create:block/funnel/andesite_funnel_frame",
+    "4": "create:block/funnel/brass_funnel_frame",
     "particle": "create:block/axis",
     "1_0": "create:block/axis",
     "1_1": "create:block/axis_top"

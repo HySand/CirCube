@@ -2,10 +2,8 @@ package me.zephyr.circube;
 
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import me.zephyr.circube.content.stabilizer.StabilizerItem;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
 
 public class CirCubeItems {

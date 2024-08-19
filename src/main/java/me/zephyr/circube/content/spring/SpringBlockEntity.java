@@ -4,7 +4,6 @@ import com.simibubi.create.content.kinetics.BlockStressValues;
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.Lang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -58,34 +57,36 @@ public class SpringBlockEntity extends GeneratingKineticBlockEntity {
     public void tick() {
         super.tick();
         updateGeneratedRotation();
-        KineticNetwork kineticNetwork = getOrCreateNetwork();
-        //充能
-        if (isCharging(kineticNetwork)) {
-            if (speed > 0) {
-                signal = 8;
-                stressInside = Math.min(stressInside + currentStress * speed, MAX_POWER);
+        if (!level.isClientSide()) {
+            KineticNetwork kineticNetwork = getOrCreateNetwork();
+            //充能
+            if (isCharging(kineticNetwork)) {
+                if (speed > 0) {
+                    signal = 8;
+                    stressInside = Math.min(stressInside + currentStress * speed, MAX_POWER);
+                } else {
+                    signal = 8;
+                    stressInside = Math.max(stressInside + currentStress * speed, -MAX_POWER);
+                }
             } else {
-                signal = 8;
-                stressInside = Math.max(stressInside + currentStress * speed, -MAX_POWER);
+                if (stressInside == 0) signal = 4;
+                else signal = 0;
             }
-        } else {
-            if (stressInside == 0) signal = 4;
-            else signal = 0;
-        }
-        level.updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
+            level.updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
 
-        //消耗
-        if (stressInside > 0) {
-            if (isOverStressed()) {
-                stressInside = Math.max(stressInside - BASE_IMPACT * 8, 0);
-            } else {
-                stressInside = Math.max(stressInside - stress - (BASE_IMPACT - currentStress) * 8, 0);
-            }
-        } else if (stressInside < 0) {
-            if (isOverStressed()) {
-                stressInside = Math.min(stressInside + BASE_IMPACT * 8, 0);
-            } else {
-                stressInside = Math.min(stressInside + stress + (BASE_IMPACT - currentStress) * 8, 0);
+            //消耗
+            if (stressInside > 0) {
+                if (isOverStressed()) {
+                    stressInside = Math.max(stressInside - BASE_IMPACT * 8, 0);
+                } else {
+                    stressInside = Math.max(stressInside - stress - (BASE_IMPACT - currentStress) * 8, 0);
+                }
+            } else if (stressInside < 0) {
+                if (isOverStressed()) {
+                    stressInside = Math.min(stressInside + BASE_IMPACT * 8, 0);
+                } else {
+                    stressInside = Math.min(stressInside + stress + (BASE_IMPACT - currentStress) * 8, 0);
+                }
             }
         }
     }

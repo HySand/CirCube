@@ -1,0 +1,12 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "circube:fluid/molten_gold_flow"
+    },
+    {
+      "type": "single",
+      "resource": "circube:fluid/molten_gold_still"
+    }
+  ]
+}
