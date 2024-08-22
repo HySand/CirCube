@@ -36,7 +36,7 @@ public class CirCubeBlocks {
             .transform(axeOrPickaxe())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> AssetLookup.partialBaseModel(c, p)))
-            .transform(BlockStressDefaults.setImpact(2))
+            .transform(BlockStressDefaults.setImpact(1))
             .transform(BlockStressDefaults.setCapacity(32))
             .transform(BlockStressDefaults.setGeneratorSpeed(SpringBlock::getSpeedRange))
             .item()
@@ -57,7 +57,7 @@ public class CirCubeBlocks {
             .transform(axeOrPickaxe())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((c, p) -> BlockStateGen.axisBlock(c, p, AssetLookup.forPowered(c, p)))
-            .transform(BlockStressDefaults.setImpact(4))
+            .transform(BlockStressDefaults.setImpact(2))
             .item()
             .transform(customItemModel())
             .register();

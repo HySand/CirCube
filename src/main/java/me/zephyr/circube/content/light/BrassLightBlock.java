@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
-import static me.zephyr.circube.content.light.AndesiteLightBlockEntity.activatedAndesiteLight;
 import static me.zephyr.circube.content.light.BrassLightBlockEntity.activatedBrassLight;
 
 public class BrassLightBlock extends AbstractEncasedShaftBlock implements IBE<SplitShaftBlockEntity> {

@@ -9,9 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class AndesiteLightBlockEntity extends SplitShaftBlockEntity {
     public static final Map<BlockPos, Float> activatedAndesiteLight = new HashMap<>();

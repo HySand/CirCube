@@ -43,13 +43,13 @@ public class SpringScenes {
         scene.idle(40);
 
         scene.overlay.showText(60)
-                .text("Spring will use as much of the remaining stress as possible")
+                .text("Spring use more stress when charging")
                 .attachKeyFrame()
                 .pointAt(util.vector.blockSurface(gauge, Direction.NORTH))
                 .placeNearTarget();
         scene.idle(70);
 
-        scene.world.setKineticSpeed(util.select.everywhere(), 8);
+        scene.world.setKineticSpeed(util.select.everywhere(), 4);
         scene.world.modifyBlockEntityNBT(util.select.position(gauge), StressGaugeBlockEntity.class, nbt -> nbt.putFloat("Value", .2f));
         scene.idle(10);
         scene.world.showSection(util.select.position(deployer), Direction.DOWN);
@@ -64,7 +64,7 @@ public class SpringScenes {
         scene.idle(60);
 
         scene.world.hideSection(util.select.position(deployer), Direction.UP);
-        scene.world.setKineticSpeed(util.select.everywhere(), 8);
+        scene.world.setKineticSpeed(util.select.everywhere(), 4);
 
         scene.overlay.showText(80)
                 .text("Spring depletes internal stresses according to the stress impact, even if there are no other loads, and it depletes stresses itself")
@@ -122,7 +122,7 @@ public class SpringScenes {
         scene.world.toggleRedstonePower(util.select.fromTo(lever, lever.south(2)));
         scene.effects.indicateRedstone(lever);
         scene.world.setKineticSpeed(util.select.position(4, 1, 3), 0);
-        scene.world.setKineticSpeed(util.select.fromTo(deployer, deployer.east(3)), 8);
+        scene.world.setKineticSpeed(util.select.fromTo(deployer, deployer.east(3)), 4);
         scene.world.toggleRedstonePower(util.select.position(clutch));
         scene.world.modifyBlockEntityNBT(util.select.position(nixieTube), NixieTubeBlockEntity.class, nbt -> nbt.putInt("RedstoneStrength", 0));
         scene.idle(10);

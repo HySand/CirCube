@@ -1,5 +1,6 @@
 package me.zephyr.circube.content.stabilizer;
 
+import me.zephyr.circube.CirCube;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,10 +29,10 @@ public class StabilizerItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        ServerPlayer serverPlayer = (ServerPlayer) player;
-        BlockPos spawnLocation = serverPlayer.getRespawnPosition();
-        if (spawnLocation == null) return InteractionResultHolder.pass(itemStack);
-        if (!world.isClientSide) {
+
+        if (!world.isClientSide()) {
+            ServerPlayer serverPlayer = (ServerPlayer) player;
+            BlockPos spawnLocation = serverPlayer.getRespawnPosition();
             if (spawnLocation != null) {
                 scheduler.schedule(() -> {
                     serverPlayer.teleportTo(spawnLocation.getX() + 0.5, spawnLocation.getY() + 0.5, spawnLocation.getZ() + 0.5); // 替换为你的目标坐标
@@ -42,10 +43,10 @@ public class StabilizerItem extends Item {
                 world.playSound(null, serverPlayer.blockPosition(), SoundEvents.ENDERMAN_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
                 serverPlayer.getCooldowns().addCooldown(this, 100);
                 itemStack.shrink(1);
+                Minecraft.getInstance().gameRenderer.displayItemActivation(itemStack);
+                return InteractionResultHolder.success(itemStack);
             }
-        } else {
-            Minecraft.getInstance().gameRenderer.displayItemActivation(itemStack);
         }
-        return InteractionResultHolder.sidedSuccess(itemStack, world.isClientSide());
+        return InteractionResultHolder.fail(itemStack);
     }
 }
