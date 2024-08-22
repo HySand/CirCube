@@ -1,5 +1,11 @@
 {
   "item.circube.stabilizer.tooltip.summary": "_Stabilizer_ is a consumable that needs to be used for teleportation",
   "item.circube.stabilizer.tooltip.behaviour1": "Crush _Stabilizer_, quick return to bed (if present)",
-  "item.circube.stabilizer.tooltip.condition1": "When R-Clicked"
+  "item.circube.stabilizer.tooltip.condition1": "When R-Clicked",
+  "block.circube.andesite_light.tooltip.behaviour1": "Emit _light_, suppress _monster spawn_ based on _Kinetic Impact_",
+  "block.circube.andesite_light.tooltip.condition1": "When Powered by Kinetics",
+  "block.circube.andesite_light.tooltip.summary": "More than a lamp, there is _soul power_ inside",
+  "block.circube.brass_light.tooltip.behaviour1": "Emit _light_, suppress _monster spawn_ based on _Kinetic Impact_",
+  "block.circube.brass_light.tooltip.condition1": "When Powered by Kinetics",
+  "block.circube.brass_light.tooltip.summary": "More than a lamp, there is _soul power_ inside"
 }

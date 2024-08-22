@@ -14,7 +14,9 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("deprecation")
 public class SpringBlock extends DirectionalKineticBlock implements IBE<SpringBlockEntity> {
 
     public SpringBlock(Properties properties) {
@@ -22,7 +24,7 @@ public class SpringBlock extends DirectionalKineticBlock implements IBE<SpringBl
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+    public @NotNull BlockState updateShape(@NotNull BlockState stateIn, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor worldIn, @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
         if (worldIn instanceof WrappedWorld)
             return stateIn;
         if (worldIn.isClientSide())
@@ -64,17 +66,17 @@ public class SpringBlock extends DirectionalKineticBlock implements IBE<SpringBl
     }
 
     @Override
-    public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
+    public int getSignal(@NotNull BlockState blockState, @NotNull BlockGetter blockAccess, @NotNull BlockPos pos, @NotNull Direction side) {
         return getBlockEntityOptional(blockAccess, pos).map(al -> al.signal).orElse(0);
     }
 
     @Override
-    public boolean isSignalSource(BlockState state) {
+    public boolean isSignalSource(@NotNull BlockState state) {
         return true;
     }
 
     @Override
-    public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
+    public int getDirectSignal(@NotNull BlockState blockState, @NotNull BlockGetter blockAccess, @NotNull BlockPos pos, @NotNull Direction side) {
         return getSignal(blockState, blockAccess, pos, side);
     }
 

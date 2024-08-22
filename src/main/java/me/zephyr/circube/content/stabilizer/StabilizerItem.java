@@ -1,6 +1,5 @@
 package me.zephyr.circube.content.stabilizer;
 
-import me.zephyr.circube.CirCube;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;

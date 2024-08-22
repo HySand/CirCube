@@ -1,12 +1,10 @@
 package me.zephyr.circube.content.spring;
 
-import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.BlockStressValues;
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import me.zephyr.circube.CirCube;
-import me.zephyr.circube.CirCubeBlocks;
 import me.zephyr.circube.Lang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
