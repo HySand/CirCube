@@ -1,10 +1,14 @@
-// 1.20.1	2024-08-20T01:49:53.1157229	Registrate Provider for circube [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2024-08-23T16:48:26.4375147	Registrate Provider for circube [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+59a67a1e17fd4c958391d21469fa5f5ed636b3d3 assets/circube/blockstates/andesite_beacon.json
 e3a5b683b2b5d6fdea05aa0b328bed0a8fd26fda assets/circube/blockstates/andesite_light.json
+44a4aea18126571a328a4fec7b9eca119c0d25b6 assets/circube/blockstates/brass_beacon.json
 3800614bccf837184cb692d56687b34c2d92568b assets/circube/blockstates/brass_light.json
 87335ff9ec6311ed8e462c1e8b720dbdcae7fede assets/circube/blockstates/spring.json
-c2a30d1ddb267c2011d2c0f4490b446eaf7c670f assets/circube/lang/en_ud.json
-30c9cb74ce2bd33233e4be232902b7ed9bd5e4cb assets/circube/lang/en_us.json
+73237ee777aeda6d16af2c7507698c63112ec0ff assets/circube/lang/en_ud.json
+a0f3a16d0f0d7f516c52bb3520ce49506af7875f assets/circube/lang/en_us.json
+e0983fb128ddf6e0e1e0111e188536958303dbc9 assets/circube/models/item/andesite_beacon.json
 44cd2484df42de78099577b79c3c1d3759d0d7dc assets/circube/models/item/andesite_light.json
+0d10d1e1b4687cf69c624491eb8f997fcd69f256 assets/circube/models/item/brass_beacon.json
 963dc13efc878889567d308499b6f1b6aa65e5f5 assets/circube/models/item/brass_light.json
 2ca1122d72aaea1d687554d8b5299f8f7276b6c0 assets/circube/models/item/incomplete_integrated_circuit.json
 4dff1b51019a632a3c73eef01d53869f33ba2ae7 assets/circube/models/item/incomplete_kinetic_mechanism.json
@@ -17,9 +21,11 @@ cec553ec834cc0f9b1c7a9b3677125de0315d04f assets/circube/models/item/kinetic_mech
 2da1a9120ce124c42acfca5643c63ab3e1462af8 assets/circube/models/item/sealed_mechanism.json
 012868fc512e7cc2abe6b96eb54c18d363cd5ec4 assets/circube/models/item/spring.json
 84c123dfcf7548f142ff4c8eecd570d8abd7c496 assets/circube/models/item/stabilizer.json
+d32413f38474b022c42f682ba5827707649a373f data/circube/loot_tables/blocks/andesite_beacon.json
 de42c879c3513c2a2e97232c270d1364e949fec3 data/circube/loot_tables/blocks/andesite_light.json
+d69babd8902f6655319377f90ce08df93f635b56 data/circube/loot_tables/blocks/brass_beacon.json
 d5b23b643eb809a254b1d76b890a71f606d9cc73 data/circube/loot_tables/blocks/brass_light.json
 50f111c708c32f510c0a6469bdadda6cd74d329b data/circube/loot_tables/blocks/spring.json
 4a60746dbbb3025432c1f4cca809b99003a1feb7 data/forge/tags/fluids/molten_gold.json
-d859c09c94d8e1769e8ca940cb648b7893998132 data/minecraft/tags/blocks/mineable/axe.json
-d859c09c94d8e1769e8ca940cb648b7893998132 data/minecraft/tags/blocks/mineable/pickaxe.json
+f97cc9286e22e759fc48c009314b4a792b8e0c56 data/minecraft/tags/blocks/mineable/axe.json
+098de3ba09e98393e415c21564554cec28845425 data/minecraft/tags/blocks/mineable/pickaxe.json

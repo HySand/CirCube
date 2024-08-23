@@ -18,11 +18,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-public class AndesiteBeaconBlock extends DirectionalKineticBlock implements IBE<MechanicalBeaconBlockEntity> {
+public class MechanicalBeaconBlock extends DirectionalKineticBlock implements IBE<MechanicalBeaconBlockEntity> {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 
-    public AndesiteBeaconBlock(Properties properties) {
+    public MechanicalBeaconBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(POWERED, false));
     }
@@ -35,14 +35,16 @@ public class AndesiteBeaconBlock extends DirectionalKineticBlock implements IBE<
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockState state = this.getStateForPlacement(context);
-        state.setValue(FACING, state.getValue(FACING).getOpposite());
-        return state;
+        Direction preferredFacing = getPreferredFacing(context);
+        if (preferredFacing == null)
+            preferredFacing = context.getNearestLookingDirection();
+        return defaultBlockState().setValue(FACING, context.getPlayer() != null && context.getPlayer()
+                .isShiftKeyDown() ? preferredFacing : preferredFacing.getOpposite());
     }
 
     @Override
     public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-        return state.getValue(FACING).getOpposite() == face;
+        return face == state.getValue(FACING).getOpposite();
     }
 
     @Override

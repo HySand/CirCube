@@ -1,6 +1,7 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "circube:block/andesite_beacon/block",
 	"textures": {
-		"2": "circube:block/beacon/beacon_on"
+		"3": "circube:block/beacon/andesite_beacon_on"
 	}
 }
