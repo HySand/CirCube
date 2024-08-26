@@ -1,17 +1,19 @@
 package me.zephyr.circube;
 
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class CirCubeShapes {
-    public static final VoxelShaper
-            BEACON = getShape(0, 0, 0, 16, 2, 16)
-            .add(1, 2, 1, 15, 3, 15)
-            .add(2, 3, 2, 14, 8, 14)
-            .add(3, 8, 3, 13, 16, 13)
-            .forDirectional();
+    public static final VoxelShape
+            BEACON_TOP = getShape(3, 0, 3, 13, 7, 13)
+            .add(2, 7, 2, 14, 11, 14)
+            .build(),
+            BEACON_BOTTOM = getShape(0, 0, 0, 16, 2, 16)
+                    .add(1, 2, 1, 15, 3, 15)
+                    .add(2, 3, 2, 14, 8, 14)
+                    .add(3, 8, 3, 13, 16, 13)
+                    .build();
 
 
     private static AllShapes.Builder getShape(VoxelShape shape) {

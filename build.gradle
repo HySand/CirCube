@@ -146,6 +146,9 @@ repositories {
     maven {
         url 'https://maven.blamejared.com/'
     }
+    maven {
+        url "https://www.cursemaven.com"
+    }
 }
 
 dependencies {

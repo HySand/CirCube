@@ -9,7 +9,9 @@ import net.minecraft.world.item.Item;
 public class CirCubeItems {
     private static final CreateRegistrate REGISTRATE = CirCube.getRegistrate();
 
-
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_STABILIZER = REGISTRATE
+            .item("incomplete_stabilizer", SequencedAssemblyItem::new)
+            .register();
     public static final ItemEntry<StabilizerItem> STABILIZER = REGISTRATE
             .item("stabilizer", StabilizerItem::new)
             .register();

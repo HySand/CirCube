@@ -30,22 +30,36 @@ public class StabilizerItem extends Item {
         ItemStack itemStack = player.getItemInHand(hand);
 
         if (!world.isClientSide()) {
-            ServerPlayer serverPlayer = (ServerPlayer) player;
-            BlockPos spawnLocation = serverPlayer.getRespawnPosition();
-            if (spawnLocation != null) {
-                scheduler.schedule(() -> {
-                    serverPlayer.teleportTo(spawnLocation.getX() + 0.5, spawnLocation.getY() + 0.5, spawnLocation.getZ() + 0.5); // 替换为你的目标坐标
-                    world.playSound(null, serverPlayer.blockPosition(), SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 1.0F, 1.0F);
-                }, 1500, TimeUnit.MILLISECONDS);
-                MobEffectInstance blind = new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, false, false);
-                player.addEffect(blind);
-                world.playSound(null, serverPlayer.blockPosition(), SoundEvents.ENDERMAN_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
-                serverPlayer.getCooldowns().addCooldown(this, 100);
-                itemStack.shrink(1);
-                Minecraft.getInstance().gameRenderer.displayItemActivation(itemStack);
-                return InteractionResultHolder.success(itemStack);
+            if (player.isCrouching()) {
+                ServerPlayer serverPlayer = (ServerPlayer) player;
+                BlockPos spawnLocation = serverPlayer.getRespawnPosition();
+                if (spawnLocation != null) {
+                    return doTeleport(itemStack, world, serverPlayer, spawnLocation, true);
+                }
+            } else {
+                ServerPlayer serverPlayer = (ServerPlayer) player;
+                BlockPos spawnLocation = serverPlayer.getRespawnPosition();
+                if (spawnLocation != null) {
+                    return doTeleport(itemStack, world, serverPlayer, spawnLocation, false);
+                }
             }
         }
         return InteractionResultHolder.fail(itemStack);
+    }
+
+    private InteractionResultHolder<ItemStack> doTeleport (ItemStack itemStack, Level world, ServerPlayer player, BlockPos pos, boolean consume) {
+        scheduler.schedule(() -> {
+            player.teleportTo(pos.getX(), pos.getY() + 0.5, pos.getZ());
+            world.playSound(null, player.blockPosition(), SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 1.0F, 1.0F);
+        }, 1500, TimeUnit.MILLISECONDS);
+        MobEffectInstance blind = new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, false, false);
+        player.addEffect(blind);
+        world.playSound(null, player.blockPosition(), SoundEvents.ENDERMAN_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
+        player.getCooldowns().addCooldown(this, 100);
+        if (consume) {
+            itemStack.shrink(1);
+            Minecraft.getInstance().gameRenderer.displayItemActivation(itemStack);
+        }
+        return InteractionResultHolder.success(itemStack);
     }
 }

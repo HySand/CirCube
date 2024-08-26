@@ -1,7 +1,0 @@
-{
-	"credit": "Made with Blockbench",
-	"parent": "circube:block/brass_beacon/block",
-	"textures": {
-		"3": "circube:block/beacon/brass_beacon_on"
-	}
-}

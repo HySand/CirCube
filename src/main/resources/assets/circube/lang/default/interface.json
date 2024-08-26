@@ -1,5 +1,8 @@
 {
   "itemGroup.circube": "CirCube Addon",
   "circube.generic.unit.stress": "su",
-  "circube.gui.goggles.stress_inside": "stress inside"
+  "circube.gui.goggles.stress_inside": "stress inside",
+  "circube.gui.goggles.beaconStats": "Beacon Stats:",
+  "circube.tooltip.beacon_name": "Beacon Name:",
+  "circube.tooltip.beacon_owner": "Beacon Owner:"
 }

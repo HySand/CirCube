@@ -11,7 +11,10 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import me.zephyr.circube.content.beacon.*;
+import me.zephyr.circube.content.beacon.MechanicalBeaconBlock;
+import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
+import me.zephyr.circube.content.beacon.MechanicalBeaconInstance;
+import me.zephyr.circube.content.beacon.MechanicalBeaconRenderer;
 import me.zephyr.circube.content.light.AndesiteLightBlock;
 import me.zephyr.circube.content.light.AndesiteLightBlockEntity;
 import me.zephyr.circube.content.light.BrassLightBlock;
@@ -19,7 +22,10 @@ import me.zephyr.circube.content.light.BrassLightBlockEntity;
 import me.zephyr.circube.content.spring.SpringBlock;
 import me.zephyr.circube.content.spring.SpringBlockEntity;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOnly;
@@ -93,36 +99,55 @@ public class CirCubeBlocks {
             .block("andesite_beacon", MechanicalBeaconBlock::new)
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL))
-            .transform(axeOnly())
+            .transform(axeOrPickaxe())
             .addLayer(() -> RenderType::cutoutMipped)
-            .blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, AssetLookup.forPowered(c, p)))
+            .blockstate((c, p) -> {
+                ModelFile bottom = AssetLookup.partialBaseModel(c, p, "bottom");
+                ModelFile top = AssetLookup.partialBaseModel(c, p, "top");
+                p.getVariantBuilder(c.get()).forAllStatesExcept((state) -> {
+                    boolean lower = state.getValue(MechanicalBeaconBlock.HALF) == DoubleBlockHalf.LOWER;
+                    ModelFile model = null;
+                    if (lower) {
+                        model = bottom;
+                    } else {
+                        model = top;
+                    }
+                    return ConfiguredModel.builder().modelFile(model).build();
+                });
+            })
             .transform(BlockStressDefaults.setImpact(4))
             .item()
             .transform(customItemModel())
             .register();
-    public static final BlockEntityEntry<MechanicalBeaconBlockEntity> ANDESITE_BEACON_ENTITY = REGISTRATE
-            .blockEntity("andesite_beacon", MechanicalBeaconBlockEntity::new)
-            .instance(() -> MechanicalBeaconInstance::new, true)
-            .validBlocks(ANDESITE_BEACON)
-            .renderer(() -> ShaftRenderer::new)
-            .register();
-
-    public static final BlockEntry<BrassBeaconBlock> BRASS_BEACON = REGISTRATE
-            .block("brass_beacon", BrassBeaconBlock::new)
+    public static final BlockEntry<MechanicalBeaconBlock> BRASS_BEACON = REGISTRATE
+            .block("brass_beacon", MechanicalBeaconBlock::new)
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL))
-            .transform(axeOnly())
+            .transform(axeOrPickaxe())
             .addLayer(() -> RenderType::cutoutMipped)
-            .blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, AssetLookup.forPowered(c, p)))
+            .blockstate((c, p) -> {
+                ModelFile bottom = AssetLookup.partialBaseModel(c, p, "bottom");
+                ModelFile top = AssetLookup.partialBaseModel(c, p, "top");
+                p.getVariantBuilder(c.get()).forAllStatesExcept((state) -> {
+                    boolean lower = state.getValue(MechanicalBeaconBlock.HALF) == DoubleBlockHalf.LOWER;
+                    ModelFile model = null;
+                    if (lower) {
+                        model = bottom;
+                    } else {
+                        model = top;
+                    }
+                    return ConfiguredModel.builder().modelFile(model).build();
+                });
+            })
             .transform(BlockStressDefaults.setImpact(4))
             .item()
             .transform(customItemModel())
             .register();
-    public static final BlockEntityEntry<MechanicalBeaconBlockEntity> BRASS_BEACON_ENTITY = REGISTRATE
+    public static final BlockEntityEntry<MechanicalBeaconBlockEntity> MECHANICAL_BEACON_ENTITY = REGISTRATE
             .blockEntity("brass_beacon", MechanicalBeaconBlockEntity::new)
-            .instance(() -> BrassBeaconInstance::new, true)
-            .validBlocks(BRASS_BEACON)
-            .renderer(() -> ShaftRenderer::new)
+            .instance(() -> MechanicalBeaconInstance::new, true)
+            .validBlocks(ANDESITE_BEACON, BRASS_BEACON)
+            .renderer(() -> MechanicalBeaconRenderer::new)
             .register();
 
     public static void register() {

@@ -9,15 +9,10 @@ import net.minecraft.core.Direction;
 
 public class MechanicalBeaconInstance extends KineticBlockEntityInstance<MechanicalBeaconBlockEntity> {
     protected final RotatingData shaft;
-    final Direction direction;
-    private final Direction opposite;
 
     public MechanicalBeaconInstance(MaterialManager materialManager, MechanicalBeaconBlockEntity blockEntity) {
         super(materialManager, blockEntity);
-        direction = blockState.getValue(MechanicalBeaconBlock.FACING);
-
-        opposite = direction.getOpposite();
-        shaft = getRotatingMaterial().getModel(AllPartialModels.SHAFT_HALF, blockState, opposite).createInstance();
+        shaft = getRotatingMaterial().getModel(AllPartialModels.SHAFT_HALF, blockState, Direction.DOWN).createInstance();
         setup(shaft);
     }
 
@@ -28,7 +23,7 @@ public class MechanicalBeaconInstance extends KineticBlockEntityInstance<Mechani
 
     @Override
     public void updateLight() {
-        BlockPos behind = pos.relative(opposite);
+        BlockPos behind = pos.relative(Direction.DOWN);
         relight(behind, shaft);
     }
 
