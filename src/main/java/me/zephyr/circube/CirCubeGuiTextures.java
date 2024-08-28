@@ -11,9 +11,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import static me.zephyr.circube.CirCube.MODID;
 
-public enum CirCubeTextures implements ScreenElement {
-    STABILIZER("stabilizer", 125, 125)
-    ;
+public enum CirCubeGuiTextures implements ScreenElement {
+
+    STABILIZER("stabilizer", 192, 165);
 
     public final ResourceLocation location;
     public final int width;
@@ -21,19 +21,19 @@ public enum CirCubeTextures implements ScreenElement {
     public final int startX;
     public final int startY;
 
-    CirCubeTextures(String location, int width, int height) {
+    CirCubeGuiTextures(String location, int width, int height) {
         this(location, 0, 0, width, height);
     }
 
-    CirCubeTextures(int startX, int startY) {
+    CirCubeGuiTextures(int startX, int startY) {
         this("icons", startX * 16, startY * 16, 16, 16);
     }
 
-    CirCubeTextures(String location, int startX, int startY, int width, int height) {
+    CirCubeGuiTextures(String location, int startX, int startY, int width, int height) {
         this(MODID, location, startX, startY, width, height);
     }
 
-    CirCubeTextures(String namespace, String location, int startX, int startY, int width, int height) {
+    CirCubeGuiTextures(String namespace, String location, int startX, int startY, int width, int height) {
         this.location = new ResourceLocation(namespace, "textures/gui/" + location + ".png");
         this.width = width;
         this.height = height;

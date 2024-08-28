@@ -1,37 +1,69 @@
 package me.zephyr.circube.content.stabilizer;
 
-import me.zephyr.circube.content.beacon.MechanicalBeacon;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
+import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
-import java.util.List;
 
-public class StabilizerMenu extends AbstractContainerMenu {
-    private MechanicalBeacon beacon;
+public class StabilizerMenu extends GhostItemMenu<ItemStack> {
+    public boolean slotsActive = true;
+    public int targetSlotsActive = 1;
 
-    protected StabilizerMenu(@Nullable MenuType<?> type, int windowId, MechanicalBeacon beacon) {
-        super(type, windowId);
-        this.beacon = beacon;
+    static final int slots = 2;
+
+    public StabilizerMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
+        super(type, id, inv, extraData);
+    }
+
+    public StabilizerMenu(MenuType<?> type, int id, Inventory inv, ItemStack contentHolder) {
+        super(type, id, inv, contentHolder);
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int i) {
-        return ItemStack.EMPTY;
+    protected ItemStack createOnClient(FriendlyByteBuf extraData) {
+        return extraData.readItem();
     }
 
     @Override
-    public boolean stillValid(@NotNull Player player) {
-        if (beacon != null) {
-            BlockPos pos = beacon.getPos();
-            return player.distanceToSqr((double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5) <= 64;
-        }
+    protected void addSlots() {
+        addPlayerSlots(46, 140);
+        for (int i = 0; i < slots; i++)
+            addSlot(new InactiveItemHandlerSlot(ghostInventory, i, i, 54 + 20 * i, 88));
+    }
+
+    @Override
+    protected void saveData(ItemStack contentHolder) {
+    }
+
+    @Override
+    protected ItemStackHandler createGhostInventory() {
+        return new ItemStackHandler(slots);
+    }
+
+    @Override
+    protected boolean allowRepeats() {
         return true;
+    }
+
+    class InactiveItemHandlerSlot extends SlotItemHandler {
+
+        private int targetIndex;
+
+        public InactiveItemHandlerSlot(IItemHandler itemHandler, int targetIndex, int index, int xPosition,
+                                       int yPosition) {
+            super(itemHandler, index, xPosition, yPosition);
+            this.targetIndex = targetIndex;
+        }
+
+        @Override
+        public boolean isActive() {
+            return slotsActive && targetIndex < targetSlotsActive;
+        }
+
     }
 }

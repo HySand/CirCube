@@ -4,5 +4,6 @@
   "circube.gui.goggles.stress_inside": "stress inside",
   "circube.gui.goggles.beaconStats": "Beacon Stats:",
   "circube.tooltip.beacon_name": "Beacon Name:",
-  "circube.tooltip.beacon_owner": "Beacon Owner:"
+  "circube.tooltip.beacon_owner": "Beacon Owner:",
+  "circube.dice.message": "%1$s rolls %2$s x %3$s(s) and get %4$s."
 }
