@@ -1,11 +1,11 @@
-// 1.20.1	2024-08-28T18:42:51.3833089	Registrate Provider for circube [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2024-09-24T15:12:23.3974192	Registrate Provider for circube [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 a644a2162b7b307851754af3e8007ca625d96c7a assets/circube/blockstates/andesite_beacon.json
 e3a5b683b2b5d6fdea05aa0b328bed0a8fd26fda assets/circube/blockstates/andesite_light.json
 34b299613019eda56e28d567fb48df6b596aa051 assets/circube/blockstates/brass_beacon.json
 3800614bccf837184cb692d56687b34c2d92568b assets/circube/blockstates/brass_light.json
 87335ff9ec6311ed8e462c1e8b720dbdcae7fede assets/circube/blockstates/spring.json
-55242f0341459ea1d7b7f6d4be0acffef9111868 assets/circube/lang/en_ud.json
-2641c3bc111fdc628197efbc430a92536bd8f8ba assets/circube/lang/en_us.json
+cf6fdda2a5e079f447643c5622a59163a7d7e1a9 assets/circube/lang/en_ud.json
+0cfb9cd068fc37b77bdde288ef611ec237eec0f7 assets/circube/lang/en_us.json
 e0983fb128ddf6e0e1e0111e188536958303dbc9 assets/circube/models/item/andesite_beacon.json
 44cd2484df42de78099577b79c3c1d3759d0d7dc assets/circube/models/item/andesite_light.json
 0d10d1e1b4687cf69c624491eb8f997fcd69f256 assets/circube/models/item/brass_beacon.json
