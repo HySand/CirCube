@@ -10,6 +10,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+
+import static me.zephyr.circube.content.beacon.MechanicalBeaconBlock.HALF;
 
 public class MechanicalBeaconRenderer extends KineticBlockEntityRenderer<MechanicalBeaconBlockEntity> {
 
@@ -19,6 +22,7 @@ public class MechanicalBeaconRenderer extends KineticBlockEntityRenderer<Mechani
 
     @Override
     public void renderSafe(MechanicalBeaconBlockEntity entity, float v, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay) {
+        if (entity.getBlockState().getValue(HALF) == DoubleBlockHalf.LOWER) return;
         ItemStack stack;
         if (entity.getBlockState().getValue(MechanicalBeaconBlock.ACTIVE)) {
             stack = new ItemStack(CirCubeItems.STABILIZER);
@@ -28,7 +32,7 @@ public class MechanicalBeaconRenderer extends KineticBlockEntityRenderer<Mechani
 
         poseStack.pushPose();
         poseStack.scale(0.5f, 0.5f, 0.5f);
-        poseStack.translate(1f, 4f, 1f);
+        poseStack.translate(1f, 2f, 1f);
 
         poseStack.mulPose(Axis.YN.rotationDegrees(entity.lookingRotR));
         poseStack.mulPose(Axis.YP.rotationDegrees(90));

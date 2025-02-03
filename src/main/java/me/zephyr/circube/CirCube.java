@@ -7,7 +7,6 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import me.zephyr.circube.config.CCConfigs;
-import me.zephyr.circube.util.BeaconData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -22,12 +21,9 @@ import org.slf4j.Logger;
 public class CirCube {
     public static final String MODID = "circube";
     public static final Logger LOGGER = LogUtils.getLogger();
-
     public static IEventBus modEventBus;
     public static IEventBus forgeEventBus;
     private static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
-
-    public static BeaconData BEACON_STORAGE;
 
     static {
         REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
@@ -41,6 +37,7 @@ public class CirCube {
         forgeEventBus.register(this);
 
         REGISTRATE.registerEventListeners(modEventBus);
+        CirCubePackets.register();
         CirCubeBlocks.register();
         CirCubeItems.register();
         CirCubeFluids.register();

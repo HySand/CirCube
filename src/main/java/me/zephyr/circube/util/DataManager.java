@@ -1,11 +1,25 @@
 package me.zephyr.circube.util;
 
+import me.zephyr.circube.CirCube;
+import me.zephyr.circube.content.beacon.MechanicalBeaconBlock;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
+import me.zephyr.circube.content.beacon.MechanicalBeaconScreen;
+import me.zephyr.circube.content.stabilizer.StabilizerEntry;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DataManager {
     public static BeaconData getOrCreateBeaconData(ServerLevel level) {
@@ -19,9 +33,9 @@ public class DataManager {
         nbt.putString("Name", blockEntity.getBeaconName());
         nbt.putString("Owner", blockEntity.getOwnerName());
         nbt.putString("World", level.dimension().location().toShortLanguageKey());
-        nbt.putString("X", String.valueOf(blockEntity.getBlockPos().getX()));
-        nbt.putString("Y", String.valueOf(blockEntity.getBlockPos().getY()));
-        nbt.putString("Z", String.valueOf(blockEntity.getBlockPos().getZ()));
+        nbt.putInt("X", blockEntity.getBlockPos().getX());
+        nbt.putInt("Y", blockEntity.getBlockPos().getY());
+        nbt.putInt("Z", blockEntity.getBlockPos().getZ());
         nbt.putUUID("OwnerUUID", blockEntity.getOwner());
 
         data.setData(blockEntity.getBeaconId(), nbt);
@@ -32,18 +46,41 @@ public class DataManager {
         storage.removeData(id);
     }
 
-    public static CompoundTag loadBeaconData(ServerLevel level, String id) {
-        BeaconData storage = getOrCreateBeaconData(level);
+    public static CompoundTag loadBeaconData(ServerPlayer serverPlayer, String id) {
+        BeaconData storage = getOrCreateBeaconData(serverPlayer.serverLevel());
+        if (storage.getData(id).isEmpty()) {
+            removeBeacon(serverPlayer, id);
+            return null;
+        }
         return storage.getData(id);
     }
 
+    public static List<StabilizerEntry> loadBeaconEntries(ServerPlayer serverPlayer, List<String> beaconIds) {
+        List<StabilizerEntry> entries = new ArrayList<>();
+        for (String id : beaconIds) {
+            CompoundTag beaconData = loadBeaconData(serverPlayer, id);
+            if (beaconData != null) {
+                String name = beaconData.getString("Name");
+                BlockPos pos = new BlockPos(
+                        beaconData.getInt("X"),
+                        beaconData.getInt("Y"),
+                        beaconData.getInt("Z")
+                );
+                String owner = beaconData.getString("Owner");
+                BlockState state = serverPlayer.serverLevel().getBlockState(pos);
+                boolean active = state.hasProperty(MechanicalBeaconBlock.ACTIVE) && state.getValue(MechanicalBeaconBlock.ACTIVE);
+                entries.add(new StabilizerEntry(id, name, pos, "minecraft:grass_block", owner, active)); // 假设使用默认图标
+            }
+        }
+        return entries;
+    }
 
     public static void savePlayerData(ServerPlayer player, String id) {
         CompoundTag data = player.getPersistentData();
 
         ListTag beacons;
         if (data.contains("Beacons", 9)) {
-            beacons = data.getList("Beacons", 8);
+            beacons = data.getList("Beacons", Tag.TAG_STRING);
         } else {
             beacons = new ListTag();
         }
@@ -52,5 +89,44 @@ public class DataManager {
         }
 
         data.put("Beacons", beacons);
+    }
+
+    public static List<String> getBeaconIds(ServerPlayer player) {
+        CompoundTag data = player.getPersistentData();
+        return data.getList("Beacons", Tag.TAG_STRING)
+                .stream()
+                .map(tag -> tag.getAsString())
+                .collect(Collectors.toList());
+    }
+
+    public static void removeBeacon(ServerPlayer player, String beaconId) {
+        CompoundTag playerData = player.getPersistentData();
+        ListTag beaconList = playerData.getList("Beacons", Tag.TAG_STRING);
+        beaconList.removeIf(tag -> tag.getAsString().equals(beaconId));
+    }
+
+    public static void updateBeaconOrder(ServerPlayer player, List<String> beaconIds) {
+        CompoundTag playerData = player.getPersistentData();
+        ListTag beaconList = new ListTag();
+        beaconIds.forEach(beaconId -> beaconList.add(StringTag.valueOf(beaconId)));
+        playerData.put("Beacons", beaconList);
+    }
+
+    public static void updateBeaconName(ServerLevel level, String beaconId, String newName) {
+        BeaconData storage = getOrCreateBeaconData(level);
+        CompoundTag beaconData = storage.getData(beaconId);
+        if (beaconData != null) {
+            beaconData.putString("Name", newName);
+            storage.setData(beaconId, beaconData);
+        }
+    }
+
+    public static void updateBeaconIcon(ServerPlayer player, String beaconId, String newIcon) {
+        BeaconData storage = getOrCreateBeaconData(player.serverLevel());
+        CompoundTag beaconData = storage.getData(beaconId);
+        if (beaconData != null) {
+            beaconData.putString("Icon", newIcon);
+            storage.setData(beaconId, beaconData);
+        }
     }
 }

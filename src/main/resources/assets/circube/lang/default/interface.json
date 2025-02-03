@@ -6,7 +6,10 @@
   "circube.tooltip.beacon_name": "Beacon Name:",
   "circube.tooltip.beacon_owner": "Beacon Owner:",
   "circube.dice.message": "%1$s rolls %2$s x %3$s(s) and get %4$s.",
+  "circube.gui.stabilizer.teleport": "Click to teleport",
+  "circube.gui.stabilizer.offline": "Offline",
   "circube.gui.stabilizer.forget_entry": "Forget Beacon",
+  "circube.gui.stabilizer.owner": "Owner: %s",
   "circube.gui.stabilizer.move_up": "Move up",
   "circube.gui.stabilizer.move_down": "Move down"
 }

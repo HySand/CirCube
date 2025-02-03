@@ -2,22 +2,30 @@ package me.zephyr.circube.content.beacon;
 
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import me.zephyr.circube.CirCube;
 import me.zephyr.circube.Lang;
+import me.zephyr.circube.util.DataManager;
 import me.zephyr.circube.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.UUID;
 
+import static me.zephyr.circube.content.beacon.MechanicalBeaconBlock.HALF;
 import static net.minecraft.util.Mth.clamp;
 
 public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
@@ -30,30 +38,34 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
 
     public MechanicalBeaconBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
+        if (getBlockState().getValue(HALF) == DoubleBlockHalf.UPPER) return;
         this.name = getBeaconName();
     }
-
 
     @Override
     public void tick() {
         super.tick();
-        var closestPlayer = level.getNearestPlayer(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 5.5, false);
-        if (closestPlayer != null && getBlockState().getValue(MechanicalBeaconBlock.ACTIVE)) {
-            addParticle(closestPlayer);
-            double x = closestPlayer.getX() - worldPosition.getX() - 0.5D;
-            double z = closestPlayer.getZ() - worldPosition.getZ() - 0.5D;
-            float rotY = (float) ((float) Math.atan2(z, x) / Math.PI * 180 + 180);
-            moveOnTickR(rotY);
+        if (getBlockState().getValue(HALF) == DoubleBlockHalf.UPPER) {
+            var closestPlayer = level.getNearestPlayer(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 5.5, false);
+            if (closestPlayer != null && getBlockState().getValue(MechanicalBeaconBlock.ACTIVE)) {
+                addParticle(closestPlayer);
+                double x = closestPlayer.getX() - worldPosition.getX() - 0.5D;
+                double z = closestPlayer.getZ() - worldPosition.getZ() - 0.5D;
+                float rotY = (float) ((float) Math.atan2(z, x) / Math.PI * 180 + 180);
+                moveOnTickR(rotY);
+            } else {
+                lookingRotR += 2;
+            }
+            lookingRotR = rotClamp(360, lookingRotR);
         } else {
-            lookingRotR += 2;
-        }
-        lookingRotR = rotClamp(360, lookingRotR);
-
-        KineticNetwork kineticNetwork = getOrCreateNetwork();
-        if (kineticNetwork != null && capacity >= stress && lastStressApplied > 0) {
-            level.setBlock(getBlockPos(), getBlockState().setValue(MechanicalBeaconBlock.ACTIVE, true), 2);
-        } else {
-            level.setBlock(getBlockPos(), getBlockState().setValue(MechanicalBeaconBlock.ACTIVE, false), 2);
+            KineticNetwork kineticNetwork = getOrCreateNetwork();
+            if (kineticNetwork != null && capacity >= stress && lastStressApplied > 0) {
+                level.setBlockAndUpdate(getBlockPos().above(), getBlockState().setValue(MechanicalBeaconBlock.ACTIVE, true).setValue(HALF, DoubleBlockHalf.UPPER));
+                level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(MechanicalBeaconBlock.ACTIVE, true));
+            } else {
+                level.setBlockAndUpdate(getBlockPos().above(), getBlockState().setValue(MechanicalBeaconBlock.ACTIVE, false).setValue(HALF, DoubleBlockHalf.UPPER));
+                level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(MechanicalBeaconBlock.ACTIVE, false));
+            }
         }
     }
 
@@ -93,6 +105,7 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
     }
 
     private void addParticle(Player player) {
+        if (getBlockState().getValue(HALF) == DoubleBlockHalf.UPPER) return;
         if (level == null) {
             return;
         }
@@ -158,7 +171,7 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
     }
 
     public void setBeaconId(String id) {
-        hash = id;
+        this.hash = id;
     }
 
     public String getBeaconName() {
@@ -166,7 +179,11 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
     }
 
     public void setBeaconName(String beaconName) {
-        name = beaconName;
+        this.name = beaconName;
+        this.setChanged();
+        if (level != null && !level.isClientSide)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        DataManager.updateBeaconName((ServerLevel) level, hash, beaconName);
     }
 
     public UUID getOwner() {
@@ -174,7 +191,7 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
     }
 
     public void setOwner(String player) {
-        ownerName = player;
+        this.ownerName = player;
     }
 
     public String getOwnerName() {
@@ -182,11 +199,17 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
     }
 
     public void setOwner(UUID player) {
-        owner = player;
+        this.owner = player;
     }
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        if (getBlockState().getValue(HALF) == DoubleBlockHalf.UPPER) {
+            BlockEntity lowerEntity = level.getBlockEntity(worldPosition.below());
+            if (lowerEntity instanceof MechanicalBeaconBlockEntity) {
+                return ((MechanicalBeaconBlockEntity) lowerEntity).addToGoggleTooltip(tooltip, isPlayerSneaking);
+            }
+        }
         boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
         Lang.translate("gui.goggles.beaconStats")
                 .style(ChatFormatting.GRAY)

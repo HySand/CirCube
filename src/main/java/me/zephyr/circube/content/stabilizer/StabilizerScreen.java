@@ -12,8 +12,11 @@ import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Pair;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
-import me.zephyr.circube.CirCubeGuiTextures;
-import me.zephyr.circube.Lang;
+import me.zephyr.circube.*;
+import me.zephyr.circube.content.stabilizer.packets.BeaconDeletePacket;
+import me.zephyr.circube.content.stabilizer.packets.BeaconOrderUpdatePacket;
+import me.zephyr.circube.content.stabilizer.packets.BeaconRequestPacket;
+import me.zephyr.circube.content.stabilizer.packets.TeleportPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
@@ -21,18 +24,18 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu> {
     private static final int CARD_HEADER = 18;
@@ -41,23 +44,28 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
     private List<Rect2i> extraAreas = Collections.emptyList();
 
     private final LerpedFloat scroll = LerpedFloat.linear().startWithValue(0);
-    private final List<StabilizerEntry> teleportEntries;
+    private List<StabilizerEntry> teleportEntries = new ArrayList<>();
     private IconButton cancelButton;
+
+    private boolean hasRequestedData = false;
 
     public StabilizerScreen(StabilizerMenu container, Inventory inv, Component title) {
         super(container, inv, title);
         CompoundTag tag = container.contentHolder.getOrCreateTag().getCompound("Stabilizer");
         menu.slotsActive = false;
-        teleportEntries = loadTeleportEntries();  // 加载传送点条目
     }
 
-    private List<StabilizerEntry> loadTeleportEntries() {
-        List<StabilizerEntry> entries = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            BlockPos location = new BlockPos(100 + i, 64, 100 + i);
-            entries.add(new StabilizerEntry("传送点 " + (i + 1), location, "minecraft:stone", "Zephyr"));
+    private void loadTeleportEntries() {
+        if (minecraft != null && minecraft.player != null) {
+            UUID playerUUID = minecraft.player.getUUID();
+            CirCubePackets.CHANNEL.sendToServer(new BeaconRequestPacket(playerUUID));
         }
-        return entries;
+    }
+
+    public void updateTeleportEntries(List<StabilizerEntry> entries) {
+        this.teleportEntries.clear();
+        this.teleportEntries.addAll(entries);
+        this.init();
     }
 
     @Override
@@ -72,6 +80,11 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
         addRenderableWidget(cancelButton);
 
         extraAreas = ImmutableList.of(new Rect2i(leftPos + bg.width, topPos + bg.height - 56, 48, 48));
+
+        if (!hasRequestedData) {
+            loadTeleportEntries();
+            hasRequestedData = true;
+        }
     }
 
     @Override
@@ -126,6 +139,13 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
 
             matrixStack.popPose();
             endStencil();
+
+            startStencil(graphics, leftPos + 3, topPos + 14, 178, 120);
+            matrixStack.pushPose();
+            matrixStack.translate(0, scrollOffset, 0);
+            renderStabilizerInformations(graphics, entry, cardY, mouseX, mouseY, partialTicks, cardHeight, i);
+            matrixStack.popPose();
+            endStencil();
         }
 
         int zLevel = 200;
@@ -140,36 +160,56 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
                                      float partialTicks) {
         int zLevel = -100;
 
-        AllGuiTextures light = AllGuiTextures.SCHEDULE_CARD_LIGHT;
-        AllGuiTextures medium = AllGuiTextures.SCHEDULE_CARD_MEDIUM;
-        AllGuiTextures dark = AllGuiTextures.SCHEDULE_CARD_DARK;
+        CirCubeGuiTextures light = CirCubeGuiTextures.STABILIZER_CARD_LIGHT;
+        CirCubeGuiTextures medium = CirCubeGuiTextures.STABILIZER_CARD_MEDIUM;
+        CirCubeGuiTextures dark = CirCubeGuiTextures.STABILIZER_CARD_DARK;
 
         int cardWidth = CARD_WIDTH;
         int cardHeader = CARD_HEADER;
         int maxRows = 0;
-        int cardHeight = cardHeader + 10;
+        int cardHeight = cardHeader + 14;
 
         PoseStack matrixStack = graphics.pose();
         matrixStack.pushPose();
         matrixStack.translate(leftPos + 25, topPos + yOffset, 0);
 
-        UIRenderHelper.drawStretched(graphics, 0, 1, cardWidth, cardHeight - 2, zLevel, light);
-        UIRenderHelper.drawStretched(graphics, 1, 0, cardWidth - 2, cardHeight, zLevel, light);
-        UIRenderHelper.drawStretched(graphics, 1, 1, cardWidth - 2, cardHeight - 2, zLevel, dark);
-        UIRenderHelper.drawStretched(graphics, 2, 2, cardWidth - 4, cardHeight - 4, zLevel, medium);
-        UIRenderHelper.drawStretched(graphics, 2, 2, cardWidth - 4, cardHeader, zLevel, medium);
+        me.zephyr.circube.util.UIRenderHelper.drawStretched(graphics, 0, 1, cardWidth, cardHeight - 2, zLevel, light);
+        me.zephyr.circube.util.UIRenderHelper.drawStretched(graphics, 1, 0, cardWidth - 2, cardHeight, zLevel, light);
+        me.zephyr.circube.util.UIRenderHelper.drawStretched(graphics, 1, 1, cardWidth - 2, cardHeight - 2, zLevel, dark);
+        me.zephyr.circube.util.UIRenderHelper.drawStretched(graphics, 2, 2, cardWidth - 4, cardHeight - 4, zLevel, medium);
+        me.zephyr.circube.util.UIRenderHelper.drawStretched(graphics, 2, 2, cardWidth - 4, cardHeader, zLevel, light);
 
-        AllGuiTextures.SCHEDULE_CARD_REMOVE.render(graphics, cardWidth - 14, 2);
+        CirCubeGuiTextures.STABILIZER_CARD_FORGET.render(graphics, cardWidth - 14, 2);
 
         int i = teleportEntries.indexOf(entry);
         if (i > 0)
-            AllGuiTextures.SCHEDULE_CARD_MOVE_UP.render(graphics, cardWidth, cardHeader - 14);
+            CirCubeGuiTextures.STABILIZER_CARD_MOVE_UP.render(graphics, cardWidth, cardHeader - 14);
         if (i < teleportEntries.size() - 1)
-            AllGuiTextures.SCHEDULE_CARD_MOVE_DOWN.render(graphics, cardWidth, cardHeader);
+            CirCubeGuiTextures.STABILIZER_CARD_MOVE_DOWN.render(graphics, cardWidth, cardHeader);
 
         matrixStack.popPose();
 
         return cardHeight;
+    }
+
+    public void renderStabilizerInformations(GuiGraphics graphics, StabilizerEntry entry, int yOffset, int mouseX,
+                                             int mouseY, float partialTicks, int cardHeight, int entryIndex) {
+        int cardWidth = CARD_WIDTH;
+        int cardHeader = CARD_HEADER;
+
+        PoseStack matrixStack = graphics.pose();
+        matrixStack.pushPose();
+        matrixStack.translate(leftPos + 25, topPos + yOffset, 0);
+
+        ItemStack itemStack = entry.getIcon();
+        graphics.renderItem(itemStack,10, 3);
+        matrixStack.translate(0, 0, 0);
+        FormattedText displayText = FormattedText.of(entry.getName());
+        graphics.drawString(font, font.substrByWidth(displayText, 120)
+                .getString(), 30, 7, 0xff_f2f2ee);
+        Component ownerText = Lang.translateDirect("gui.stabilizer.owner", entry.getOwner());
+        graphics.drawString(font, ownerText, 12, 21, 0xff_e1e1d8);
+        matrixStack.popPose();
     }
 
     @Override
@@ -177,7 +217,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
         float chaseTarget = scroll.getChaseTarget();
         float max = 40 - 120;
         for (StabilizerEntry scheduleEntry : teleportEntries) {
-            max += CARD_HEADER + 5 + 10;
+            max += CARD_HEADER + 5 + 14;
         }
         if (max > 0) {
             chaseTarget -= pDelta * 12;
@@ -226,7 +266,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
 
         for (int i = 0; i < teleportEntries.size(); i++) {
             StabilizerEntry entry = teleportEntries.get(i);
-            int cardHeight = CARD_HEADER + 10;
+            int cardHeight = CARD_HEADER + 14;
 
             if (y >= cardHeight + 5) {
                 y -= cardHeight + 10;
@@ -236,13 +276,21 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
             }
 
             int fieldSize = 110;
-            if (x > 0 && x <= fieldSize && y > 0 && y <= cardHeight || x > 0 && x <= fieldSize + 12 && y > 14 && y <= cardHeight) {
-                List<Component> components = new ArrayList<>();
-                components.add(Component.literal("Click to teleport"));
-                renderActionTooltip(graphics, components, mx, my);
-                if (click == 0) {
+            if (x > 0 && x <= fieldSize && y > 0 && y <= cardHeight - 12 || x > 0 && x <= fieldSize + 12 && y > 14 && y <= cardHeight - 12) {
+                if (entry.isActive()) {
+                    renderActionTooltip(graphics, ImmutableList.of(Lang.translateDirect("gui.stabilizer.teleport")),
+                            mx, my);
+                    if (click == 0) {
+                        minecraft.player.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
+                        BlockPos targetPos = entry.getLocation();
+                        CirCubePackets.CHANNEL.sendToServer(new TeleportPacket(targetPos));
+                        minecraft.player.closeContainer();
+                    }
+                    return true;
+                } else {
+                    renderActionTooltip(graphics, ImmutableList.of(Lang.translateDirect("gui.stabilizer.offline")),
+                            mx, my);
                 }
-                return true;
             }
 
             if (x > fieldSize && x <= fieldSize + 12) {
@@ -250,6 +298,8 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
                     renderActionTooltip(graphics, ImmutableList.of(Lang.translateDirect("gui.stabilizer.forget_entry")),
                             mx, my);
                     if (click == 0) {
+                        String beaconId = entry.getBeaconId();
+                        CirCubePackets.CHANNEL.sendToServer(new BeaconDeletePacket(beaconId));
                         teleportEntries.remove(entry);
                         init();
                     }
@@ -258,22 +308,24 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
             }
 
             if (x > fieldSize + 14 && x < fieldSize + 26) {
-                if (y > 7 && y <= 20 && i > 0) {
+                if (y > 7 && y <= 16 && i > 0) {
                     renderActionTooltip(graphics, ImmutableList.of(Lang.translateDirect("gui.stabilizer.move_up")), mx,
                             my);
                     if (click == 0) {
                         teleportEntries.remove(entry);
                         teleportEntries.add(i - 1, entry);
+                        sendUpdatedOrderToServer();
                         init();
                     }
                     return true;
                 }
-                if (y > 20 && y <= 33 && i < teleportEntries.size() - 1) {
+                if (y > 17 && y <= 26 && i < teleportEntries.size() - 1) {
                     renderActionTooltip(graphics, ImmutableList.of(Lang.translateDirect("gui.stabilizer.move_down")), mx,
                             my);
                     if (click == 0) {
                         teleportEntries.remove(entry);
                         teleportEntries.add(i + 1, entry);
+                        sendUpdatedOrderToServer();
                         init();
                     }
                     return true;
@@ -283,6 +335,13 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
             return x >= 0 && x <= 15 && y <= 20;
         }
         return true;
+    }
+
+    private void sendUpdatedOrderToServer() {
+        List<String> beaconIds = teleportEntries.stream()
+                .map(StabilizerEntry::getBeaconId)
+                .collect(Collectors.toList());
+        CirCubePackets.CHANNEL.sendToServer(new BeaconOrderUpdatePacket(beaconIds));
     }
 
     protected void startStencil(GuiGraphics graphics, float x, float y, float w, float h) {
@@ -310,6 +369,14 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
 
     protected void endStencil() {
         GL11.glDisable(GL11.GL_STENCIL_TEST);
+    }
+
+    @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        if (action(null, pMouseX, pMouseY, pButton))
+            return true;
+
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 
     private int getFieldSize(int minSize, Pair<ItemStack, Component> pair) {

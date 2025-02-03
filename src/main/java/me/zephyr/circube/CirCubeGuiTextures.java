@@ -13,7 +13,17 @@ import static me.zephyr.circube.CirCube.MODID;
 
 public enum CirCubeGuiTextures implements ScreenElement {
 
-    STABILIZER("stabilizer", 192, 165);
+    STABILIZER("stabilizer", 192, 165),
+    STABILIZER_CARD_DARK("stabilizer", 3, 169, 1, 1),
+    STABILIZER_CARD_MEDIUM("stabilizer", 4, 169, 1, 1),
+    STABILIZER_CARD_LIGHT("stabilizer", 5, 169, 1, 1),
+    STABILIZER_CARD_MOVE_DOWN("stabilizer", 0, 176, 12, 12),
+    STABILIZER_CARD_MOVE_UP("stabilizer", 12, 176, 12, 12),
+    STABILIZER_CARD_FORGET("stabilizer", 24, 176, 12, 12),
+    ANDESITE_BEACON("mechanical_beacon", 134, 102),
+    BRASS_BEACON("mechanical_beacon", 0, 102, 134, 102),
+    ANDESITE_EDIT_NAME("mechanical_beacon", 0, 208, 13, 13),
+    BRASS_EDIT_NAME("mechanical_beacon", 13, 208, 13, 13);
 
     public final ResourceLocation location;
     public final int width;

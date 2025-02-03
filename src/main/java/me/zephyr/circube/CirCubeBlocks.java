@@ -144,7 +144,7 @@ public class CirCubeBlocks {
             .transform(customItemModel())
             .register();
     public static final BlockEntityEntry<MechanicalBeaconBlockEntity> MECHANICAL_BEACON_ENTITY = REGISTRATE
-            .blockEntity("brass_beacon", MechanicalBeaconBlockEntity::new)
+            .blockEntity("mechanical_beacon", MechanicalBeaconBlockEntity::new)
             .instance(() -> MechanicalBeaconInstance::new, true)
             .validBlocks(ANDESITE_BEACON, BRASS_BEACON)
             .renderer(() -> MechanicalBeaconRenderer::new)

@@ -9,19 +9,24 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class StabilizerEntry {
+    private String beaconId;
     private String name;
     private BlockPos location;
     private String owner;
     private ItemStack icon;
+    private boolean active;
 
-    public StabilizerEntry(String name, BlockPos location, String icon, String owner) {
+    public StabilizerEntry(String  id, String name, BlockPos location, String icon, String owner, boolean active) {
+        this.beaconId = id;
         this.name = name;
         this.location = location;
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(icon));
         this.icon = new ItemStack(Objects.requireNonNullElse(item, Items.GRASS_BLOCK));
         this.owner = owner;
+        this.active = active;
     }
 
     public String getName() {
@@ -54,5 +59,13 @@ public class StabilizerEntry {
 
     public void setLocation(BlockPos location) {
         this.location = location;
+    }
+
+    public String getBeaconId() {
+        return beaconId;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }
