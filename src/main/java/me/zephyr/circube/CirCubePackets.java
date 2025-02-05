@@ -21,19 +21,19 @@ public class CirCubePackets {
     public static void register() {
         int packetId = 0;
         CHANNEL.registerMessage(packetId++,
-                TeleportPacket .class,
+                TeleportPacket.class,
                 TeleportPacket::encode,
                 TeleportPacket::decode,
                 TeleportPacket::handle
         );
         CHANNEL.registerMessage(packetId++,
-                BeaconRequestPacket .class,
+                BeaconRequestPacket.class,
                 BeaconRequestPacket::encode,
                 BeaconRequestPacket::decode,
                 BeaconRequestPacket::handle
         );
         CHANNEL.registerMessage(packetId++,
-                StabilizerDataPacket .class,
+                StabilizerDataPacket.class,
                 StabilizerDataPacket::encode,
                 StabilizerDataPacket::decode,
                 StabilizerDataPacket::handle

@@ -1,9 +1,10 @@
 package me.zephyr.circube.content.beacon;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.trains.station.NoShadowFontWrapper;
-import com.simibubi.create.foundation.gui.AbstractSimiScreen;
 import com.simibubi.create.foundation.gui.AllIcons;
+import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.utility.Components;
 import me.zephyr.circube.CirCubeGuiTextures;
@@ -11,20 +12,31 @@ import me.zephyr.circube.CirCubePackets;
 import me.zephyr.circube.content.beacon.packets.BeaconNameUpdatePacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
 
-public class MechanicalBeaconScreen extends AbstractSimiScreen {
+import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
+
+public class MechanicalBeaconScreen extends AbstractSimiContainerScreen<MechanicalBeaconMenu> {
     private EditBox nameBox;
     private IconButton confirmButton;
-    private MechanicalBeaconBlockEntity entity;
     protected CirCubeGuiTextures background;
-    private boolean brass;
-    public MechanicalBeaconScreen(MechanicalBeaconBlockEntity be, boolean brass) {
-        super(Component.literal(be.getBeaconName()));
-        this.entity = be;
-        this.brass = brass;
+    private final String name;
+    private final BlockPos pos;
+    private final boolean brass;
+    private List<Rect2i> extraAreas = Collections.emptyList();
+
+    public MechanicalBeaconScreen(MechanicalBeaconMenu container, Inventory inv, Component title) {
+        super(container, inv, title);
+        this.name = container.getName();
+        this.pos = container.getPos();
+        this.brass = container.isBrass();
         if (brass) {
             background = CirCubeGuiTextures.BRASS_BEACON;
         } else {
@@ -33,19 +45,57 @@ public class MechanicalBeaconScreen extends AbstractSimiScreen {
     }
 
     @Override
-    public void tick() {
+    public void containerTick() {
         if (getFocused() != nameBox) {
             nameBox.setCursorPosition(nameBox.getValue()
                     .length());
             nameBox.setHighlightPos(nameBox.getCursorPosition());
         }
-        super.tick();
+        super.containerTick();
     }
 
     @Override
-    protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        int x = guiLeft;
-        int y = guiTop;
+    protected void init() {
+        setWindowSize( PLAYER_INVENTORY.width, background.height + 4 + PLAYER_INVENTORY.height);
+        super.init();
+        int x = leftPos;
+        int y = topPos;
+        clearWidgets();
+
+        confirmButton = new IconButton(x + background.width - 33, y + background.height - 24, AllIcons.I_CONFIRM);
+        confirmButton.withCallback(() -> minecraft.player.closeContainer());
+        addRenderableWidget(confirmButton);
+
+        Consumer<String> onTextChanged;
+
+        onTextChanged = s -> nameBox.setX(nameBoxX(s, nameBox));
+        nameBox = new EditBox(new NoShadowFontWrapper(font), x + 5, y + 4, background.width - 20, 10,
+                Components.literal(name));
+        nameBox.setBordered(false);
+        nameBox.setMaxLength(24);
+        if (brass) {
+            nameBox.setTextColor(0x592424);
+        } else {
+            nameBox.setTextColor(0x303030);
+        }
+        nameBox.setValue(name);
+        nameBox.setFocused(false);
+        nameBox.mouseClicked(0, 0, 0);
+        nameBox.setResponder(onTextChanged);
+        nameBox.setX(nameBoxX(nameBox.getValue(), nameBox));
+        addRenderableWidget(nameBox);
+
+        extraAreas = ImmutableList.of(new Rect2i(x + background.width, y + background.height - 40, 80, 48));
+    }
+
+    @Override
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.width);
+        int invY = topPos + background.height + 4;
+        renderPlayerInventory(graphics, invX, invY);
+
+        int x = leftPos;
+        int y = topPos;
         background.render(graphics, x, y);
 
         String text = nameBox.getValue();
@@ -56,49 +106,16 @@ public class MechanicalBeaconScreen extends AbstractSimiScreen {
                 CirCubeGuiTextures.ANDESITE_EDIT_NAME.render(graphics, nameBoxX(text, nameBox) + font.width(text) + 5, y + 1);
             }
         }
-
-    }
-
-    @Override
-    protected void init() {
-        setWindowSize(background.width, background.height);
-        super.init();
-        int x = guiLeft;
-        int y = guiTop;
-        clearWidgets();
-
-        confirmButton = new IconButton( x + background.width - 33, y + background.height - 24, AllIcons.I_CONFIRM);
-        confirmButton.withCallback(() -> minecraft.player.closeContainer());
-        addRenderableWidget(confirmButton);
-
-        Consumer<String> onTextChanged;
-
-        onTextChanged = s -> nameBox.setX(nameBoxX(s, nameBox));
-        nameBox = new EditBox(new NoShadowFontWrapper(font), x + 5, y + 4, background.width - 20, 10,
-                Components.literal(entity.getBeaconName()));
-        nameBox.setBordered(false);
-        nameBox.setMaxLength(24);
-        if (brass) {
-            nameBox.setTextColor(0x592424);
-        } else {
-            nameBox.setTextColor(0x303030);
-        }
-        nameBox.setValue(entity.getBeaconName());
-        nameBox.setFocused(false);
-        nameBox.mouseClicked(0, 0, 0);
-        nameBox.setResponder(onTextChanged);
-        nameBox.setX(nameBoxX(nameBox.getValue(), nameBox));
-        addRenderableWidget(nameBox);
     }
 
     private int nameBoxX(String s, EditBox nameBox) {
-        return guiLeft + background.width / 2 - (Math.min(font.width(s), nameBox.getWidth()) + 10) / 2;
+        return leftPos + background.width / 2 - (Math.min(font.width(s), nameBox.getWidth()) + 10) / 2;
     }
 
     @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        if (!nameBox.isFocused() && pMouseY > guiTop && pMouseY < guiTop + 14 && pMouseX > guiLeft
-                && pMouseX < guiLeft + background.width) {
+        if (!nameBox.isFocused() && pMouseY > topPos && pMouseY < topPos + 14 && pMouseX > leftPos
+                && pMouseX < leftPos + background.width) {
             nameBox.setFocused(true);
             nameBox.setHighlightPos(0);
             setFocused(nameBox);
@@ -113,11 +130,16 @@ public class MechanicalBeaconScreen extends AbstractSimiScreen {
                 && (pKeyCode == InputConstants.KEY_RETURN || pKeyCode == InputConstants.KEY_NUMPADENTER);
 
         if (hitEnter && nameBox.isFocused()) {
-            if (!nameBox.getValue().equals(entity.getBeaconName()))
-                CirCubePackets.CHANNEL.sendToServer(new BeaconNameUpdatePacket(entity.getBlockPos(), nameBox.getValue()));
+            if (!nameBox.getValue().equals(name))
+                CirCubePackets.CHANNEL.sendToServer(new BeaconNameUpdatePacket(pos, nameBox.getValue()));
             return true;
         }
 
         return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+    }
+
+    @Override
+    public List<Rect2i> getExtraAreas() {
+        return extraAreas;
     }
 }

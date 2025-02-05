@@ -1,9 +1,7 @@
 package me.zephyr.circube.util;
 
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlock;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
-import me.zephyr.circube.content.beacon.MechanicalBeaconScreen;
 import me.zephyr.circube.content.stabilizer.StabilizerEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -12,10 +10,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +28,7 @@ public class DataManager {
         nbt.putString("Name", blockEntity.getBeaconName());
         nbt.putString("Owner", blockEntity.getOwnerName());
         nbt.putString("World", level.dimension().location().toShortLanguageKey());
+        nbt.putString("Icon", blockEntity.getIcon());
         nbt.putInt("X", blockEntity.getBlockPos().getX());
         nbt.putInt("Y", blockEntity.getBlockPos().getY());
         nbt.putInt("Z", blockEntity.getBlockPos().getZ());
@@ -66,10 +62,11 @@ public class DataManager {
                         beaconData.getInt("Y"),
                         beaconData.getInt("Z")
                 );
+                String icon = beaconData.getString("Icon");
                 String owner = beaconData.getString("Owner");
                 BlockState state = serverPlayer.serverLevel().getBlockState(pos);
                 boolean active = state.hasProperty(MechanicalBeaconBlock.ACTIVE) && state.getValue(MechanicalBeaconBlock.ACTIVE);
-                entries.add(new StabilizerEntry(id, name, pos, "minecraft:grass_block", owner, active)); // 假设使用默认图标
+                entries.add(new StabilizerEntry(id, name, pos, icon, owner, active));
             }
         }
         return entries;
@@ -121,8 +118,8 @@ public class DataManager {
         }
     }
 
-    public static void updateBeaconIcon(ServerPlayer player, String beaconId, String newIcon) {
-        BeaconData storage = getOrCreateBeaconData(player.serverLevel());
+    public static void updateBeaconIcon(ServerLevel level, String beaconId, String newIcon) {
+        BeaconData storage = getOrCreateBeaconData(level);
         CompoundTag beaconData = storage.getData(beaconId);
         if (beaconData != null) {
             beaconData.putString("Icon", newIcon);

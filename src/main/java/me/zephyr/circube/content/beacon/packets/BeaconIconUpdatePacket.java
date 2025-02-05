@@ -1,30 +1,34 @@
 package me.zephyr.circube.content.beacon.packets;
 
-import me.zephyr.circube.util.DataManager;
+import me.zephyr.circube.CirCube;
+import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class BeaconIconUpdatePacket {
-    private final String beaconId;
-    private final String newIcon;
+    private final BlockPos pos;
+    private final ItemStack newIcon;
 
-    public BeaconIconUpdatePacket(String beaconId, String newIcon) {
-        this.beaconId = beaconId;
+    public BeaconIconUpdatePacket(BlockPos pos, ItemStack newIcon) {
+        this.pos = pos;
         this.newIcon = newIcon;
     }
 
     public static void encode(BeaconIconUpdatePacket packet, FriendlyByteBuf buffer) {
-        buffer.writeUtf(packet.beaconId);
-        buffer.writeUtf(packet.newIcon);
+        buffer.writeBlockPos(packet.pos);
+        buffer.writeItem(packet.newIcon);
     }
 
     public static BeaconIconUpdatePacket decode(FriendlyByteBuf buffer) {
         return new BeaconIconUpdatePacket(
-                buffer.readUtf(), // beaconId
-                buffer.readUtf()  // newIcon（例如 "minecraft:stone"）
+                buffer.readBlockPos(),
+                buffer.readItem()
         );
     }
 
@@ -32,7 +36,10 @@ public class BeaconIconUpdatePacket {
         context.get().enqueueWork(() -> {
             ServerPlayer serverPlayer = context.get().getSender();
             if (serverPlayer != null) {
-                DataManager.updateBeaconIcon(serverPlayer, packet.beaconId, packet.newIcon);
+                BlockEntity blockEntity = serverPlayer.serverLevel().getBlockEntity(packet.pos);
+                if (blockEntity instanceof MechanicalBeaconBlockEntity beacon) {
+                    beacon.setIcon(packet.newIcon);
+                }
             }
         });
         context.get().setPacketHandled(true);

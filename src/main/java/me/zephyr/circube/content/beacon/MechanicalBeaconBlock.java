@@ -2,14 +2,12 @@ package me.zephyr.circube.content.beacon;
 
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeBlocks;
 import me.zephyr.circube.CirCubeShapes;
 import me.zephyr.circube.util.DataManager;
-import me.zephyr.circube.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,30 +72,31 @@ public class MechanicalBeaconBlock extends KineticBlock implements IBE<Mechanica
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide) {
-            if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
-                DataManager.savePlayerData((ServerPlayer) pPlayer, ((MechanicalBeaconBlockEntity) pLevel.getBlockEntity(pPos.below())).getBeaconId());
-            } else {
-                DataManager.savePlayerData((ServerPlayer) pPlayer, ((MechanicalBeaconBlockEntity) pLevel.getBlockEntity(pPos)).getBeaconId());
-            }
-        } else {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!level.isClientSide) {
             MechanicalBeaconBlockEntity be;
-            if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
-                be = (MechanicalBeaconBlockEntity) pLevel.getBlockEntity(pPos.below());
+            if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+                be = (MechanicalBeaconBlockEntity) level.getBlockEntity(pos.below());
             } else {
-                be = (MechanicalBeaconBlockEntity) pLevel.getBlockEntity(pPos);
+                be = (MechanicalBeaconBlockEntity) level.getBlockEntity(pos);
             }
-            if (pPlayer.isCrouching() && be.getOwner().equals(pPlayer.getUUID())) {
-                Block block = pPlayer.level().getBlockState(pPos).getBlock();
+            if (player.isCrouching() && be.getOwner().equals(player.getUUID())) {
+                Block block = player.level().getBlockState(pos).getBlock();
                 ResourceLocation blockId = ForgeRegistries.BLOCKS.getKey(block);
-                if (blockId.getPath().equals("brass_beacon")) {
-                    Minecraft.getInstance().setScreen(new MechanicalBeaconScreen(be, true));
-                } else {
-                    Minecraft.getInstance().setScreen(new MechanicalBeaconScreen(be, false));
-                }
+                withBlockEntityDo(level, pos,
+                        beacon -> NetworkHooks.openScreen((ServerPlayer) player, beacon, buf -> {
+                            buf.writeUtf(beacon.getBeaconName());
+                            buf.writeBlockPos(beacon.getBlockPos());
+                            buf.writeBoolean(blockId.getPath().equals("brass_beacon"));
+                            CompoundTag iconTag = new CompoundTag();
+                            beacon.getIconItemStack().save(iconTag);
+                            buf.writeNbt(iconTag);
+                        }));
+            } else {
+                DataManager.savePlayerData((ServerPlayer) player, be.getBeaconId());
             }
         }
+
         return InteractionResult.SUCCESS;
     }
 
@@ -137,11 +137,8 @@ public class MechanicalBeaconBlock extends KineticBlock implements IBE<Mechanica
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (!world.isClientSide && blockEntity instanceof MechanicalBeaconBlockEntity mechanicalBeaconBlockEntity) {
-            mechanicalBeaconBlockEntity.setOwner(placer.getUUID());
-            mechanicalBeaconBlockEntity.setOwner(placer.getDisplayName().getString());
-            mechanicalBeaconBlockEntity.setBeaconId(Utils.getOrCreateBeaconName(mechanicalBeaconBlockEntity.getBeaconId()));
-            mechanicalBeaconBlockEntity.setBeaconName(Utils.getOrCreateBeaconName(mechanicalBeaconBlockEntity.getBeaconName()));
+        if (!world.isClientSide && blockEntity instanceof MechanicalBeaconBlockEntity mechanicalBeaconBlockEntity && placer instanceof Player) {
+            mechanicalBeaconBlockEntity.initBlockEntity((Player) placer);
             DataManager.saveBeaconData((ServerLevel) world, mechanicalBeaconBlockEntity);
         }
 

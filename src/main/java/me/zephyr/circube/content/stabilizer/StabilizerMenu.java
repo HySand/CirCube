@@ -51,7 +51,7 @@ public class StabilizerMenu extends GhostItemMenu<ItemStack> {
 
     class InactiveItemHandlerSlot extends SlotItemHandler {
 
-        private int targetIndex;
+        private final int targetIndex;
 
         public InactiveItemHandlerSlot(IItemHandler itemHandler, int targetIndex, int index, int xPosition,
                                        int yPosition) {

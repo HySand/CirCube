@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import me.zephyr.circube.config.CCConfigs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -41,6 +42,7 @@ public class CirCube {
         CirCubeBlocks.register();
         CirCubeItems.register();
         CirCubeFluids.register();
+        CirCubeGuiTypes.register();
         CirCubeCreativeTabs.register(modEventBus);
         CCConfigs.register(ModLoadingContext.get());
         modEventBus.addListener(EventPriority.LOWEST, Registration::gatherData);
@@ -49,5 +51,9 @@ public class CirCube {
 
     public static CreateRegistrate getRegistrate() {
         return REGISTRATE;
+    }
+
+    public static ResourceLocation asResource(String path) {
+        return new ResourceLocation(MODID, path);
     }
 }

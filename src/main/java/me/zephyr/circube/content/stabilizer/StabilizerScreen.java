@@ -3,7 +3,6 @@ package me.zephyr.circube.content.stabilizer;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.UIRenderHelper;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
@@ -12,7 +11,9 @@ import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Pair;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
-import me.zephyr.circube.*;
+import me.zephyr.circube.CirCubeGuiTextures;
+import me.zephyr.circube.CirCubePackets;
+import me.zephyr.circube.Lang;
 import me.zephyr.circube.content.stabilizer.packets.BeaconDeletePacket;
 import me.zephyr.circube.content.stabilizer.packets.BeaconOrderUpdatePacket;
 import me.zephyr.circube.content.stabilizer.packets.BeaconRequestPacket;
@@ -44,7 +45,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
     private List<Rect2i> extraAreas = Collections.emptyList();
 
     private final LerpedFloat scroll = LerpedFloat.linear().startWithValue(0);
-    private List<StabilizerEntry> teleportEntries = new ArrayList<>();
+    private final List<StabilizerEntry> teleportEntries = new ArrayList<>();
     private IconButton cancelButton;
 
     private boolean hasRequestedData = false;
@@ -202,7 +203,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
         matrixStack.translate(leftPos + 25, topPos + yOffset, 0);
 
         ItemStack itemStack = entry.getIcon();
-        graphics.renderItem(itemStack,10, 3);
+        graphics.renderItem(itemStack, 10, 3);
         matrixStack.translate(0, 0, 0);
         FormattedText displayText = FormattedText.of(entry.getName());
         graphics.drawString(font, font.substrByWidth(displayText, 120)

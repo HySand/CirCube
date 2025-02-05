@@ -9,8 +9,6 @@ import com.tterrag.registrate.util.entry.MenuEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import me.zephyr.circube.content.dice.DiceItem;
 import me.zephyr.circube.content.stabilizer.StabilizerItem;
-import me.zephyr.circube.content.stabilizer.StabilizerMenu;
-import me.zephyr.circube.content.stabilizer.StabilizerScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -25,10 +23,6 @@ public class CirCubeItems {
     public static final ItemEntry<StabilizerItem> STABILIZER = REGISTRATE
             .item("stabilizer", StabilizerItem::new)
             .register();
-    public static final MenuEntry<StabilizerMenu> STABILIZER_MENU =
-            register("stabilizer_selection", StabilizerMenu::new, () -> StabilizerScreen::new);
-
-
     public static final ItemEntry<DiceItem> D4 = REGISTRATE
             .item("four_sided_die", DiceItem::new)
             .register();

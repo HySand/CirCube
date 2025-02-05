@@ -1,6 +1,5 @@
 package me.zephyr.circube.content.stabilizer.packets;
 
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubePackets;
 import me.zephyr.circube.content.stabilizer.StabilizerEntry;
 import me.zephyr.circube.util.DataManager;

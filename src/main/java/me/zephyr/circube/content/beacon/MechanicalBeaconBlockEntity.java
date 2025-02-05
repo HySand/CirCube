@@ -2,25 +2,31 @@ package me.zephyr.circube.content.beacon;
 
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.Lang;
 import me.zephyr.circube.util.DataManager;
 import me.zephyr.circube.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,13 +34,14 @@ import java.util.UUID;
 import static me.zephyr.circube.content.beacon.MechanicalBeaconBlock.HALF;
 import static net.minecraft.util.Mth.clamp;
 
-public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
+public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements MenuProvider {
     public float lookingRotR = 0;
     private float turningSpeedR = 2;
     private String name = "";
     private String hash;
     private UUID owner = null;
     private String ownerName = null;
+    private String icon = "minecraft:grass_block";
 
     public MechanicalBeaconBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
@@ -142,7 +149,6 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
     @Override
     public void write(CompoundTag compound, boolean clientPacket) {
         super.write(compound, clientPacket);
-
         if (name != null)
             compound.putString("Name", name);
         if (hash != null)
@@ -151,6 +157,8 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
             compound.putUUID("Owner", owner);
         if (ownerName != null)
             compound.putString("OwnerName", ownerName);
+        if (icon != null)
+            compound.putString("Icon", icon);
     }
 
     @Override
@@ -164,6 +172,8 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
             owner = compound.getUUID("Owner");
         if (compound.contains("OwnerName"))
             ownerName = compound.getString("OwnerName");
+        if (compound.contains("Icon"))
+            icon = compound.getString("Icon");
     }
 
     public String getBeaconId() {
@@ -186,20 +196,54 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
         DataManager.updateBeaconName((ServerLevel) level, hash, beaconName);
     }
 
-    public UUID getOwner() {
-        return owner;
+    public void initBlockEntity(Player player) {
+        this.hash = Utils.getOrCreateHashString(hash, level, worldPosition);
+        this.name = Utils.getOrCreateBeaconName(name);
+        this.icon = "minecraft:grass_block";
+        this.owner = player.getUUID();
+        this.ownerName = player.getName().getString();
     }
 
-    public void setOwner(String player) {
-        this.ownerName = player;
+    public boolean isBrass() {
+        Block block = level.getBlockState(getBlockPos()).getBlock();
+        ResourceLocation blockId = ForgeRegistries.BLOCKS.getKey(block);
+        return blockId.getPath().equals("brass_beacon");
+    }
+
+    public UUID getOwner() {
+        return owner;
     }
 
     public String getOwnerName() {
         return ownerName;
     }
 
-    public void setOwner(UUID player) {
-        this.owner = player;
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+        this.setChanged();
+        if (level != null && !level.isClientSide)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        DataManager.updateBeaconIcon((ServerLevel) level, hash, icon);
+    }
+
+    public void setIcon(ItemStack itemStack) {
+        String icon;
+        if (itemStack.isEmpty()) {
+            icon = "minecraft:grass_block";
+        } else {
+            Item item = itemStack.getItem();
+            ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
+            icon = itemId.getNamespace() + ":" + itemId.getPath();
+        }
+        this.icon = icon;
+        this.setChanged();
+        if (level != null && !level.isClientSide)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        DataManager.updateBeaconIcon((ServerLevel) level, hash, icon);
     }
 
     @Override
@@ -232,5 +276,26 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity {
         }
 
         return added;
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.literal(name);
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+        return MechanicalBeaconMenu.create(id, inventory, this);
+    }
+
+    public ItemStack getIconItemStack() {
+        if (icon == null || icon.isEmpty()) {
+            ResourceLocation resourceLocation = new ResourceLocation("minecraft:barrier");
+            return new ItemStack(ForgeRegistries.ITEMS.getValue(resourceLocation));
+        } else {
+            ResourceLocation resourceLocation = new ResourceLocation(icon);
+            return new ItemStack(ForgeRegistries.ITEMS.getValue(resourceLocation));
+        }
     }
 }
