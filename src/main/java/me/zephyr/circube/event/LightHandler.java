@@ -2,22 +2,23 @@ package me.zephyr.circube.event;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static me.zephyr.circube.CirCube.MODID;
+import static me.zephyr.circube.CirCube.MOD_ID;
 import static me.zephyr.circube.content.light.AndesiteLightBlockEntity.activatedAndesiteLight;
 import static me.zephyr.circube.content.light.BrassLightBlockEntity.activatedBrassLight;
 
 public class LightHandler {
-    @Mod.EventBusSubscriber(modid = MODID)
+    @Mod.EventBusSubscriber(modid = MOD_ID)
     public class PreventMobSpawnNearLight {
         @SubscribeEvent
         public static void onMobSpawn(MobSpawnEvent.FinalizeSpawn event) {
-            if (!event.isCanceled() && event.getEntity() instanceof Enemy) {
+            if (!event.isCanceled() && event.getEntity() instanceof Enemy && event.getSpawnType() == MobSpawnType.NATURAL) {
                 Entity entity = event.getEntity();
                 if (isNearLight(entity)) {
                     event.setResult(Event.Result.DENY);

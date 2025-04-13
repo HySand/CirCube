@@ -1,15 +1,15 @@
 package me.zephyr.circube;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.simibubi.create.foundation.gui.UIRenderHelper;
-import com.simibubi.create.foundation.gui.element.ScreenElement;
-import com.simibubi.create.foundation.utility.Color;
+import net.createmod.catnip.gui.UIRenderHelper;
+import net.createmod.catnip.gui.element.ScreenElement;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import static me.zephyr.circube.CirCube.MODID;
+import static me.zephyr.circube.CirCube.MOD_ID;
 
 public enum CirCubeGuiTextures implements ScreenElement {
 
@@ -23,7 +23,13 @@ public enum CirCubeGuiTextures implements ScreenElement {
     ANDESITE_BEACON("mechanical_beacon", 134, 102),
     BRASS_BEACON("mechanical_beacon", 0, 102, 134, 102),
     ANDESITE_EDIT_NAME("mechanical_beacon", 0, 208, 13, 13),
-    BRASS_EDIT_NAME("mechanical_beacon", 13, 208, 13, 13);
+    BRASS_EDIT_NAME("mechanical_beacon", 13, 208, 13, 13),
+    VLOBBY("lobby", 1, 1, 147, 180),
+    VLOBBY_CARD("lobby", 1, 183, 114, 50),
+    VLOBBY_LARGE_CARD("lobby", 118, 183, 114, 72),
+    VLOBBY_DIFFICULTY("lobby", 63, 234, 20, 16),
+    VLOBBY_SLOT("lobby", 97, 234, 18, 18),
+    ;
 
     public final ResourceLocation location;
     public final int width;
@@ -40,11 +46,11 @@ public enum CirCubeGuiTextures implements ScreenElement {
     }
 
     CirCubeGuiTextures(String location, int startX, int startY, int width, int height) {
-        this(MODID, location, startX, startY, width, height);
+        this(MOD_ID, location, startX, startY, width, height);
     }
 
     CirCubeGuiTextures(String namespace, String location, int startX, int startY, int width, int height) {
-        this.location = new ResourceLocation(namespace, "textures/gui/" + location + ".png");
+        this.location = ResourceLocation.fromNamespaceAndPath(namespace, "textures/gui/" + location + ".png");
         this.width = width;
         this.height = height;
         this.startX = startX;

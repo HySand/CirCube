@@ -2,7 +2,7 @@ package me.zephyr.circube.content.beacon;
 
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import me.zephyr.circube.Lang;
+import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.util.DataManager;
 import me.zephyr.circube.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -255,22 +255,22 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
             }
         }
         boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-        Lang.translate("gui.goggles.beaconStats")
+        CirCubeLang.translate("gui.goggles.beaconStats")
                 .style(ChatFormatting.GRAY)
                 .forGoggles(tooltip);
         if (name != null && !name.isEmpty()) {
-            Lang.translate("tooltip.beacon_name")
+            CirCubeLang.translate("tooltip.beacon_name")
                     .style(ChatFormatting.DARK_GRAY)
                     .forGoggles(tooltip);
-            Lang.text(name)
+            CirCubeLang.text(name)
                     .style(ChatFormatting.AQUA)
                     .forGoggles(tooltip);
         }
         if (ownerName != null) {
-            Lang.translate("tooltip.beacon_owner")
+            CirCubeLang.translate("tooltip.beacon_owner")
                     .style(ChatFormatting.DARK_GRAY)
                     .forGoggles(tooltip);
-            Lang.text(ownerName)
+            CirCubeLang.text(ownerName)
                     .style(ChatFormatting.AQUA)
                     .forGoggles(tooltip);
         }
@@ -291,10 +291,10 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
 
     public ItemStack getIconItemStack() {
         if (icon == null || icon.isEmpty()) {
-            ResourceLocation resourceLocation = new ResourceLocation("minecraft:barrier");
+            ResourceLocation resourceLocation = ResourceLocation.tryParse("minecraft:barrier");
             return new ItemStack(ForgeRegistries.ITEMS.getValue(resourceLocation));
         } else {
-            ResourceLocation resourceLocation = new ResourceLocation(icon);
+            ResourceLocation resourceLocation = ResourceLocation.tryParse(icon);
             return new ItemStack(ForgeRegistries.ITEMS.getValue(resourceLocation));
         }
     }

@@ -23,7 +23,7 @@ public class StabilizerEntry {
         this.name = name;
         this.location = location;
         this.iconName = icon;
-        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(icon));
+        Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(icon));
         this.icon = new ItemStack(item, 1);
         this.owner = owner;
         this.active = active;

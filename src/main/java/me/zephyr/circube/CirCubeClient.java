@@ -12,6 +12,6 @@ public class CirCubeClient {
     }
 
     public static void init(final FMLClientSetupEvent event) {
-        CirCubePonders.register();
+
     }
 }

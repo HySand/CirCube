@@ -11,18 +11,18 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
-import static me.zephyr.circube.CirCube.MODID;
+import static me.zephyr.circube.CirCube.MOD_ID;
 import static me.zephyr.circube.CirCubeItems.KINETIC_MECHANISM;
 
 public class CirCubeCreativeTabs {
     private static final CreateRegistrate REGISTRATE = CirCube.getRegistrate();
 
-    private static final DeferredRegister<CreativeModeTab> REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+    private static final DeferredRegister<CreativeModeTab> REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
     public static final RegistryObject<CreativeModeTab> TAB =
             REGISTER.register("circube",
                     () -> CreativeModeTab.builder()
                             .title(Component.translatable("itemGroup.circube"))
-                            .withTabsBefore(ResourceLocation.of("create:palettes", ':'))
+                            .withTabsBefore(ResourceLocation.bySeparator("create:palettes", ':'))
                             .icon(() -> KINETIC_MECHANISM.get().asItem().getDefaultInstance())
                             .displayItems(
                                     (parameters, output) ->

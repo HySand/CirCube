@@ -4,15 +4,12 @@ package me.zephyr.circube;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraftforge.data.event.GatherDataEvent;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
-
-import static me.zephyr.circube.CirCube.MODID;
 
 @SuppressWarnings("removal")
 public class Registration {
@@ -24,7 +21,7 @@ public class Registration {
 
             provideDefaultLang("interface", langConsumer);
             provideDefaultLang("tooltips", langConsumer);
-            providePonderLang(langConsumer);
+            CirCubeKeys.provideLang(langConsumer);
         });
     }
 
@@ -40,13 +37,5 @@ public class Registration {
             String value = entry.getValue().getAsString();
             consumer.accept(key, value);
         }
-    }
-
-    private static void providePonderLang(BiConsumer<String, String> consumer) {
-        CirCubePonders.register();
-
-        PonderLocalization.generateSceneLang();
-
-        PonderLocalization.provideLang(MODID, consumer);
     }
 }

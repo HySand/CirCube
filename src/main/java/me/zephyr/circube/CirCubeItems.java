@@ -69,6 +69,25 @@ public class CirCubeItems {
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_INTEGRATED_CIRCUIT = REGISTRATE
             .item("incomplete_integrated_circuit", SequencedAssemblyItem::new)
             .register();
+    public static final ItemEntry<Item> PLASTIC = REGISTRATE
+            .item("plastic", Item::new)
+            .register();
+
+    public static final ItemEntry<Item> BRASS_SHELL = REGISTRATE
+            .item("brass_shell", Item::new)
+            .register();
+    public static final ItemEntry<Item> SHELL = REGISTRATE
+            .item("shell", Item::new)
+            .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_RBAPB = REGISTRATE
+            .item("incomplete_rbapb", SequencedAssemblyItem::new)
+            .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_SLAP = REGISTRATE
+            .item("incomplete_slap", SequencedAssemblyItem::new)
+            .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_GAS_PISTOL_AMMO = REGISTRATE
+            .item("incomplete_gas_pistol_ammo", SequencedAssemblyItem::new)
+            .register();
 
     private static <C extends AbstractContainerMenu, S extends Screen & MenuAccess<C>> MenuEntry<C> register(String name, ForgeMenuFactory<C> factory, NonNullSupplier<ScreenFactory<C, S>> screenFactory) {
         return REGISTRATE

@@ -1,6 +1,6 @@
 package me.zephyr.circube.content.stabilizer;
 
-import me.zephyr.circube.CirCubeGuiTypes;
+import me.zephyr.circube.CirCubeMenuTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -71,7 +71,7 @@ public class StabilizerItem extends Item implements MenuProvider {
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
         ItemStack heldItem = player.getMainHandItem();
-        return new StabilizerMenu(CirCubeGuiTypes.STABILIZER_MENU.get(), id, inv, heldItem);
+        return new StabilizerMenu(CirCubeMenuTypes.STABILIZER_MENU.get(), id, inv, heldItem);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package me.zephyr.circube.content.dice;
 
-import me.zephyr.circube.Lang;
+import me.zephyr.circube.CirCubeLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -89,7 +89,7 @@ public class DiceItem extends Item {
 
     private void broadcastDiceMessage(Player player, int count, int randomNum, ItemStack dice, Component hover) {
         HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover);
-        MutableComponent diceMessage = Lang
+        MutableComponent diceMessage = CirCubeLang
                 .translateDirect("dice.message", player.getName(), count, dice.getHoverName(), Component.literal(String.valueOf(randomNum)).withStyle(ChatFormatting.AQUA))
                 .withStyle(style -> style.withHoverEvent(hoverEvent).withColor(ChatFormatting.GRAY));
         BlockPos pos = player.getOnPos();

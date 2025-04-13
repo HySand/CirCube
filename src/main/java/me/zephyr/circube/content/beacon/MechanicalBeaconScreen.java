@@ -2,20 +2,26 @@ package me.zephyr.circube.content.beacon;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.trains.station.NoShadowFontWrapper;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
-import com.simibubi.create.foundation.utility.Components;
+import com.simibubi.create.foundation.gui.widget.Label;
+import com.simibubi.create.foundation.gui.widget.ScrollInput;
+import me.zephyr.circube.CirCubeBlocks;
 import me.zephyr.circube.CirCubeGuiTextures;
 import me.zephyr.circube.CirCubePackets;
 import me.zephyr.circube.content.beacon.packets.BeaconNameUpdatePacket;
+import net.createmod.catnip.data.Pair;
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +36,9 @@ public class MechanicalBeaconScreen extends AbstractSimiContainerScreen<Mechanic
     private final String name;
     private final BlockPos pos;
     private final boolean brass;
+    private PositionControl positionControl;
+
+    private final ItemStack renderedItem;
     private List<Rect2i> extraAreas = Collections.emptyList();
 
     public MechanicalBeaconScreen(MechanicalBeaconMenu container, Inventory inv, Component title) {
@@ -39,9 +48,12 @@ public class MechanicalBeaconScreen extends AbstractSimiContainerScreen<Mechanic
         this.brass = container.isBrass();
         if (brass) {
             background = CirCubeGuiTextures.BRASS_BEACON;
+            renderedItem = CirCubeBlocks.BRASS_BEACON.asStack();
         } else {
             background = CirCubeGuiTextures.ANDESITE_BEACON;
+            renderedItem = CirCubeBlocks.ANDESITE_BEACON.asStack();
         }
+        this.positionControl = PositionControl.NORTH;
     }
 
     @Override
@@ -56,7 +68,7 @@ public class MechanicalBeaconScreen extends AbstractSimiContainerScreen<Mechanic
 
     @Override
     protected void init() {
-        setWindowSize( PLAYER_INVENTORY.width, background.height + 4 + PLAYER_INVENTORY.height);
+        setWindowSize(PLAYER_INVENTORY.getWidth(), background.height + 4 + PLAYER_INVENTORY.getHeight());
         super.init();
         int x = leftPos;
         int y = topPos;
@@ -70,7 +82,7 @@ public class MechanicalBeaconScreen extends AbstractSimiContainerScreen<Mechanic
 
         onTextChanged = s -> nameBox.setX(nameBoxX(s, nameBox));
         nameBox = new EditBox(new NoShadowFontWrapper(font), x + 5, y + 4, background.width - 20, 10,
-                Components.literal(name));
+                Component.literal(name));
         nameBox.setBordered(false);
         nameBox.setMaxLength(24);
         if (brass) {
@@ -85,18 +97,28 @@ public class MechanicalBeaconScreen extends AbstractSimiContainerScreen<Mechanic
         nameBox.setX(nameBoxX(nameBox.getValue(), nameBox));
         addRenderableWidget(nameBox);
 
-        extraAreas = ImmutableList.of(new Rect2i(x + background.width, y + background.height - 40, 80, 48));
+        Pair<ScrollInput, Label> positionControlWidgets =
+                PositionControl.createWidget(x + 31, y + 77, mode -> positionControl = mode, positionControl);
+        addRenderableWidget(positionControlWidgets.getFirst());
+        addRenderableWidget(positionControlWidgets.getSecond());
+
+        extraAreas = ImmutableList.of(new Rect2i(x + background.width, y + background.height - 45, 40, 48));
     }
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.width);
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth());
         int invY = topPos + background.height + 4;
         renderPlayerInventory(graphics, invX, invY);
 
         int x = leftPos;
         int y = topPos;
         background.render(graphics, x, y);
+
+        GuiGameElement.of(renderedItem)
+                .<GuiGameElement.GuiRenderBuilder>at(x + background.width, y + background.height - 45, -200)
+                .scale(3)
+                .render(graphics);
 
         String text = nameBox.getValue();
         if (!nameBox.isFocused()) {
@@ -106,6 +128,13 @@ public class MechanicalBeaconScreen extends AbstractSimiContainerScreen<Mechanic
                 CirCubeGuiTextures.ANDESITE_EDIT_NAME.render(graphics, nameBoxX(text, nameBox) + font.width(text) + 5, y + 1);
             }
         }
+
+        if (brass) {
+            graphics.renderItem(AllBlocks.BRASS_DOOR.asStack(), x + 10, y + 78);
+        } else {
+            graphics.renderItem(AllBlocks.ANDESITE_DOOR.asStack(), x + 10, y + 78);
+        }
+
     }
 
     private int nameBoxX(String s, EditBox nameBox) {

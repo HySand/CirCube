@@ -4,20 +4,21 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.AllIcons;
-import com.simibubi.create.foundation.gui.UIRenderHelper;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
+
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Pair;
-import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+
 import me.zephyr.circube.CirCubeGuiTextures;
 import me.zephyr.circube.CirCubePackets;
-import me.zephyr.circube.Lang;
+import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.content.stabilizer.packets.BeaconDeletePacket;
 import me.zephyr.circube.content.stabilizer.packets.BeaconOrderUpdatePacket;
 import me.zephyr.circube.content.stabilizer.packets.BeaconRequestPacket;
 import me.zephyr.circube.content.stabilizer.packets.TeleportPacket;
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.data.Pair;
+import net.createmod.catnip.gui.UIRenderHelper;
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
@@ -208,7 +209,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
         FormattedText displayText = FormattedText.of(entry.getName());
         graphics.drawString(font, font.substrByWidth(displayText, 120)
                 .getString(), 30, 7, 0xff_f2f2ee);
-        Component ownerText = Lang.translateDirect("gui.stabilizer.owner", entry.getOwner());
+        Component ownerText = CirCubeLang.translateDirect("gui.stabilizer.owner", entry.getOwner());
         graphics.drawString(font, ownerText, 12, 21, 0xff_e1e1d8);
         matrixStack.popPose();
     }
@@ -253,7 +254,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
     }
 
     public boolean action(@Nullable GuiGraphics graphics, double mouseX, double mouseY, int click) {
-        Component empty = Components.immutableEmpty();
+        Component empty = Component.empty();
 
         int mx = (int) mouseX;
         int my = (int) mouseY;
@@ -279,7 +280,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
             int fieldSize = 110;
             if (x > 0 && x <= fieldSize && y > 0 && y <= cardHeight - 12 || x > 0 && x <= fieldSize + 12 && y > 14 && y <= cardHeight - 12) {
                 if (entry.isActive()) {
-                    renderActionTooltip(graphics, ImmutableList.of(Lang.translateDirect("gui.stabilizer.teleport")),
+                    renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.stabilizer.teleport")),
                             mx, my);
                     if (click == 0) {
                         minecraft.player.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
@@ -289,14 +290,14 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
                     }
                     return true;
                 } else {
-                    renderActionTooltip(graphics, ImmutableList.of(Lang.translateDirect("gui.stabilizer.offline")),
+                    renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.stabilizer.offline")),
                             mx, my);
                 }
             }
 
             if (x > fieldSize && x <= fieldSize + 12) {
                 if (y > 0 && y <= 14) {
-                    renderActionTooltip(graphics, ImmutableList.of(Lang.translateDirect("gui.stabilizer.forget_entry")),
+                    renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.stabilizer.forget_entry")),
                             mx, my);
                     if (click == 0) {
                         String beaconId = entry.getBeaconId();
@@ -310,7 +311,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
 
             if (x > fieldSize + 14 && x < fieldSize + 26) {
                 if (y > 7 && y <= 16 && i > 0) {
-                    renderActionTooltip(graphics, ImmutableList.of(Lang.translateDirect("gui.stabilizer.move_up")), mx,
+                    renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.stabilizer.move_up")), mx,
                             my);
                     if (click == 0) {
                         teleportEntries.remove(entry);
@@ -321,7 +322,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
                     return true;
                 }
                 if (y > 17 && y <= 26 && i < teleportEntries.size() - 1) {
-                    renderActionTooltip(graphics, ImmutableList.of(Lang.translateDirect("gui.stabilizer.move_down")), mx,
+                    renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.stabilizer.move_down")), mx,
                             my);
                     if (click == 0) {
                         teleportEntries.remove(entry);

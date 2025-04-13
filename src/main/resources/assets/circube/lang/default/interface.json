@@ -11,5 +11,11 @@
   "circube.gui.stabilizer.forget_entry": "Forget Beacon",
   "circube.gui.stabilizer.owner": "Owner: %s",
   "circube.gui.stabilizer.move_up": "Move up",
-  "circube.gui.stabilizer.move_down": "Move down"
+  "circube.gui.stabilizer.move_down": "Move down",
+  "circube.gui.vlobby.join": "Join team",
+  "circube.beacon.position_control": "Mechanical Beacon Position Control",
+  "circube.beacon.position_control.north": "North Side",
+  "circube.beacon.position_control.east": "East Side",
+  "circube.beacon.position_control.south": "South Side",
+  "circube.beacon.position_control.west": "West Side"
 }

@@ -26,13 +26,15 @@ public class AndesiteLightBlockEntity extends SplitShaftBlockEntity {
     @Override
     public void tick() {
         super.tick();
-        KineticNetwork kineticNetwork = getOrCreateNetwork();
-        if (kineticNetwork != null && capacity >= stress && lastStressApplied > 0) {
-            activatedAndesiteLight.put(getBlockPos(), lastStressApplied);
-            level.setBlock(getBlockPos(), getBlockState().setValue(BlockStateProperties.POWERED, true), 2);
-        } else {
-            activatedAndesiteLight.remove(getBlockPos());
-            level.setBlock(getBlockPos(), getBlockState().setValue(BlockStateProperties.POWERED, false), 2);
+        if (!getLevel().isClientSide()) {
+            KineticNetwork kineticNetwork = getOrCreateNetwork();
+            if (kineticNetwork != null && capacity >= stress) {
+                activatedAndesiteLight.put(getBlockPos(), lastStressApplied);
+                level.setBlock(getBlockPos(), getBlockState().setValue(BlockStateProperties.POWERED, true), 2);
+            } else {
+                activatedAndesiteLight.remove(getBlockPos());
+                level.setBlock(getBlockPos(), getBlockState().setValue(BlockStateProperties.POWERED, false), 2);
+            }
         }
     }
 }

@@ -14,12 +14,12 @@ import java.util.Collection;
 import java.util.List;
 
 import static me.zephyr.circube.CirCube.LOGGER;
-import static me.zephyr.circube.CirCube.MODID;
+import static me.zephyr.circube.CirCube.MOD_ID;
 
 public class AntiCheat {
     private static final List<String> BANNED_MODS = Arrays.asList("xray", "atianxray", "forgeautofish", "tweakerge", "tweakeroo");
 
-    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public class ModChecker {
         @SubscribeEvent
         public static void onLoadComplete(FMLLoadCompleteEvent event) {
@@ -31,7 +31,7 @@ public class AntiCheat {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public class ResourcePackChecker {
         @SubscribeEvent
         public static void onResourceReload(RegisterClientReloadListenersEvent event) {

@@ -1,7 +1,7 @@
 package me.zephyr.circube.content.beacon;
 
 import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
-import me.zephyr.circube.CirCubeGuiTypes;
+import me.zephyr.circube.CirCubeMenuTypes;
 import me.zephyr.circube.CirCubePackets;
 import me.zephyr.circube.content.beacon.packets.BeaconIconUpdatePacket;
 import net.minecraft.client.Minecraft;
@@ -86,7 +86,7 @@ public class MechanicalBeaconMenu extends GhostItemMenu<MechanicalBeaconBlockEnt
     }
 
     public static MechanicalBeaconMenu create(int id, Inventory inv, MechanicalBeaconBlockEntity be) {
-        return new MechanicalBeaconMenu(CirCubeGuiTypes.MECHANICAL_BEACON_MENU.get(), id, inv, be);
+        return new MechanicalBeaconMenu(CirCubeMenuTypes.MECHANICAL_BEACON_MENU.get(), id, inv, be);
     }
 
     @Override

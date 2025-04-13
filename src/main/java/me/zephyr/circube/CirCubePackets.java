@@ -3,16 +3,17 @@ package me.zephyr.circube;
 import me.zephyr.circube.content.beacon.packets.BeaconIconUpdatePacket;
 import me.zephyr.circube.content.beacon.packets.BeaconNameUpdatePacket;
 import me.zephyr.circube.content.stabilizer.packets.*;
+import me.zephyr.circube.content.vlobby.packets.OpenLobbyPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-import static me.zephyr.circube.CirCube.MODID;
+import static me.zephyr.circube.CirCube.MOD_ID;
 
 public class CirCubePackets {
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(MODID, "main"),
+            ResourceLocation.tryBuild(MOD_ID, "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
@@ -61,6 +62,12 @@ public class CirCubePackets {
                 BeaconIconUpdatePacket::encode,
                 BeaconIconUpdatePacket::decode,
                 BeaconIconUpdatePacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
+                OpenLobbyPacket.class,
+                OpenLobbyPacket::encode,
+                OpenLobbyPacket::decode,
+                OpenLobbyPacket::handle
         );
     }
 }

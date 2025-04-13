@@ -1,6 +1,6 @@
 package me.zephyr.circube.config;
 
-import com.simibubi.create.foundation.config.ConfigBase;
+import net.createmod.catnip.config.ConfigBase;
 
 public class CServer extends ConfigBase {
     public final CStress stressValues = nested(0, CStress::new, Comments.stress);
