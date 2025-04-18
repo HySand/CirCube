@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class RoomEntry {
-    private String roomName;
-    private int difficulty;
-    private int maxPlayers;
-    private List<UUID> players;
+    private final String roomName;
+    private final int difficulty;
+    private final int maxPlayers;
+    private final List<UUID> players;
 
     public RoomEntry(String roomName, int difficulty, int maxPlayers) {
         this.roomName = roomName;

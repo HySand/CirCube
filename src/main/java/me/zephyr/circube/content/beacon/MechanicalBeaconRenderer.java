@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import me.zephyr.circube.CirCubeItems;
+import me.zephyr.circube.util.DataManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,9 +23,9 @@ public class MechanicalBeaconRenderer extends KineticBlockEntityRenderer<Mechani
 
     @Override
     public void renderSafe(MechanicalBeaconBlockEntity entity, float v, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay) {
-        if (entity.getBlockState().getValue(HALF) == DoubleBlockHalf.LOWER) return;
+        if (entity.getBlockState().getValue(HALF) == DoubleBlockHalf.UPPER) return;
         ItemStack stack;
-        if (entity.getBlockState().getValue(MechanicalBeaconBlock.ACTIVE)) {
+        if (isActive(entity.getBeaconId())) {
             stack = new ItemStack(CirCubeItems.STABILIZER);
         } else {
             stack = new ItemStack(CirCubeItems.INCOMPLETE_STABILIZER);
@@ -32,7 +33,7 @@ public class MechanicalBeaconRenderer extends KineticBlockEntityRenderer<Mechani
 
         poseStack.pushPose();
         poseStack.scale(0.5f, 0.5f, 0.5f);
-        poseStack.translate(1f, 2f, 1f);
+        poseStack.translate(1f, 4f, 1f);
 
         poseStack.mulPose(Axis.YN.rotationDegrees(entity.lookingRotR));
         poseStack.mulPose(Axis.YP.rotationDegrees(90));
@@ -44,5 +45,9 @@ public class MechanicalBeaconRenderer extends KineticBlockEntityRenderer<Mechani
         );
 
         poseStack.popPose();
+    }
+
+    private boolean isActive(String beaconId) {
+        return DataManager.clientBeaconList.contains(beaconId);
     }
 }

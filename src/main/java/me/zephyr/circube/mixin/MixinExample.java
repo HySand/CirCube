@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftServer.class)
 public class MixinExample {
-    @Inject(at = @At("HEAD"),method = "loadLevel")
-    private void init(CallbackInfo info){
+    @Inject(at = @At("HEAD"), method = "loadLevel")
+    private void init(CallbackInfo info) {
         System.out.println("LoadLevel");
     }
 }

@@ -5,6 +5,7 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.util.DataManager;
 import me.zephyr.circube.util.Utils;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static me.zephyr.circube.content.beacon.MechanicalBeaconBlock.HALF;
+import static me.zephyr.circube.util.DataManager.clientBeaconList;
 import static net.minecraft.util.Mth.clamp;
 
 public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements MenuProvider {
@@ -42,6 +44,7 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
     private UUID owner = null;
     private String ownerName = null;
     private String icon = "minecraft:grass_block";
+    private PositionControl positionMode = PositionControl.NORTH;
 
     public MechanicalBeaconBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
@@ -52,19 +55,21 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
     @Override
     public void tick() {
         super.tick();
-        if (getBlockState().getValue(HALF) == DoubleBlockHalf.UPPER) {
-            var closestPlayer = level.getNearestPlayer(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 5.5, false);
-            if (closestPlayer != null && getBlockState().getValue(MechanicalBeaconBlock.ACTIVE)) {
-                addParticle(closestPlayer);
-                double x = closestPlayer.getX() - worldPosition.getX() - 0.5D;
-                double z = closestPlayer.getZ() - worldPosition.getZ() - 0.5D;
-                float rotY = (float) ((float) Math.atan2(z, x) / Math.PI * 180 + 180);
-                moveOnTickR(rotY);
-            } else {
-                lookingRotR += 2;
+        if (getBlockState().getValue(HALF) == DoubleBlockHalf.LOWER) {
+            if (level.isClientSide()) {
+                var closestPlayer = level.getNearestPlayer(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 5.5, false);
+                if (closestPlayer != null && clientBeaconList.contains(hash)) {
+                    addParticle(closestPlayer);
+                    double x = closestPlayer.getX() - worldPosition.getX() - 0.5D;
+                    double z = closestPlayer.getZ() - worldPosition.getZ() - 0.5D;
+                    float rotY = (float) ((float) Math.atan2(z, x) / Math.PI * 180 + 180);
+                    moveOnTickR(rotY);
+                } else {
+                    lookingRotR += 2;
+                }
+                lookingRotR = rotClamp(360, lookingRotR);
             }
-            lookingRotR = rotClamp(360, lookingRotR);
-        } else {
+
             KineticNetwork kineticNetwork = getOrCreateNetwork();
             if (kineticNetwork != null && capacity >= stress && lastStressApplied > 0) {
                 level.setBlockAndUpdate(getBlockPos().above(), getBlockState().setValue(MechanicalBeaconBlock.ACTIVE, true).setValue(HALF, DoubleBlockHalf.UPPER));
@@ -159,6 +164,8 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
             compound.putString("OwnerName", ownerName);
         if (icon != null)
             compound.putString("Icon", icon);
+        if (positionMode != null)
+            NBTHelper.writeEnum(compound, "PositionMode", positionMode);
     }
 
     @Override
@@ -174,6 +181,8 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
             ownerName = compound.getString("OwnerName");
         if (compound.contains("Icon"))
             icon = compound.getString("Icon");
+        if (compound.contains("PositionMode"))
+            positionMode = NBTHelper.readEnum(compound, "PositionMode", PositionControl.class);
     }
 
     public String getBeaconId() {
@@ -202,6 +211,7 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
         this.icon = "minecraft:grass_block";
         this.owner = player.getUUID();
         this.ownerName = player.getName().getString();
+        this.positionMode = PositionControl.NORTH;
     }
 
     public boolean isBrass() {
@@ -244,6 +254,18 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
         if (level != null && !level.isClientSide)
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
         DataManager.updateBeaconIcon((ServerLevel) level, hash, icon);
+    }
+
+    public void setPositionMode(PositionControl mode) {
+        positionMode = mode;
+        this.setChanged();
+        if (level != null && !level.isClientSide)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        DataManager.updateBeaconPositionMode((ServerLevel) level, hash, positionMode);
+    }
+
+    public PositionControl getPositionMode() {
+        return positionMode;
     }
 
     @Override

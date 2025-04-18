@@ -1,8 +1,6 @@
 package me.zephyr.circube.util;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,10 +9,6 @@ import java.util.Map;
 
 public class BeaconData extends SavedData {
     private final Map<String, CompoundTag> dataMap = new HashMap<>();
-    private String beaconName;
-    private String hash256;
-    private BlockPos pos;
-    private Level world;
 
     public static BeaconData load(CompoundTag nbt) {
         BeaconData data = new BeaconData();

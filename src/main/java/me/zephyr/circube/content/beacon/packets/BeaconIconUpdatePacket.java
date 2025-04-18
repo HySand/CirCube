@@ -1,6 +1,5 @@
 package me.zephyr.circube.content.beacon.packets;
 
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

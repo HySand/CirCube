@@ -28,20 +28,9 @@ public enum PositionControl {
                 .toArray(new String[values.length]);
     }
 
-    public boolean matches(Direction doorDirection) {
-        return switch (this) {
-            case NORTH -> doorDirection == Direction.NORTH;
-            case EAST -> doorDirection == Direction.EAST;
-            case SOUTH -> doorDirection == Direction.SOUTH;
-            case WEST -> doorDirection == Direction.WEST;
-            default -> false;
-        };
-    }
-
     @OnlyIn(Dist.CLIENT)
     public static Pair<ScrollInput, Label> createWidget(int x, int y, Consumer<PositionControl> callback,
                                                         PositionControl initial) {
-
         PositionControl playerFacing = EAST;
         Entity cameraEntity = Minecraft.getInstance().cameraEntity;
         if (cameraEntity != null) {

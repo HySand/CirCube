@@ -25,6 +25,7 @@ public class MechanicalBeaconMenu extends GhostItemMenu<MechanicalBeaconBlockEnt
     private BlockPos pos;
     private boolean brass;
     private ItemStack icon;
+    private PositionControl positionControl;
 
     public MechanicalBeaconMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
@@ -35,6 +36,7 @@ public class MechanicalBeaconMenu extends GhostItemMenu<MechanicalBeaconBlockEnt
         this.name = be.getBeaconName();
         this.pos = be.getBlockPos();
         this.brass = be.isBrass();
+        this.positionControl = be.getPositionMode();
     }
 
     @Override
@@ -72,9 +74,9 @@ public class MechanicalBeaconMenu extends GhostItemMenu<MechanicalBeaconBlockEnt
         this.pos = friendlyByteBuf.readBlockPos();
         this.brass = friendlyByteBuf.readBoolean();
         this.icon = ItemStack.of(friendlyByteBuf.readNbt());
+        this.positionControl = friendlyByteBuf.readEnum(PositionControl.class);
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof MechanicalBeaconBlockEntity) {
-            MechanicalBeaconBlockEntity mechanicalBeaconBlockEntity = (MechanicalBeaconBlockEntity) blockEntity;
+        if (blockEntity instanceof MechanicalBeaconBlockEntity mechanicalBeaconBlockEntity) {
             return mechanicalBeaconBlockEntity;
         }
         return null;
@@ -105,5 +107,9 @@ public class MechanicalBeaconMenu extends GhostItemMenu<MechanicalBeaconBlockEnt
 
     public boolean isBrass() {
         return brass;
+    }
+
+    public PositionControl getPositionControl() {
+        return positionControl;
     }
 }

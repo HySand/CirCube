@@ -1,13 +1,11 @@
 package me.zephyr.circube.content.stabilizer;
 
+import me.zephyr.circube.content.beacon.PositionControl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.Objects;
 
 public class StabilizerEntry {
     private final String beaconId;
@@ -15,10 +13,11 @@ public class StabilizerEntry {
     private BlockPos location;
     private String owner;
     private ItemStack icon;
-    private String iconName;
+    private final String iconName;
     private final boolean active;
+    private PositionControl positionControl;
 
-    public StabilizerEntry(String id, String name, BlockPos location, String icon, String owner, boolean active) {
+    public StabilizerEntry(String id, String name, BlockPos location, String icon, String owner, boolean active, PositionControl positionControl) {
         this.beaconId = id;
         this.name = name;
         this.location = location;
@@ -27,6 +26,7 @@ public class StabilizerEntry {
         this.icon = new ItemStack(item, 1);
         this.owner = owner;
         this.active = active;
+        this.positionControl = positionControl;
     }
 
     public String getName() {
@@ -48,6 +48,7 @@ public class StabilizerEntry {
     public ItemStack getIcon() {
         return icon;
     }
+
     public String getIconName() {
         return iconName;
     }
@@ -70,5 +71,13 @@ public class StabilizerEntry {
 
     public boolean isActive() {
         return active;
+    }
+
+    public void setPositionControl(PositionControl positionControl) {
+        this.positionControl = positionControl;
+    }
+
+    public PositionControl getPositionControl() {
+        return positionControl;
     }
 }

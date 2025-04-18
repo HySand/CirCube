@@ -26,7 +26,7 @@ public class BeaconDeletePacket {
         context.get().enqueueWork(() -> {
             ServerPlayer serverPlayer = context.get().getSender();
             if (serverPlayer != null) {
-                DataManager.removeBeacon(serverPlayer, packet.beaconId);
+                DataManager.removeBeaconFromPlayer(serverPlayer, packet.beaconId);
             }
         });
         context.get().setPacketHandled(true);

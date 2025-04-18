@@ -78,13 +78,19 @@ public class CirCubeBlocks {
             .transform(axeOrPickaxe())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((c, p) -> {
-                ModelFile bottom = AssetLookup.partialBaseModel(c, p, "bottom");
+                ModelFile bottom_off = AssetLookup.partialBaseModel(c, p, "bottom_off");
+                ModelFile bottom_on = AssetLookup.partialBaseModel(c, p, "bottom_on");
                 ModelFile top = AssetLookup.partialBaseModel(c, p, "top");
                 p.getVariantBuilder(c.get()).forAllStatesExcept((state) -> {
                     boolean lower = state.getValue(MechanicalBeaconBlock.HALF) == DoubleBlockHalf.LOWER;
+                    boolean active = state.getValue(MechanicalBeaconBlock.ACTIVE);
                     ModelFile model = null;
                     if (lower) {
-                        model = bottom;
+                        if (active) {
+                            model = bottom_on;
+                        } else {
+                            model = bottom_off;
+                        }
                     } else {
                         model = top;
                     }
@@ -102,13 +108,19 @@ public class CirCubeBlocks {
             .transform(axeOrPickaxe())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((c, p) -> {
-                ModelFile bottom = AssetLookup.partialBaseModel(c, p, "bottom");
+                ModelFile bottom_off = AssetLookup.partialBaseModel(c, p, "bottom_off");
+                ModelFile bottom_on = AssetLookup.partialBaseModel(c, p, "bottom_on");
                 ModelFile top = AssetLookup.partialBaseModel(c, p, "top");
                 p.getVariantBuilder(c.get()).forAllStatesExcept((state) -> {
                     boolean lower = state.getValue(MechanicalBeaconBlock.HALF) == DoubleBlockHalf.LOWER;
+                    boolean active = state.getValue(MechanicalBeaconBlock.ACTIVE);
                     ModelFile model = null;
                     if (lower) {
-                        model = bottom;
+                        if (active) {
+                            model = bottom_on;
+                        } else {
+                            model = bottom_off;
+                        }
                     } else {
                         model = top;
                     }

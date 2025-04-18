@@ -29,7 +29,6 @@ public class BeaconOrderUpdatePacket {
         context.get().enqueueWork(() -> {
             ServerPlayer serverPlayer = context.get().getSender();
             if (serverPlayer != null) {
-                // 更新服务端玩家数据中的 Beacon ID 顺序
                 DataManager.updateBeaconOrder(serverPlayer, packet.beaconIds);
             }
         });

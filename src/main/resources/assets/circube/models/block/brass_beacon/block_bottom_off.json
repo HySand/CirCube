@@ -1,6 +1,6 @@
 {
   "credit": "Made with Blockbench",
-  "parent": "circube:block/andesite_beacon/block_bottom",
+  "parent": "circube:block/andesite_beacon/block_bottom_off",
   "textures": {
     "0": "create:block/brass_gearbox",
     "1": "create:block/funnel/brass_funnel_frame",

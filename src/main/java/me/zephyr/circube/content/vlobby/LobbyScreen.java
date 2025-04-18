@@ -127,7 +127,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
 
 
     public int renderRoomEntry(GuiGraphics graphics, RoomEntry entry, int yOffset, int mouseX, int mouseY,
-                                     float partialTicks) {
+                               float partialTicks) {
         PoseStack matrixStack = graphics.pose();
         matrixStack.pushPose();
         matrixStack.translate(leftPos + 16, topPos + yOffset, 0);
@@ -146,7 +146,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
     }
 
     public void renderRoomInformations(GuiGraphics graphics, RoomEntry entry, int yOffset, int mouseX,
-                                             int mouseY, float partialTicks, int cardHeight, int entryIndex) {
+                                       int mouseY, float partialTicks, int cardHeight, int entryIndex) {
         PoseStack matrixStack = graphics.pose();
         matrixStack.pushPose();
         matrixStack.translate(leftPos + 25, topPos + yOffset, 0);
@@ -161,7 +161,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
         }
         int slotXOffset = 2;
         int slotYOffset = 25;
-        for (int i = 0; i < Math.min(entry.getMaxPlayers(), 5) ; i++) {
+        for (int i = 0; i < Math.min(entry.getMaxPlayers(), 5); i++) {
             CirCubeGuiTextures.VLOBBY_SLOT.render(graphics, slotXOffset, slotYOffset);
             slotXOffset += 19;
         }
@@ -169,7 +169,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
             slotXOffset = 2;
             slotYOffset += 19;
         }
-        for (int i = 5; i < Math.min(entry.getMaxPlayers(), 10) ; i++) {
+        for (int i = 5; i < Math.min(entry.getMaxPlayers(), 10); i++) {
             CirCubeGuiTextures.VLOBBY_SLOT.render(graphics, slotXOffset, slotYOffset);
             slotXOffset += 19;
         }

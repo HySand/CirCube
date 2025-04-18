@@ -1,5 +1,6 @@
 package me.zephyr.circube.content.stabilizer.packets;
 
+import me.zephyr.circube.content.beacon.PositionControl;
 import me.zephyr.circube.content.stabilizer.StabilizerEntry;
 import me.zephyr.circube.content.stabilizer.StabilizerScreen;
 import net.minecraft.client.Minecraft;
@@ -27,6 +28,7 @@ public class StabilizerDataPacket {
             buffer.writeBlockPos(entry.getLocation());
             buffer.writeUtf(entry.getOwner());
             buffer.writeBoolean(entry.isActive());
+            buffer.writeEnum(entry.getPositionControl());
         }
     }
 
@@ -40,7 +42,8 @@ public class StabilizerDataPacket {
             BlockPos pos = buffer.readBlockPos();
             String owner = buffer.readUtf();
             boolean active = buffer.readBoolean();
-            entries.add(new StabilizerEntry(id, name, pos, icon, owner, active));
+            PositionControl positionMode = buffer.readEnum(PositionControl.class);
+            entries.add(new StabilizerEntry(id, name, pos, icon, owner, active, positionMode));
         }
         return new StabilizerDataPacket(entries);
     }

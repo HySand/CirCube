@@ -13,6 +13,7 @@ import me.zephyr.circube.CirCubeBlocks;
 import me.zephyr.circube.CirCubeGuiTextures;
 import me.zephyr.circube.CirCubePackets;
 import me.zephyr.circube.content.beacon.packets.BeaconNameUpdatePacket;
+import me.zephyr.circube.content.beacon.packets.BeaconPositionUpdatePacket;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
@@ -53,7 +54,7 @@ public class MechanicalBeaconScreen extends AbstractSimiContainerScreen<Mechanic
             background = CirCubeGuiTextures.ANDESITE_BEACON;
             renderedItem = CirCubeBlocks.ANDESITE_BEACON.asStack();
         }
-        this.positionControl = PositionControl.NORTH;
+        this.positionControl = container.getPositionControl();
     }
 
     @Override
@@ -170,5 +171,14 @@ public class MechanicalBeaconScreen extends AbstractSimiContainerScreen<Mechanic
     @Override
     public List<Rect2i> getExtraAreas() {
         return extraAreas;
+    }
+
+    @Override
+    public void removed() {
+        super.removed();
+        CirCubePackets.CHANNEL.sendToServer(new BeaconPositionUpdatePacket(pos, positionControl));
+        if (nameBox == null || nameBox.getValue().equals(name))
+            return;
+        CirCubePackets.CHANNEL.sendToServer(new BeaconNameUpdatePacket(pos, nameBox.getValue()));
     }
 }

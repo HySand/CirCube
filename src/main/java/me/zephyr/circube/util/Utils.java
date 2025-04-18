@@ -21,7 +21,8 @@ public class Utils {
                 "<POS X:" + pos.getX() +
                         ", Y:" + pos.getY() +
                         ", Z:" + pos.getZ() +
-                        ", WORLD: \">" + level.dimension().location() + "\">"
+                        ", WORLD: \">" + level.dimension().location() +
+                        ", TIMESTAMP: \">" + System.currentTimeMillis() + "\">"
         ) : hash;
     }
 

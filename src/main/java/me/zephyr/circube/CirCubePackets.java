@@ -1,7 +1,6 @@
 package me.zephyr.circube;
 
-import me.zephyr.circube.content.beacon.packets.BeaconIconUpdatePacket;
-import me.zephyr.circube.content.beacon.packets.BeaconNameUpdatePacket;
+import me.zephyr.circube.content.beacon.packets.*;
 import me.zephyr.circube.content.stabilizer.packets.*;
 import me.zephyr.circube.content.vlobby.packets.OpenLobbyPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -64,10 +63,28 @@ public class CirCubePackets {
                 BeaconIconUpdatePacket::handle
         );
         CHANNEL.registerMessage(packetId++,
+                BeaconPositionUpdatePacket.class,
+                BeaconPositionUpdatePacket::encode,
+                BeaconPositionUpdatePacket::decode,
+                BeaconPositionUpdatePacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
                 OpenLobbyPacket.class,
                 OpenLobbyPacket::encode,
                 OpenLobbyPacket::decode,
                 OpenLobbyPacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
+                BeaconLoadPacket.class,
+                BeaconLoadPacket::encode,
+                BeaconLoadPacket::decode,
+                BeaconLoadPacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
+                BeaconSyncPacket.class,
+                BeaconSyncPacket::encode,
+                BeaconSyncPacket::decode,
+                BeaconSyncPacket::handle
         );
     }
 }

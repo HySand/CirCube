@@ -91,9 +91,12 @@ public class MechanicalBeaconBlock extends KineticBlock implements IBE<Mechanica
                             CompoundTag iconTag = new CompoundTag();
                             beacon.getIconItemStack().save(iconTag);
                             buf.writeNbt(iconTag);
+                            buf.writeEnum(beacon.getPositionMode());
                         }));
             } else {
-                DataManager.savePlayerData((ServerPlayer) player, be.getBeaconId());
+                String beaconId = be.getBeaconId();
+                DataManager.addBeaconToMemory((ServerPlayer) player, beaconId);
+                DataManager.savePlayerData((ServerPlayer) player, beaconId);
             }
         }
 

@@ -4,17 +4,19 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.AllIcons;
-
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
-
+import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeGuiTextures;
-import me.zephyr.circube.CirCubePackets;
 import me.zephyr.circube.CirCubeLang;
+import me.zephyr.circube.CirCubePackets;
+import me.zephyr.circube.content.beacon.packets.BeaconNameUpdatePacket;
+import me.zephyr.circube.content.beacon.packets.BeaconPositionUpdatePacket;
 import me.zephyr.circube.content.stabilizer.packets.BeaconDeletePacket;
 import me.zephyr.circube.content.stabilizer.packets.BeaconOrderUpdatePacket;
 import me.zephyr.circube.content.stabilizer.packets.BeaconRequestPacket;
 import me.zephyr.circube.content.stabilizer.packets.TeleportPacket;
+import me.zephyr.circube.util.DataManager;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.gui.UIRenderHelper;
@@ -24,7 +26,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
@@ -36,7 +37,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu> {
@@ -49,18 +53,18 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
     private final List<StabilizerEntry> teleportEntries = new ArrayList<>();
     private IconButton cancelButton;
 
+    private boolean modified = false;
+
     private boolean hasRequestedData = false;
 
     public StabilizerScreen(StabilizerMenu container, Inventory inv, Component title) {
         super(container, inv, title);
-        CompoundTag tag = container.contentHolder.getOrCreateTag().getCompound("Stabilizer");
         menu.slotsActive = false;
     }
 
     private void loadTeleportEntries() {
         if (minecraft != null && minecraft.player != null) {
-            UUID playerUUID = minecraft.player.getUUID();
-            CirCubePackets.CHANNEL.sendToServer(new BeaconRequestPacket(playerUUID));
+            CirCubePackets.CHANNEL.sendToServer(new BeaconRequestPacket());
         }
     }
 
@@ -285,7 +289,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
                     if (click == 0) {
                         minecraft.player.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
                         BlockPos targetPos = entry.getLocation();
-                        CirCubePackets.CHANNEL.sendToServer(new TeleportPacket(targetPos));
+                        CirCubePackets.CHANNEL.sendToServer(new TeleportPacket(targetPos, entry.getPositionControl()));
                         minecraft.player.closeContainer();
                     }
                     return true;
@@ -302,6 +306,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
                     if (click == 0) {
                         String beaconId = entry.getBeaconId();
                         CirCubePackets.CHANNEL.sendToServer(new BeaconDeletePacket(beaconId));
+                        DataManager.clientBeaconList.remove(beaconId);
                         teleportEntries.remove(entry);
                         init();
                     }
@@ -316,7 +321,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
                     if (click == 0) {
                         teleportEntries.remove(entry);
                         teleportEntries.add(i - 1, entry);
-                        sendUpdatedOrderToServer();
+                        modified = true;
                         init();
                     }
                     return true;
@@ -327,7 +332,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
                     if (click == 0) {
                         teleportEntries.remove(entry);
                         teleportEntries.add(i + 1, entry);
-                        sendUpdatedOrderToServer();
+                        modified = true;
                         init();
                     }
                     return true;
@@ -343,6 +348,8 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
         List<String> beaconIds = teleportEntries.stream()
                 .map(StabilizerEntry::getBeaconId)
                 .collect(Collectors.toList());
+        DataManager.clientBeaconList.clear();
+        DataManager.clientBeaconList.addAll(beaconIds);
         CirCubePackets.CHANNEL.sendToServer(new BeaconOrderUpdatePacket(beaconIds));
     }
 
@@ -391,6 +398,13 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
     private void renderActionTooltip(@Nullable GuiGraphics graphics, List<Component> tooltip, int mx, int my) {
         if (graphics != null)
             graphics.renderTooltip(font, tooltip, Optional.empty(), mx, my);
+    }
+
+    @Override
+    public void removed() {
+        super.removed();
+        if (modified)
+            sendUpdatedOrderToServer();
     }
 
     @Override

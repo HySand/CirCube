@@ -12,7 +12,8 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class OpenLobbyPacket {
-    public OpenLobbyPacket() {}
+    public OpenLobbyPacket() {
+    }
 
     public static void encode(OpenLobbyPacket packet, FriendlyByteBuf buffer) {
     }
@@ -27,7 +28,7 @@ public class OpenLobbyPacket {
             if (player != null) {
                 player.openMenu(new SimpleMenuProvider(
                         (containerId, playerInventory, playerEntity) ->
-                                new LobbyMenu(CirCubeMenuTypes.LOBBY_MENU.get(),containerId, playerInventory, null),
+                                new LobbyMenu(CirCubeMenuTypes.LOBBY_MENU.get(), containerId, playerInventory, null),
                         Component.literal("Custom GUI")
                 ));
             }
