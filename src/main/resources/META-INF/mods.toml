@@ -68,3 +68,10 @@ mandatory = true
 versionRange = "[0.6.0,)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "xaerominimapfair"
+mandatory = true
+versionRange = "[24.2.0,)"
+ordering = "NONE"
+side = "BOTH"

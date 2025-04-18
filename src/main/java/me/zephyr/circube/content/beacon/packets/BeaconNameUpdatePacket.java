@@ -1,10 +1,12 @@
 package me.zephyr.circube.content.beacon.packets;
 
+import me.zephyr.circube.compact.CirCubeXaerosMinimap;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -25,8 +27,8 @@ public class BeaconNameUpdatePacket {
 
     public static BeaconNameUpdatePacket decode(FriendlyByteBuf buffer) {
         return new BeaconNameUpdatePacket(
-                buffer.readBlockPos(), //pos
-                buffer.readUtf()  // newName
+                buffer.readBlockPos(),
+                buffer.readUtf()
         );
     }
 
@@ -37,6 +39,7 @@ public class BeaconNameUpdatePacket {
                 BlockEntity blockEntity = serverPlayer.serverLevel().getBlockEntity(packet.pos);
                 MechanicalBeaconBlockEntity beacon = (MechanicalBeaconBlockEntity) blockEntity;
                 beacon.setBeaconName(packet.newName);
+                CirCubeXaerosMinimap.updateWaypoint(packet.newName, beacon.getBlockPos(), serverPlayer);
             }
         });
         context.get().setPacketHandled(true);

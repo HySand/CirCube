@@ -11,18 +11,18 @@ import net.minecraftforge.network.PacketDistributor;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class BeaconRequestPacket {
-    public BeaconRequestPacket() {
+public class EntriesRequestPacket {
+    public EntriesRequestPacket() {
     }
 
-    public static void encode(BeaconRequestPacket packet, FriendlyByteBuf buffer) {
+    public static void encode(EntriesRequestPacket packet, FriendlyByteBuf buffer) {
     }
 
-    public static BeaconRequestPacket decode(FriendlyByteBuf buffer) {
-        return new BeaconRequestPacket();
+    public static EntriesRequestPacket decode(FriendlyByteBuf buffer) {
+        return new EntriesRequestPacket();
     }
 
-    public static void handle(BeaconRequestPacket packet, Supplier<NetworkEvent.Context> context) {
+    public static void handle(EntriesRequestPacket packet, Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
             ServerPlayer serverPlayer = context.get().getSender();
             if (serverPlayer != null) {

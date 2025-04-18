@@ -17,5 +17,17 @@
   "circube.beacon.position_control.north": "North Side",
   "circube.beacon.position_control.east": "East Side",
   "circube.beacon.position_control.south": "South Side",
-  "circube.beacon.position_control.west": "West Side"
+  "circube.beacon.position_control.west": "West Side",
+  "circube.beacon.position_control.north_east": "North East Side",
+  "circube.beacon.position_control.north_west": "North West Side",
+  "circube.beacon.position_control.south_east": "South East Side",
+  "circube.beacon.position_control.south_west": "South West Side",
+  "circube.beacon.position_control.north.short": "North",
+  "circube.beacon.position_control.east.short": "East",
+  "circube.beacon.position_control.south.short": "South",
+  "circube.beacon.position_control.west.short": "West",
+  "circube.beacon.position_control.north_east.short": "NE",
+  "circube.beacon.position_control.north_west.short": "NW",
+  "circube.beacon.position_control.south_east.short": "SE",
+  "circube.beacon.position_control.south_west.short": "SW"
 }

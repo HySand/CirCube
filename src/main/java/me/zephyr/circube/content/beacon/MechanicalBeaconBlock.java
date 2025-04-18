@@ -4,6 +4,7 @@ import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import me.zephyr.circube.CirCubeBlocks;
 import me.zephyr.circube.CirCubeShapes;
+import me.zephyr.circube.compact.CirCubeXaerosMinimap;
 import me.zephyr.circube.util.DataManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -77,6 +78,7 @@ public class MechanicalBeaconBlock extends KineticBlock implements IBE<Mechanica
             MechanicalBeaconBlockEntity be;
             if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
                 be = (MechanicalBeaconBlockEntity) level.getBlockEntity(pos.below());
+                pos = pos.below();
             } else {
                 be = (MechanicalBeaconBlockEntity) level.getBlockEntity(pos);
             }
@@ -95,8 +97,11 @@ public class MechanicalBeaconBlock extends KineticBlock implements IBE<Mechanica
                         }));
             } else {
                 String beaconId = be.getBeaconId();
-                DataManager.addBeaconToMemory((ServerPlayer) player, beaconId);
-                DataManager.savePlayerData((ServerPlayer) player, beaconId);
+                if (DataManager.addBeaconToPlayerData((ServerPlayer) player, beaconId)) {
+                    DataManager.addBeaconToMemory((ServerPlayer) player, beaconId);
+                    CirCubeXaerosMinimap.addWaypoint(be.getBeaconName(), be.getBlockPos(), (ServerPlayer) player);
+                }
+
             }
         }
 

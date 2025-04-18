@@ -84,7 +84,7 @@ public class DataManager {
         return entries;
     }
 
-    public static void savePlayerData(ServerPlayer player, String id) {
+    public static boolean addBeaconToPlayerData(ServerPlayer player, String id) {
         CompoundTag data = player.getPersistentData();
 
         ListTag beacons;
@@ -95,9 +95,10 @@ public class DataManager {
         }
         if (!beacons.contains(StringTag.valueOf(id))) {
             beacons.add(StringTag.valueOf(id));
+            data.put("Beacons", beacons);
+            return true;
         }
-
-        data.put("Beacons", beacons);
+        return false;
     }
 
     public static List<String> getBeaconIds(ServerPlayer player) {
@@ -159,13 +160,11 @@ public class DataManager {
     public static void addBeaconToMemory(ServerPlayer player, String beaconId) {
         UUID uuid = player.getUUID();
         List<String> beaconIds = beaconMap.get(uuid);
-        if (!beaconIds.contains(beaconId)) {
-            beaconIds.add(beaconId);
-            beaconMap.putIfAbsent(uuid, beaconIds);
-            List<String> beaconList = getBeaconIdsInMemory(player);
-            BeaconSyncPacket beaconSyncPacket = new BeaconSyncPacket(beaconList);
-            CirCubePackets.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), beaconSyncPacket);
-        }
+        beaconIds.add(beaconId);
+        beaconMap.putIfAbsent(uuid, beaconIds);
+        List<String> beaconList = getBeaconIdsInMemory(player);
+        BeaconSyncPacket beaconSyncPacket = new BeaconSyncPacket(beaconList);
+        CirCubePackets.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), beaconSyncPacket);
     }
 
     public static void loadBeaconsToMemory(ServerPlayer player) {

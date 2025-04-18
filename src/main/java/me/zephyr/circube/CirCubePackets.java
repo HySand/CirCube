@@ -1,5 +1,7 @@
 package me.zephyr.circube;
 
+import me.zephyr.circube.compact.packets.AddWaypointPacket;
+import me.zephyr.circube.compact.packets.RenameWaypointPacket;
 import me.zephyr.circube.content.beacon.packets.*;
 import me.zephyr.circube.content.stabilizer.packets.*;
 import me.zephyr.circube.content.vlobby.packets.OpenLobbyPacket;
@@ -27,10 +29,10 @@ public class CirCubePackets {
                 TeleportPacket::handle
         );
         CHANNEL.registerMessage(packetId++,
-                BeaconRequestPacket.class,
-                BeaconRequestPacket::encode,
-                BeaconRequestPacket::decode,
-                BeaconRequestPacket::handle
+                EntriesRequestPacket.class,
+                EntriesRequestPacket::encode,
+                EntriesRequestPacket::decode,
+                EntriesRequestPacket::handle
         );
         CHANNEL.registerMessage(packetId++,
                 StabilizerDataPacket.class,
@@ -75,16 +77,28 @@ public class CirCubePackets {
                 OpenLobbyPacket::handle
         );
         CHANNEL.registerMessage(packetId++,
-                BeaconLoadPacket.class,
-                BeaconLoadPacket::encode,
-                BeaconLoadPacket::decode,
-                BeaconLoadPacket::handle
+                BeaconRequestPacket.class,
+                BeaconRequestPacket::encode,
+                BeaconRequestPacket::decode,
+                BeaconRequestPacket::handle
         );
         CHANNEL.registerMessage(packetId++,
                 BeaconSyncPacket.class,
                 BeaconSyncPacket::encode,
                 BeaconSyncPacket::decode,
                 BeaconSyncPacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
+                AddWaypointPacket.class,
+                AddWaypointPacket::encode,
+                AddWaypointPacket::decode,
+                AddWaypointPacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
+                RenameWaypointPacket.class,
+                RenameWaypointPacket::encode,
+                RenameWaypointPacket::decode,
+                RenameWaypointPacket::handle
         );
     }
 }

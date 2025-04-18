@@ -74,7 +74,8 @@ public class CirCubeBlocks {
     public static final BlockEntry<MechanicalBeaconBlock> ANDESITE_BEACON = REGISTRATE
             .block("andesite_beacon", MechanicalBeaconBlock::new)
             .initialProperties(SharedProperties::stone)
-            .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL))
+            .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL)
+                    .lightLevel(s -> s.getValue(MechanicalBeaconBlock.ACTIVE) ? 5 : 0))
             .transform(axeOrPickaxe())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((c, p) -> {
@@ -104,7 +105,8 @@ public class CirCubeBlocks {
     public static final BlockEntry<MechanicalBeaconBlock> BRASS_BEACON = REGISTRATE
             .block("brass_beacon", MechanicalBeaconBlock::new)
             .initialProperties(SharedProperties::stone)
-            .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL))
+            .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL)
+                    .lightLevel(s -> s.getValue(MechanicalBeaconBlock.ACTIVE) ? 5 : 0))
             .transform(axeOrPickaxe())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((c, p) -> {

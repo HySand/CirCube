@@ -1,7 +1,7 @@
 package me.zephyr.circube.event;
 
 import me.zephyr.circube.CirCubePackets;
-import me.zephyr.circube.content.beacon.packets.BeaconLoadPacket;
+import me.zephyr.circube.content.beacon.packets.BeaconRequestPacket;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -13,7 +13,7 @@ public class BeaconEvents {
     public class SyncBeaconEvent {
         @SubscribeEvent
         public static void onJoinServer(ClientPlayerNetworkEvent.LoggingIn event) {
-            CirCubePackets.CHANNEL.sendToServer(new BeaconLoadPacket());
+            CirCubePackets.CHANNEL.sendToServer(new BeaconRequestPacket());
         }
     }
 }

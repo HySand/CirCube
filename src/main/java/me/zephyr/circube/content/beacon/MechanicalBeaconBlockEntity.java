@@ -200,9 +200,10 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
     public void setBeaconName(String beaconName) {
         this.name = beaconName;
         this.setChanged();
-        if (level != null && !level.isClientSide)
+        if (level != null && !level.isClientSide) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-        DataManager.updateBeaconName((ServerLevel) level, hash, beaconName);
+            DataManager.updateBeaconName((ServerLevel) level, hash, beaconName);
+        }
     }
 
     public void initBlockEntity(Player player) {
@@ -235,9 +236,10 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
     public void setIcon(String icon) {
         this.icon = icon;
         this.setChanged();
-        if (level != null && !level.isClientSide)
+        if (level != null && !level.isClientSide) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-        DataManager.updateBeaconIcon((ServerLevel) level, hash, icon);
+            DataManager.updateBeaconIcon((ServerLevel) level, hash, icon);
+        }
     }
 
     public void setIcon(ItemStack itemStack) {
@@ -251,17 +253,19 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
         }
         this.icon = icon;
         this.setChanged();
-        if (level != null && !level.isClientSide)
+        if (level != null && !level.isClientSide) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-        DataManager.updateBeaconIcon((ServerLevel) level, hash, icon);
+            DataManager.updateBeaconIcon((ServerLevel) level, hash, icon);
+        }
     }
 
     public void setPositionMode(PositionControl mode) {
         positionMode = mode;
         this.setChanged();
-        if (level != null && !level.isClientSide)
+        if (level != null && !level.isClientSide) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-        DataManager.updateBeaconPositionMode((ServerLevel) level, hash, positionMode);
+            DataManager.updateBeaconPositionMode((ServerLevel) level, hash, positionMode);
+        }
     }
 
     public PositionControl getPositionMode() {

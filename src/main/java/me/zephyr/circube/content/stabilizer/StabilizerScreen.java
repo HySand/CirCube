@@ -6,15 +6,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeGuiTextures;
 import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.CirCubePackets;
-import me.zephyr.circube.content.beacon.packets.BeaconNameUpdatePacket;
-import me.zephyr.circube.content.beacon.packets.BeaconPositionUpdatePacket;
 import me.zephyr.circube.content.stabilizer.packets.BeaconDeletePacket;
 import me.zephyr.circube.content.stabilizer.packets.BeaconOrderUpdatePacket;
-import me.zephyr.circube.content.stabilizer.packets.BeaconRequestPacket;
+import me.zephyr.circube.content.stabilizer.packets.EntriesRequestPacket;
 import me.zephyr.circube.content.stabilizer.packets.TeleportPacket;
 import me.zephyr.circube.util.DataManager;
 import net.createmod.catnip.animation.LerpedFloat;
@@ -64,7 +61,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
 
     private void loadTeleportEntries() {
         if (minecraft != null && minecraft.player != null) {
-            CirCubePackets.CHANNEL.sendToServer(new BeaconRequestPacket());
+            CirCubePackets.CHANNEL.sendToServer(new EntriesRequestPacket());
         }
     }
 
