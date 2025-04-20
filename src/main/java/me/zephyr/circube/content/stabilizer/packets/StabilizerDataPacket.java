@@ -25,6 +25,7 @@ public class StabilizerDataPacket {
             buffer.writeUtf(entry.getBeaconId());
             buffer.writeUtf(entry.getName());
             buffer.writeUtf(entry.getIconName());
+            buffer.writeUtf(entry.getLevelName());
             buffer.writeBlockPos(entry.getLocation());
             buffer.writeUtf(entry.getOwner());
             buffer.writeBoolean(entry.isActive());
@@ -39,11 +40,12 @@ public class StabilizerDataPacket {
             String id = buffer.readUtf();
             String name = buffer.readUtf();
             String icon = buffer.readUtf();
+            String levelName = buffer.readUtf();
             BlockPos pos = buffer.readBlockPos();
             String owner = buffer.readUtf();
             boolean active = buffer.readBoolean();
             PositionControl positionMode = buffer.readEnum(PositionControl.class);
-            entries.add(new StabilizerEntry(id, name, pos, icon, owner, active, positionMode));
+            entries.add(new StabilizerEntry(id, name, levelName, pos, icon, owner, active, positionMode));
         }
         return new StabilizerDataPacket(entries);
     }

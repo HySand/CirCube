@@ -2,6 +2,7 @@ package me.zephyr.circube.content.beacon;
 
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.util.DataManager;
 import me.zephyr.circube.util.Utils;
@@ -12,6 +13,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
@@ -20,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -29,6 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,13 +47,11 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
     private String hash;
     private UUID owner = null;
     private String ownerName = null;
-    private String icon = "minecraft:grass_block";
+    private String icon = null;
     private PositionControl positionMode = PositionControl.NORTH;
 
     public MechanicalBeaconBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
-        if (getBlockState().getValue(HALF) == DoubleBlockHalf.UPPER) return;
-        this.name = getBeaconName();
     }
 
     @Override
@@ -207,12 +209,22 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
     }
 
     public void initBlockEntity(Player player) {
+        if (getBlockState().getValue(HALF) == DoubleBlockHalf.UPPER) return;
         this.hash = Utils.getOrCreateHashString(hash, level, worldPosition);
         this.name = Utils.getOrCreateBeaconName(name);
-        this.icon = "minecraft:grass_block";
         this.owner = player.getUUID();
         this.ownerName = player.getName().getString();
         this.positionMode = PositionControl.NORTH;
+        ResourceKey<Level> dimension = level.dimension();
+        if (dimension.equals(Level.OVERWORLD)) {
+            this.icon = "minecraft:grass_block";
+        } else if (dimension.equals(Level.END)) {
+            this.icon = "minecraft:end_stone";
+        } else if (dimension.equals(Level.NETHER)) {
+            this.icon = "minecraft:netherrack";
+        } else {
+            this.icon = "minecraft:stone";
+        }
     }
 
     public boolean isBrass() {
@@ -245,7 +257,7 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
     public void setIcon(ItemStack itemStack) {
         String icon;
         if (itemStack.isEmpty()) {
-            icon = "minecraft:grass_block";
+            icon = "minecraft:stone";
         } else {
             Item item = itemStack.getItem();
             ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(item);
@@ -287,18 +299,18 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
         if (name != null && !name.isEmpty()) {
             CirCubeLang.translate("tooltip.beacon_name")
                     .style(ChatFormatting.DARK_GRAY)
-                    .forGoggles(tooltip);
-            CirCubeLang.text(name)
-                    .style(ChatFormatting.AQUA)
-                    .forGoggles(tooltip);
+                    .space()
+                    .add(CirCubeLang.text(name)
+                            .style(ChatFormatting.AQUA))
+                    .forGoggles(tooltip, 1);
         }
         if (ownerName != null) {
             CirCubeLang.translate("tooltip.beacon_owner")
                     .style(ChatFormatting.DARK_GRAY)
-                    .forGoggles(tooltip);
-            CirCubeLang.text(ownerName)
-                    .style(ChatFormatting.AQUA)
-                    .forGoggles(tooltip);
+                    .space()
+                    .add(CirCubeLang.text(ownerName)
+                            .style(ChatFormatting.AQUA))
+                    .forGoggles(tooltip, 1);
         }
 
         return added;

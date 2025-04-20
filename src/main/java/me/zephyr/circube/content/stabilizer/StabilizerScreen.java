@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
+import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeGuiTextures;
 import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.CirCubePackets;
@@ -285,8 +286,9 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
                             mx, my);
                     if (click == 0) {
                         minecraft.player.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
+                        String levelName = entry.getLevelName();
                         BlockPos targetPos = entry.getLocation();
-                        CirCubePackets.CHANNEL.sendToServer(new TeleportPacket(targetPos, entry.getPositionControl()));
+                        CirCubePackets.CHANNEL.sendToServer(new TeleportPacket(levelName, targetPos, entry.getPositionControl()));
                         minecraft.player.closeContainer();
                     }
                     return true;

@@ -9,17 +9,19 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class StabilizerEntry {
     private final String beaconId;
-    private String name;
-    private BlockPos location;
-    private String owner;
-    private ItemStack icon;
+    private final String name;
+    private final BlockPos location;
+    private final String owner;
+    private final ItemStack icon;
     private final String iconName;
     private final boolean active;
-    private PositionControl positionControl;
+    private final String levelName;
+    private final PositionControl positionControl;
 
-    public StabilizerEntry(String id, String name, BlockPos location, String icon, String owner, boolean active, PositionControl positionControl) {
+    public StabilizerEntry(String id, String name, String level, BlockPos location, String icon, String owner, boolean active, PositionControl positionControl) {
         this.beaconId = id;
         this.name = name;
+        this.levelName = level;
         this.location = location;
         this.iconName = icon;
         Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(icon));
@@ -33,16 +35,8 @@ public class StabilizerEntry {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getOwner() {
         return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
     }
 
     public ItemStack getIcon() {
@@ -53,16 +47,8 @@ public class StabilizerEntry {
         return iconName;
     }
 
-    public void setIcon(ItemStack icon) {
-        this.icon = icon;
-    }
-
     public BlockPos getLocation() {
         return location;
-    }
-
-    public void setLocation(BlockPos location) {
-        this.location = location;
     }
 
     public String getBeaconId() {
@@ -73,11 +59,11 @@ public class StabilizerEntry {
         return active;
     }
 
-    public void setPositionControl(PositionControl positionControl) {
-        this.positionControl = positionControl;
-    }
-
     public PositionControl getPositionControl() {
         return positionControl;
+    }
+
+    public String getLevelName() {
+        return levelName;
     }
 }

@@ -1,5 +1,6 @@
 package me.zephyr.circube.util;
 
+import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubePackets;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlock;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
@@ -8,10 +9,14 @@ import me.zephyr.circube.content.beacon.packets.BeaconSyncPacket;
 import me.zephyr.circube.content.stabilizer.StabilizerEntry;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,12 +34,12 @@ public class DataManager {
     }
 
     public static void saveBeaconData(ServerLevel level, MechanicalBeaconBlockEntity blockEntity) {
-        BeaconData data = getOrCreateBeaconData(level);
+        BeaconData data = getOrCreateBeaconData(level.getServer().overworld());
 
         CompoundTag nbt = new CompoundTag();
         nbt.putString("Name", blockEntity.getBeaconName());
         nbt.putString("Owner", blockEntity.getOwnerName());
-        nbt.putString("World", level.dimension().location().toShortLanguageKey());
+        nbt.putString("World", level.dimension().location().toString());
         nbt.putString("Icon", blockEntity.getIcon());
         nbt.putInt("X", blockEntity.getBlockPos().getX());
         nbt.putInt("Y", blockEntity.getBlockPos().getY());
@@ -51,7 +56,7 @@ public class DataManager {
     }
 
     public static CompoundTag loadBeaconData(ServerPlayer serverPlayer, String id) {
-        BeaconData storage = getOrCreateBeaconData(serverPlayer.serverLevel());
+        BeaconData storage = getOrCreateBeaconData(serverPlayer.getServer().overworld());
         if (storage.getData(id).isEmpty()) {
             removeBeaconFromPlayer(serverPlayer, id);
             return null;
@@ -73,10 +78,12 @@ public class DataManager {
                 );
                 String icon = beaconData.getString("Icon");
                 String owner = beaconData.getString("Owner");
-                BlockState state = serverPlayer.serverLevel().getBlockState(pos);
+                String levelName = beaconData.getString("World");
+                ServerLevel level = serverPlayer.getServer().getLevel((ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(levelName))));
+                BlockState state = level.getBlockState(pos);
                 boolean active = state.hasProperty(MechanicalBeaconBlock.ACTIVE) && state.getValue(MechanicalBeaconBlock.ACTIVE);
                 PositionControl positionMode = PositionControl.valueOf(beaconData.getString("PositionMode"));
-                entries.add(new StabilizerEntry(id, name, pos, icon, owner, active, positionMode));
+                entries.add(new StabilizerEntry(id, name, levelName, pos, icon, owner, active, positionMode));
             } else {
                 removeBeaconFromPlayer(serverPlayer, id);
             }
@@ -127,7 +134,7 @@ public class DataManager {
     }
 
     public static void updateBeaconName(ServerLevel level, String beaconId, String newName) {
-        BeaconData storage = getOrCreateBeaconData(level);
+        BeaconData storage = getOrCreateBeaconData(level.getServer().overworld());
         CompoundTag beaconData = storage.getData(beaconId);
         if (beaconData != null) {
             beaconData.putString("Name", newName);
@@ -136,7 +143,7 @@ public class DataManager {
     }
 
     public static void updateBeaconIcon(ServerLevel level, String beaconId, String newIcon) {
-        BeaconData storage = getOrCreateBeaconData(level);
+        BeaconData storage = getOrCreateBeaconData(level.getServer().overworld());
         CompoundTag beaconData = storage.getData(beaconId);
         if (beaconData != null) {
             beaconData.putString("Icon", newIcon);
@@ -145,7 +152,7 @@ public class DataManager {
     }
 
     public static void updateBeaconPositionMode(ServerLevel level, String beaconId, PositionControl positionMode) {
-        BeaconData storage = getOrCreateBeaconData(level);
+        BeaconData storage = getOrCreateBeaconData(level.getServer().overworld());
         CompoundTag beaconData = storage.getData(beaconId);
         if (beaconData != null) {
             beaconData.putString("PositionMode", String.valueOf(positionMode));

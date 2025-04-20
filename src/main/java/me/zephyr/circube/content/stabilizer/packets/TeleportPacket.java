@@ -3,34 +3,48 @@ package me.zephyr.circube.content.stabilizer.packets;
 
 import me.zephyr.circube.content.beacon.PositionControl;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.List;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 
 public class TeleportPacket {
+    private String levelName;
     private final BlockPos targetPos;
     private final PositionControl positionMode;
 
-    public TeleportPacket(BlockPos pos, PositionControl positionMode) {
+    public TeleportPacket(String levelName, BlockPos pos, PositionControl positionMode) {
+        this.levelName = levelName;
         this.targetPos = pos;
         this.positionMode = positionMode;
     }
 
     public static void encode(TeleportPacket packet, FriendlyByteBuf buffer) {
+        buffer.writeUtf(packet.levelName);
         buffer.writeBlockPos(packet.targetPos);
         buffer.writeEnum(packet.positionMode);
     }
 
     public static TeleportPacket decode(FriendlyByteBuf buffer) {
-        return new TeleportPacket(buffer.readBlockPos(), buffer.readEnum(PositionControl.class));
+        return new TeleportPacket(
+                buffer.readUtf(),
+                buffer.readBlockPos(),
+                buffer.readEnum(PositionControl.class)
+        );
     }
 
     public static void handle(TeleportPacket packet, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();
             if (player != null) {
+                ServerLevel level = player.getServer().getLevel((ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(packet.levelName))));
                 double x = packet.targetPos.getX() + 0.5;
                 double z = packet.targetPos.getZ() + 0.5;
                 float yaw = 0;
@@ -75,7 +89,7 @@ public class TeleportPacket {
                 }
 
                 player.teleportTo(
-                        player.serverLevel(),
+                        level,
                         x,
                         packet.targetPos.getY() + 0.2,
                         z,

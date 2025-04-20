@@ -84,7 +84,8 @@ public class MechanicalBeaconMenu extends GhostItemMenu<MechanicalBeaconBlockEnt
 
     @Override
     protected void saveData(MechanicalBeaconBlockEntity mechanicalBeaconBlockEntity) {
-        CirCubePackets.CHANNEL.sendToServer(new BeaconIconUpdatePacket(pos, ghostInventory.getStackInSlot(0)));
+        if (mechanicalBeaconBlockEntity.getLevel().isClientSide())
+            CirCubePackets.CHANNEL.sendToServer(new BeaconIconUpdatePacket(pos, ghostInventory.getStackInSlot(0)));
     }
 
     public static MechanicalBeaconMenu create(int id, Inventory inv, MechanicalBeaconBlockEntity be) {

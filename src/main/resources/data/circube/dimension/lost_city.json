@@ -1,0 +1,13 @@
+{
+  "type": "circube:dungeon",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "layers": [
+        { "block": "minecraft:barrier", "height": 1 }
+      ],
+      "biome": "minecraft:plains",
+      "structure_overrides": []
+    }
+  }
+}
