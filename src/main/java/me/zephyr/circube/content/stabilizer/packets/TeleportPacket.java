@@ -11,12 +11,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.List;
 import java.util.function.Supplier;
-import java.util.logging.Level;
 
 public class TeleportPacket {
-    private String levelName;
+    private final String levelName;
     private final BlockPos targetPos;
     private final PositionControl positionMode;
 

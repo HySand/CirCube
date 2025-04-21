@@ -83,10 +83,10 @@ public class CirCubePackets {
                 BeaconRequestPacket::handle
         );
         CHANNEL.registerMessage(packetId++,
-                BeaconSyncPacket.class,
-                BeaconSyncPacket::encode,
-                BeaconSyncPacket::decode,
-                BeaconSyncPacket::handle
+                BeaconDataPacket.class,
+                BeaconDataPacket::encode,
+                BeaconDataPacket::decode,
+                BeaconDataPacket::handle
         );
         CHANNEL.registerMessage(packetId++,
                 AddWaypointPacket.class,

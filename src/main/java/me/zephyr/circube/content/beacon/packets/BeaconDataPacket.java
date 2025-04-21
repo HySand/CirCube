@@ -8,30 +8,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class BeaconSyncPacket {
+public class BeaconDataPacket {
     List<String> beacons;
 
-    public BeaconSyncPacket(List<String> data) {
+    public BeaconDataPacket(List<String> data) {
         this.beacons = data;
     }
 
-    public static void encode(BeaconSyncPacket packet, FriendlyByteBuf buffer) {
+    public static void encode(BeaconDataPacket packet, FriendlyByteBuf buffer) {
         buffer.writeVarInt(packet.beacons.size());
         for (String s : packet.beacons) {
             buffer.writeUtf(s);
         }
     }
 
-    public static BeaconSyncPacket decode(FriendlyByteBuf buffer) {
+    public static BeaconDataPacket decode(FriendlyByteBuf buffer) {
         int size = buffer.readVarInt();
         List<String> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             list.add(buffer.readUtf());
         }
-        return new BeaconSyncPacket(list);
+        return new BeaconDataPacket(list);
     }
 
-    public static void handle(BeaconSyncPacket packet, Supplier<NetworkEvent.Context> context) {
+    public static void handle(BeaconDataPacket packet, Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
             if (context.get().getDirection().getReceptionSide().isClient()) {
                 DataManager.clientBeaconList = packet.beacons;

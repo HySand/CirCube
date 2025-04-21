@@ -19,8 +19,8 @@ import java.util.function.Supplier;
 import static me.zephyr.circube.compact.CirCubeXaerosMinimap.getWaypoint;
 
 public class RenameWaypointPacket {
-    private String name;
-    private BlockPos pos;
+    private final String name;
+    private final BlockPos pos;
 
     public RenameWaypointPacket(String name, BlockPos pos) {
         this.name = name;

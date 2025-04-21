@@ -2,7 +2,6 @@ package me.zephyr.circube.content.beacon;
 
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.util.DataManager;
 import me.zephyr.circube.util.Utils;
@@ -32,7 +31,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.List;
 import java.util.UUID;
 

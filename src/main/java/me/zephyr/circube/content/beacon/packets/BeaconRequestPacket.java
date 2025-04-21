@@ -27,7 +27,7 @@ public class BeaconRequestPacket {
             if (player != null) {
                 DataManager.loadBeaconsToMemory(player);
                 List<String> beaconList = DataManager.getBeaconIdsInMemory(player);
-                BeaconSyncPacket beaconSyncPacket = new BeaconSyncPacket(beaconList);
+                BeaconDataPacket beaconSyncPacket = new BeaconDataPacket(beaconList);
                 CirCubePackets.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), beaconSyncPacket);
             }
         });

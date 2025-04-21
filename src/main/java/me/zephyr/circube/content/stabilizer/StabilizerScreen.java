@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeGuiTextures;
 import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.CirCubePackets;

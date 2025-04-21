@@ -19,8 +19,8 @@ import java.util.function.Supplier;
 import static me.zephyr.circube.compact.CirCubeXaerosMinimap.getWaypoint;
 
 public class AddWaypointPacket {
-    private String name;
-    private BlockPos pos;
+    private final String name;
+    private final BlockPos pos;
 
     public AddWaypointPacket(String name, BlockPos pos) {
         this.name = name;
@@ -54,7 +54,7 @@ public class AddWaypointPacket {
         XaeroMinimapSession session = clientLevel.getXaero_minimapSession();
         WaypointsManager waypointsManager = session.getWaypointsManager();
         if (getWaypoint(waypointsManager.getWaypoints().getList(), pos) != null) return;
-        Waypoint waypoint = new Waypoint(pos.getX(), pos.getY() + 2, pos.getZ(), name, name.substring(0, 1), (int)(Math.random() * ModSettings.ENCHANT_COLORS.length), 0, false);
+        Waypoint waypoint = new Waypoint(pos.getX(), pos.getY() + 2, pos.getZ(), name, name.substring(0, 1), (int) (Math.random() * ModSettings.ENCHANT_COLORS.length), 0, false);
         waypointsManager.getWaypoints().getList().add(waypoint);
 
         try {

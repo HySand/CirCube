@@ -8,7 +8,6 @@ import me.zephyr.circube.CirCubeLang;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;

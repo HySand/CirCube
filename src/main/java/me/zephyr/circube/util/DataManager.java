@@ -1,15 +1,13 @@
 package me.zephyr.circube.util;
 
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubePackets;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlock;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
 import me.zephyr.circube.content.beacon.PositionControl;
-import me.zephyr.circube.content.beacon.packets.BeaconSyncPacket;
+import me.zephyr.circube.content.beacon.packets.BeaconDataPacket;
 import me.zephyr.circube.content.stabilizer.StabilizerEntry;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -170,7 +168,7 @@ public class DataManager {
         beaconIds.add(beaconId);
         beaconMap.putIfAbsent(uuid, beaconIds);
         List<String> beaconList = getBeaconIdsInMemory(player);
-        BeaconSyncPacket beaconSyncPacket = new BeaconSyncPacket(beaconList);
+        BeaconDataPacket beaconSyncPacket = new BeaconDataPacket(beaconList);
         CirCubePackets.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), beaconSyncPacket);
     }
 
