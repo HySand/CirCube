@@ -25,6 +25,9 @@
   "circube.gui.stabilizer.owner": "Owner: %s",
   "circube.gui.stabilizer.teleport": "Click to teleport",
   "circube.gui.vlobby.join": "Join team",
+  "circube.gui.vlobby.leave": "Leave team",
+  "circube.gui.vlobby.started": "Game started.",
+  "circube.gui.vlobby.can_not_join": "You're already in a started game.",
   "circube.tooltip.beacon_name": "Name:",
   "circube.tooltip.beacon_owner": "Owner:",
   "itemGroup.circube": "CirCube Addon"

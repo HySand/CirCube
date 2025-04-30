@@ -7,9 +7,11 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.item.render.CustomItemModels;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import me.zephyr.circube.config.CStress;
+import me.zephyr.circube.content.ShadowBlock;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlock;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
 import me.zephyr.circube.content.beacon.MechanicalBeaconRenderer;
@@ -19,11 +21,13 @@ import me.zephyr.circube.content.light.AndesiteLightBlockEntity;
 import me.zephyr.circube.content.light.BrassLightBlock;
 import me.zephyr.circube.content.light.BrassLightBlockEntity;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 
+import static com.simibubi.create.foundation.data.BlockStateGen.simpleCubeAll;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOnly;
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
@@ -138,6 +142,15 @@ public class CirCubeBlocks {
             .visual(() -> MechanicalBeaconVisual::new, true)
             .validBlocks(ANDESITE_BEACON, BRASS_BEACON)
             .renderer(() -> MechanicalBeaconRenderer::new)
+            .register();
+
+    public static final BlockEntry<ShadowBlock> SHADOW = REGISTRATE
+            .block("shadow", ShadowBlock::new)
+            .initialProperties(() -> Blocks.BARRIER)
+            .properties(p -> p.noOcclusion().mapColor(MapColor.COLOR_PURPLE)
+                    .strength(-1.0F, Float.MAX_VALUE))
+            .blockstate(simpleCubeAll("shadow"))
+            .simpleItem()
             .register();
 
     public static void register() {

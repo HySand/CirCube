@@ -1,9 +1,12 @@
 package me.zephyr.circube.content.vlobby;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
+import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeGuiTextures;
 import me.zephyr.circube.CirCubeLang;
 import net.createmod.catnip.animation.LerpedFloat;
@@ -11,17 +14,18 @@ import net.createmod.catnip.gui.UIRenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
@@ -163,16 +167,29 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
         int slotYOffset = 25;
         for (int i = 0; i < Math.min(entry.getMaxPlayers(), 5); i++) {
             CirCubeGuiTextures.VLOBBY_SLOT.render(graphics, slotXOffset, slotYOffset);
+            if (entry.getPlayers().size() > i) {
+                ResourceLocation resourceLocation = getSkinLocation(entry.getPlayers().get(i));
+                graphics.blit(resourceLocation, slotYOffset - 22, slotYOffset + 1, 16, 16, 8, 8, 8,  8, 64, 64);
+                graphics.blit(resourceLocation, slotXOffset - 22, slotYOffset + 1, 16, 16, 40, 8, 8, 8, 64, 64);
+
+            }
             slotXOffset += 19;
         }
         if (entry.getMaxPlayers() > 5) {
             slotXOffset = 2;
             slotYOffset += 19;
+            for (int i = 5; i < Math.min(entry.getMaxPlayers(), 10); i++) {
+                CirCubeGuiTextures.VLOBBY_SLOT.render(graphics, slotXOffset, slotYOffset);
+                if (entry.getPlayers().size() > i) {
+                    ResourceLocation resourceLocation = getSkinLocation(entry.getPlayers().get(i));
+                    graphics.blit(resourceLocation, slotYOffset - 22, slotYOffset + 1, 16, 16, 8, 8, 8,  8, 64, 64);
+                    graphics.blit(resourceLocation, slotXOffset - 22, slotYOffset + 1, 16, 16, 40, 8, 8, 8, 64, 64);
+
+                }
+                slotXOffset += 19;
+            }
         }
-        for (int i = 5; i < Math.min(entry.getMaxPlayers(), 10); i++) {
-            CirCubeGuiTextures.VLOBBY_SLOT.render(graphics, slotXOffset, slotYOffset);
-            slotXOffset += 19;
-        }
+
         matrixStack.popPose();
     }
 
@@ -221,8 +238,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
             return false;
         y += scroll.getValue(0);
 
-        for (int i = 0; i < roomEntries.size(); i++) {
-            RoomEntry entry = roomEntries.get(i);
+        for (RoomEntry entry : roomEntries) {
             int cardHeight = CARD_HEIGHT;
             if (entry.getMaxPlayers() > 5)
                 cardHeight += 22;
@@ -236,11 +252,32 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
 
             int fieldSize = 114;
             if (x > 0 && x <= fieldSize && y > 0 && y <= cardHeight) {
-                renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.vlobby.join")),
-                        mx, my);
-                if (click == 0) {
 
+                UUID player = minecraft.player.getUUID();
+                if (entry.isStarted()) {
+                    renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.vlobby.started")),
+                            mx, my);
+                } else if (entry.getPlayers().contains(player)) {
+                    renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.vlobby.leave")),
+                            mx, my);
+                    if (click == 0) {
+                        entry.getPlayers().remove(player);
+                    }
+                } else if (hasStartedGame(player)) {
+                    renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.vlobby.can_not_join")),
+                            mx, my);
+                } else {
+                    renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.vlobby.join")),
+                            mx, my);
+                    if (click == 0) {
+                        removePlayerFromOtherEntries(player);
+                        entry.addPlayer(player);
+                        if (entry.getPlayers().size() == entry.getMaxPlayers()) {
+                            entry.startGame();
+                        }
+                    }
                 }
+
                 return true;
             }
             return x >= 0 && x <= 15 && y <= 20;
@@ -275,8 +312,42 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
         GL11.glDisable(GL11.GL_STENCIL_TEST);
     }
 
+    @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        if (action(null, pMouseX, pMouseY, pButton))
+            return true;
+
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
+    }
+
     private void renderActionTooltip(@Nullable GuiGraphics graphics, List<Component> tooltip, int mx, int my) {
         if (graphics != null)
             graphics.renderTooltip(font, tooltip, Optional.empty(), mx, my);
+    }
+
+    private static ResourceLocation getSkinLocation(UUID uuid) {
+        GameProfile profile = new GameProfile(uuid, null);
+        Minecraft minecraft = Minecraft.getInstance();
+        Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textures = minecraft.getSkinManager().getInsecureSkinInformation(profile);
+
+        if (textures.containsKey(MinecraftProfileTexture.Type.SKIN)) {
+            MinecraftProfileTexture skinTexture = textures.get(MinecraftProfileTexture.Type.SKIN);
+            return minecraft.getSkinManager().registerTexture(skinTexture, MinecraftProfileTexture.Type.SKIN);
+        } else {
+            return DefaultPlayerSkin.getDefaultSkin(profile.getId());
+        }
+    }
+
+    private boolean hasStartedGame(UUID uuid) {
+        for (RoomEntry entry : roomEntries) {
+            if (entry.isStarted() && entry.getPlayers().contains(uuid)) return true;
+        }
+        return false;
+    }
+
+    private void removePlayerFromOtherEntries(UUID uuid) {
+        for (RoomEntry entry : roomEntries) {
+            entry.getPlayers().remove(uuid);
+        }
     }
 }
