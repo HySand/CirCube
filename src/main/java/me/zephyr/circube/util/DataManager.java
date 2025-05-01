@@ -6,6 +6,7 @@ import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
 import me.zephyr.circube.content.beacon.PositionControl;
 import me.zephyr.circube.content.beacon.packets.BeaconDataPacket;
 import me.zephyr.circube.content.stabilizer.StabilizerEntry;
+import me.zephyr.circube.content.vlobby.RoomEntry;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 
 public class DataManager {
     private static final Map<UUID, List<String>> beaconMap = new HashMap<>();
+    private static final List<RoomEntry> gameList = new ArrayList<>();
+
     public static List<String> clientBeaconList = new ArrayList<>();
 
     public static BeaconData getOrCreateBeaconData(ServerLevel level) {
@@ -185,5 +188,52 @@ public class DataManager {
         List<String> beaconIds = beaconMap.get(player.getUUID());
         beaconIds.remove(beaconId);
         beaconMap.put(player.getUUID(), beaconIds);
+    }
+
+    public static List<RoomEntry> getRoomEntries() {
+        return gameList;
+    }
+
+    public static void addGameToList(RoomEntry entry) {
+        gameList.add(entry);
+    }
+
+    public static void setGameStatus(String gameName, boolean start) {
+        for (RoomEntry entry : gameList) {
+            if (entry.getName().equals(gameName)) {
+                if (start) {
+                    entry.startGame();
+                } else {
+                    entry.stopGame();
+                }
+
+            }
+        }
+    }
+
+    public static void addPlayerToGame(ServerPlayer player, String name) {
+        for (RoomEntry entry : gameList) {
+            if (entry.getName().equals(name) && !entry.isStarted() && !entry.isStarted()) {
+                removePlayerFromOtherEntries(player.getUUID());
+                entry.addPlayer(player.getUUID());
+                if (entry.getPlayers().size() == entry.getMaxPlayers()) {
+                    setGameStatus(name, true);
+                }
+            }
+        }
+    }
+
+    public static void removePlayerFromGame(ServerPlayer player, String name) {
+        for (RoomEntry entry : gameList) {
+            if (entry.getName().equals(name) && !entry.isStarted()) {
+                entry.removePlayer(player.getUUID());
+            }
+        }
+    }
+
+    private static void removePlayerFromOtherEntries(UUID uuid) {
+        for (RoomEntry entry : gameList) {
+            entry.getPlayers().remove(uuid);
+        }
     }
 }

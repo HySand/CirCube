@@ -147,7 +147,10 @@ public class CirCubeBlocks {
     public static final BlockEntry<ShadowBlock> SHADOW = REGISTRATE
             .block("shadow", ShadowBlock::new)
             .initialProperties(() -> Blocks.BARRIER)
-            .properties(p -> p.noOcclusion().mapColor(MapColor.COLOR_PURPLE)
+            .properties(p -> p
+                    .noOcclusion()
+                    .noLootTable()
+                    .mapColor(MapColor.COLOR_PURPLE)
                     .strength(-1.0F, Float.MAX_VALUE))
             .blockstate(simpleCubeAll("shadow"))
             .simpleItem()

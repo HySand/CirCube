@@ -10,13 +10,22 @@ public class RoomEntry {
     private final int difficulty;
     private final int maxPlayers;
     private final List<UUID> players;
-    private boolean started = false;
+    private boolean started;
 
     public RoomEntry(String roomName, int difficulty, int maxPlayers) {
         this.roomName = roomName;
         this.difficulty = difficulty;
         this.maxPlayers = maxPlayers;
         this.players = new ArrayList<>(maxPlayers);
+        this.started = false;
+    }
+
+    public RoomEntry(String roomName, int difficulty, int maxPlayers, List<UUID> players, boolean started) {
+        this.roomName = roomName;
+        this.difficulty = difficulty;
+        this.maxPlayers = maxPlayers;
+        this.players = players;
+        this.started = started;
     }
 
     public void startGame() {

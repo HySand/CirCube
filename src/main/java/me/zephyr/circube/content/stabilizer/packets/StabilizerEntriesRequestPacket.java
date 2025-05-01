@@ -11,18 +11,18 @@ import net.minecraftforge.network.PacketDistributor;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class EntriesRequestPacket {
-    public EntriesRequestPacket() {
+public class StabilizerEntriesRequestPacket {
+    public StabilizerEntriesRequestPacket() {
     }
 
-    public static void encode(EntriesRequestPacket packet, FriendlyByteBuf buffer) {
+    public static void encode(StabilizerEntriesRequestPacket packet, FriendlyByteBuf buffer) {
     }
 
-    public static EntriesRequestPacket decode(FriendlyByteBuf buffer) {
-        return new EntriesRequestPacket();
+    public static StabilizerEntriesRequestPacket decode(FriendlyByteBuf buffer) {
+        return new StabilizerEntriesRequestPacket();
     }
 
-    public static void handle(EntriesRequestPacket packet, Supplier<NetworkEvent.Context> context) {
+    public static void handle(StabilizerEntriesRequestPacket packet, Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
             ServerPlayer serverPlayer = context.get().getSender();
             if (serverPlayer != null) {

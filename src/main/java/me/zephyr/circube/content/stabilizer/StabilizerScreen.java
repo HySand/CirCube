@@ -11,7 +11,7 @@ import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.CirCubePackets;
 import me.zephyr.circube.content.stabilizer.packets.BeaconDeletePacket;
 import me.zephyr.circube.content.stabilizer.packets.BeaconOrderUpdatePacket;
-import me.zephyr.circube.content.stabilizer.packets.EntriesRequestPacket;
+import me.zephyr.circube.content.stabilizer.packets.StabilizerEntriesRequestPacket;
 import me.zephyr.circube.content.stabilizer.packets.TeleportPacket;
 import me.zephyr.circube.util.DataManager;
 import net.createmod.catnip.animation.LerpedFloat;
@@ -61,7 +61,7 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
 
     private void loadTeleportEntries() {
         if (minecraft != null && minecraft.player != null) {
-            CirCubePackets.CHANNEL.sendToServer(new EntriesRequestPacket());
+            CirCubePackets.CHANNEL.sendToServer(new StabilizerEntriesRequestPacket());
         }
     }
 

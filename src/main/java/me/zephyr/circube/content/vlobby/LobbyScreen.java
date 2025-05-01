@@ -6,15 +6,18 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeGuiTextures;
 import me.zephyr.circube.CirCubeLang;
+import me.zephyr.circube.CirCubePackets;
+import me.zephyr.circube.content.vlobby.packets.JoinRoomPacket;
+import me.zephyr.circube.content.vlobby.packets.LeaveRoomPacket;
+import me.zephyr.circube.content.vlobby.packets.RoomEntriesRequestPacket;
+import me.zephyr.circube.content.vlobby.packets.StartGamePacket;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.gui.UIRenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -42,14 +45,15 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
     }
 
     private void loadLobbyEntries() {
-        RoomEntry entry1 = new RoomEntry("1", 0, 4);
-        RoomEntry entry2 = new RoomEntry("2", 1, 8);
-        RoomEntry entry3 = new RoomEntry("3", 2, 1);
-        RoomEntry entry4 = new RoomEntry("4", 3, 2);
-        roomEntries.add(entry1);
-        roomEntries.add(entry2);
-        roomEntries.add(entry3);
-        roomEntries.add(entry4);
+        if (minecraft != null && minecraft.player != null) {
+            CirCubePackets.CHANNEL.sendToServer(new RoomEntriesRequestPacket());
+        }
+    }
+
+    public void updateRoomEntries(List<RoomEntry> entries) {
+        this.roomEntries.clear();
+        this.roomEntries.addAll(entries);
+        this.init();
     }
 
     @Override
@@ -261,7 +265,8 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
                     renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.vlobby.leave")),
                             mx, my);
                     if (click == 0) {
-                        entry.getPlayers().remove(player);
+                        CirCubePackets.CHANNEL.sendToServer(new LeaveRoomPacket(entry.getName()));
+                        init();
                     }
                 } else if (hasStartedGame(player)) {
                     renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.vlobby.can_not_join")),
@@ -270,11 +275,11 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
                     renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.vlobby.join")),
                             mx, my);
                     if (click == 0) {
-                        removePlayerFromOtherEntries(player);
-                        entry.addPlayer(player);
+                        CirCubePackets.CHANNEL.sendToServer(new JoinRoomPacket(entry.getName()));
                         if (entry.getPlayers().size() == entry.getMaxPlayers()) {
-                            entry.startGame();
+                            CirCubePackets.CHANNEL.sendToServer(new StartGamePacket(entry.getName()));
                         }
+                        init();
                     }
                 }
 
@@ -343,11 +348,5 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
             if (entry.isStarted() && entry.getPlayers().contains(uuid)) return true;
         }
         return false;
-    }
-
-    private void removePlayerFromOtherEntries(UUID uuid) {
-        for (RoomEntry entry : roomEntries) {
-            entry.getPlayers().remove(uuid);
-        }
     }
 }

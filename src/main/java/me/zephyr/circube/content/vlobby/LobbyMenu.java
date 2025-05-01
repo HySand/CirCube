@@ -1,6 +1,7 @@
 package me.zephyr.circube.content.vlobby;
 
 import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
+import me.zephyr.circube.CirCubeMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;

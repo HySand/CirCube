@@ -4,7 +4,7 @@ import me.zephyr.circube.compact.packets.AddWaypointPacket;
 import me.zephyr.circube.compact.packets.RenameWaypointPacket;
 import me.zephyr.circube.content.beacon.packets.*;
 import me.zephyr.circube.content.stabilizer.packets.*;
-import me.zephyr.circube.content.vlobby.packets.OpenLobbyPacket;
+import me.zephyr.circube.content.vlobby.packets.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -29,10 +29,10 @@ public class CirCubePackets {
                 TeleportPacket::handle
         );
         CHANNEL.registerMessage(packetId++,
-                EntriesRequestPacket.class,
-                EntriesRequestPacket::encode,
-                EntriesRequestPacket::decode,
-                EntriesRequestPacket::handle
+                StabilizerEntriesRequestPacket.class,
+                StabilizerEntriesRequestPacket::encode,
+                StabilizerEntriesRequestPacket::decode,
+                StabilizerEntriesRequestPacket::handle
         );
         CHANNEL.registerMessage(packetId++,
                 StabilizerDataPacket.class,
@@ -99,6 +99,36 @@ public class CirCubePackets {
                 RenameWaypointPacket::encode,
                 RenameWaypointPacket::decode,
                 RenameWaypointPacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
+                StartGamePacket.class,
+                StartGamePacket::encode,
+                StartGamePacket::decode,
+                StartGamePacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
+                RoomEntriesRequestPacket.class,
+                RoomEntriesRequestPacket::encode,
+                RoomEntriesRequestPacket::decode,
+                RoomEntriesRequestPacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
+                RoomDataPacket.class,
+                RoomDataPacket::encode,
+                RoomDataPacket::decode,
+                RoomDataPacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
+                JoinRoomPacket.class,
+                JoinRoomPacket::encode,
+                JoinRoomPacket::decode,
+                JoinRoomPacket::handle
+        );
+        CHANNEL.registerMessage(packetId++,
+                LeaveRoomPacket.class,
+                LeaveRoomPacket::encode,
+                LeaveRoomPacket::decode,
+                LeaveRoomPacket::handle
         );
     }
 }
