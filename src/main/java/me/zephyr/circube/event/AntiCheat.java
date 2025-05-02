@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static me.zephyr.circube.CirCube.LOGGER;
 import static me.zephyr.circube.CirCube.MOD_ID;
 
 public class AntiCheat {
@@ -37,9 +36,7 @@ public class AntiCheat {
         public static void onResourceReload(RegisterClientReloadListenersEvent event) {
             Minecraft minecraft = Minecraft.getInstance();
             Collection<Pack> pack = minecraft.getResourcePackRepository().getSelectedPacks();
-            LOGGER.info("PacksID: " + pack);
             pack.forEach(p -> {
-                LOGGER.info("PackID: " + p.getId());
                 if (p.getId().toLowerCase().contains("ray")) {
                     Minecraft.getInstance().execute(() -> Minecraft.getInstance().stop());
                 }

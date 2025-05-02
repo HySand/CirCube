@@ -4,7 +4,10 @@ import me.zephyr.circube.compact.packets.AddWaypointPacket;
 import me.zephyr.circube.compact.packets.RenameWaypointPacket;
 import me.zephyr.circube.content.beacon.packets.*;
 import me.zephyr.circube.content.stabilizer.packets.*;
-import me.zephyr.circube.content.vlobby.packets.*;
+import me.zephyr.circube.content.vlobby.packets.JoinRoomPacket;
+import me.zephyr.circube.content.vlobby.packets.LeaveRoomPacket;
+import me.zephyr.circube.content.vlobby.packets.RoomDataPacket;
+import me.zephyr.circube.content.vlobby.packets.RoomEntriesRequestPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -71,12 +74,6 @@ public class CirCubePackets {
                 BeaconPositionUpdatePacket::handle
         );
         CHANNEL.registerMessage(packetId++,
-                OpenLobbyPacket.class,
-                OpenLobbyPacket::encode,
-                OpenLobbyPacket::decode,
-                OpenLobbyPacket::handle
-        );
-        CHANNEL.registerMessage(packetId++,
                 BeaconRequestPacket.class,
                 BeaconRequestPacket::encode,
                 BeaconRequestPacket::decode,
@@ -99,12 +96,6 @@ public class CirCubePackets {
                 RenameWaypointPacket::encode,
                 RenameWaypointPacket::decode,
                 RenameWaypointPacket::handle
-        );
-        CHANNEL.registerMessage(packetId++,
-                StartGamePacket.class,
-                StartGamePacket::encode,
-                StartGamePacket::decode,
-                StartGamePacket::handle
         );
         CHANNEL.registerMessage(packetId++,
                 RoomEntriesRequestPacket.class,

@@ -6,13 +6,15 @@ import java.util.List;
 import java.util.UUID;
 
 public class RoomEntry {
+    private final int id;
     private final String roomName;
     private final int difficulty;
     private final int maxPlayers;
     private final List<UUID> players;
     private boolean started;
 
-    public RoomEntry(String roomName, int difficulty, int maxPlayers) {
+    public RoomEntry(int id, String roomName, int difficulty, int maxPlayers) {
+        this.id = id;
         this.roomName = roomName;
         this.difficulty = difficulty;
         this.maxPlayers = maxPlayers;
@@ -20,7 +22,8 @@ public class RoomEntry {
         this.started = false;
     }
 
-    public RoomEntry(String roomName, int difficulty, int maxPlayers, List<UUID> players, boolean started) {
+    public RoomEntry(int id, String roomName, int difficulty, int maxPlayers, List<UUID> players, boolean started) {
+        this.id = id;
         this.roomName = roomName;
         this.difficulty = difficulty;
         this.maxPlayers = maxPlayers;
@@ -38,6 +41,10 @@ public class RoomEntry {
 
     public boolean isStarted() {
         return started;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

@@ -5,15 +5,14 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import me.zephyr.circube.CirCubeGuiTextures;
 import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.CirCubePackets;
 import me.zephyr.circube.content.vlobby.packets.JoinRoomPacket;
 import me.zephyr.circube.content.vlobby.packets.LeaveRoomPacket;
 import me.zephyr.circube.content.vlobby.packets.RoomEntriesRequestPacket;
-import me.zephyr.circube.content.vlobby.packets.StartGamePacket;
 import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.gui.AbstractSimiScreen;
 import net.createmod.catnip.gui.UIRenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -23,7 +22,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Inventory;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
@@ -31,7 +29,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 
-public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
+public class LobbyScreen extends AbstractSimiScreen {
     private static final int CARD_HEIGHT = 51;
     private static final int CARD_WIDTH = 114;
 
@@ -40,8 +38,10 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
 
     private boolean hasRequestedData = false;
 
-    public LobbyScreen(LobbyMenu container, Inventory inv, Component title) {
-        super(container, inv, title);
+    private int tickCount = 0;
+
+    public LobbyScreen() {
+        super();
     }
 
     private void loadLobbyEntries() {
@@ -70,24 +70,25 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
     }
 
     @Override
-    protected void containerTick() {
-        super.containerTick();
+    public void tick() {
         scroll.tickChaser();
+        tickCount++;
+        if (tickCount % 60 == 0) {
+            loadLobbyEntries();
+        }
     }
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         partialTicks = minecraft.getFrameTime();
 
-        if (menu.slotsActive)
-            super.render(graphics, mouseX, mouseY, partialTicks);
-        else {
-            renderBackground(graphics);
-            renderBg(graphics, partialTicks, mouseX, mouseY);
-            for (Renderable widget : this.renderables)
-                widget.render(graphics, mouseX, mouseY, partialTicks);
-            renderForeground(graphics, mouseX, mouseY, partialTicks);
-        }
+
+        renderBackground(graphics);
+        renderWindow(graphics, mouseX, mouseY, partialTicks);
+        for (Renderable widget : this.renderables)
+            widget.render(graphics, mouseX, mouseY, partialTicks);
+        renderWindowForeground(graphics, mouseX, mouseY, partialTicks);
+
     }
 
     protected void renderVLobby(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
@@ -98,7 +99,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
         float scrollOffset = -scroll.getValue(partialTicks);
 
         for (int i = 0; i <= roomEntries.size(); i++) {
-            startStencil(graphics, leftPos + 8, topPos + 8, 147, 164);
+            startStencil(graphics, guiLeft + 8, guiTop + 8, 147, 164);
             matrixStack.pushPose();
             matrixStack.translate(0, scrollOffset, 0);
 
@@ -122,7 +123,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
             matrixStack.popPose();
             endStencil();
 
-            startStencil(graphics, leftPos + 8, topPos + 8, 147, 164);
+            startStencil(graphics, guiLeft + 8, guiTop + 8, 147, 164);
             matrixStack.pushPose();
             matrixStack.translate(0, scrollOffset, 0);
             renderRoomInformations(graphics, entry, cardY, mouseX, mouseY, partialTicks, cardHeight, i);
@@ -138,7 +139,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
                                float partialTicks) {
         PoseStack matrixStack = graphics.pose();
         matrixStack.pushPose();
-        matrixStack.translate(leftPos + 16, topPos + yOffset, 0);
+        matrixStack.translate(guiLeft + 16, guiTop + yOffset, 0);
 
         int cardHeight = CARD_HEIGHT;
         if (entry.getMaxPlayers() > 5) {
@@ -157,7 +158,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
                                        int mouseY, float partialTicks, int cardHeight, int entryIndex) {
         PoseStack matrixStack = graphics.pose();
         matrixStack.pushPose();
-        matrixStack.translate(leftPos + 25, topPos + yOffset, 0);
+        matrixStack.translate(guiLeft + 25, guiTop + yOffset, 0);
 
         FormattedText displayText = FormattedText.of(entry.getName());
         graphics.drawString(font, font.substrByWidth(displayText, 120)
@@ -173,7 +174,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
             CirCubeGuiTextures.VLOBBY_SLOT.render(graphics, slotXOffset, slotYOffset);
             if (entry.getPlayers().size() > i) {
                 ResourceLocation resourceLocation = getSkinLocation(entry.getPlayers().get(i));
-                graphics.blit(resourceLocation, slotYOffset - 22, slotYOffset + 1, 16, 16, 8, 8, 8,  8, 64, 64);
+                graphics.blit(resourceLocation, slotYOffset - 22, slotYOffset + 1, 16, 16, 8, 8, 8, 8, 64, 64);
                 graphics.blit(resourceLocation, slotXOffset - 22, slotYOffset + 1, 16, 16, 40, 8, 8, 8, 64, 64);
 
             }
@@ -186,7 +187,7 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
                 CirCubeGuiTextures.VLOBBY_SLOT.render(graphics, slotXOffset, slotYOffset);
                 if (entry.getPlayers().size() > i) {
                     ResourceLocation resourceLocation = getSkinLocation(entry.getPlayers().get(i));
-                    graphics.blit(resourceLocation, slotYOffset - 22, slotYOffset + 1, 16, 16, 8, 8, 8,  8, 64, 64);
+                    graphics.blit(resourceLocation, slotYOffset - 22, slotYOffset + 1, 16, 16, 8, 8, 8, 8, 64, 64);
                     graphics.blit(resourceLocation, slotXOffset - 22, slotYOffset + 1, 16, 16, 40, 8, 8, 8, 64, 64);
 
                 }
@@ -217,15 +218,15 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
     }
 
     @Override
-    protected void renderForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    protected void renderWindowForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         PoseStack matrixStack = graphics.pose();
-        super.renderForeground(graphics, mouseX, mouseY, partialTicks);
+        super.renderWindowForeground(graphics, mouseX, mouseY, partialTicks);
         action(graphics, mouseX, mouseY, -1);
     }
 
     @Override
-    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-        CirCubeGuiTextures.VLOBBY.render(graphics, leftPos, topPos);
+    protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        CirCubeGuiTextures.VLOBBY.render(graphics, guiLeft, guiTop);
         renderVLobby(graphics, mouseX, mouseY, partialTicks);
     }
 
@@ -234,8 +235,8 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
 
         int mx = (int) mouseX;
         int my = (int) mouseY;
-        int x = mx - leftPos - 15;
-        int y = my - topPos - 17;
+        int x = mx - guiLeft - 15;
+        int y = my - guiTop - 17;
         if (x < 0 || x >= 114)
             return false;
         if (y < 0 || y >= 183)
@@ -265,7 +266,8 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
                     renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.vlobby.leave")),
                             mx, my);
                     if (click == 0) {
-                        CirCubePackets.CHANNEL.sendToServer(new LeaveRoomPacket(entry.getName()));
+                        entry.removePlayer(player);
+                        CirCubePackets.CHANNEL.sendToServer(new LeaveRoomPacket(entry.getId()));
                         init();
                     }
                 } else if (hasStartedGame(player)) {
@@ -275,10 +277,12 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
                     renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.vlobby.join")),
                             mx, my);
                     if (click == 0) {
-                        CirCubePackets.CHANNEL.sendToServer(new JoinRoomPacket(entry.getName()));
+                        removePlayerFromOtherEntries(player);
+                        entry.addPlayer(player);
                         if (entry.getPlayers().size() == entry.getMaxPlayers()) {
-                            CirCubePackets.CHANNEL.sendToServer(new StartGamePacket(entry.getName()));
+                            entry.startGame();
                         }
+                        CirCubePackets.CHANNEL.sendToServer(new JoinRoomPacket(entry.getId()));
                         init();
                     }
                 }
@@ -348,5 +352,11 @@ public class LobbyScreen extends AbstractSimiContainerScreen<LobbyMenu> {
             if (entry.isStarted() && entry.getPlayers().contains(uuid)) return true;
         }
         return false;
+    }
+
+    private void removePlayerFromOtherEntries(UUID uuid) {
+        for (RoomEntry entry : roomEntries) {
+            entry.getPlayers().remove(uuid);
+        }
     }
 }

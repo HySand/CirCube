@@ -1,0 +1,11 @@
+{
+  "pack.cgp.name": "CirCube 枪包",
+  "pack.cgp.desc": "增加一些默认枪包的变种武器。",
+
+  "cgp.gun.uzigold.name": "黄金乌兹冲锋枪",
+  "cgp.gun.m16a4gold.name": "黄金M16A4 制式步枪",
+  "cgp.gun.m700gold.name": "黄金M700 狙击步枪",
+  "cgp.gun.m1911gold.name": "黄金M1911 手枪",
+  "cgp.gun.ak47gold.name": "黄金AKM 突击步枪",
+  "cgp.gun.rpkgold.name": "黄金RPK 轻机枪"
+}

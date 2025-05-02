@@ -1,12 +1,8 @@
 package me.zephyr.circube.content.vlobby.packets;
 
-import me.zephyr.circube.content.beacon.PositionControl;
-import me.zephyr.circube.content.stabilizer.StabilizerEntry;
-import me.zephyr.circube.content.stabilizer.StabilizerScreen;
 import me.zephyr.circube.content.vlobby.LobbyScreen;
 import me.zephyr.circube.content.vlobby.RoomEntry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -25,6 +21,7 @@ public class RoomDataPacket {
     public static void encode(RoomDataPacket packet, FriendlyByteBuf buffer) {
         buffer.writeInt(packet.entries.size());
         for (RoomEntry entry : packet.entries) {
+            buffer.writeInt(entry.getId());
             buffer.writeUtf(entry.getName());
             buffer.writeInt(entry.getDifficulty());
             buffer.writeInt(entry.getMaxPlayers());
@@ -37,12 +34,13 @@ public class RoomDataPacket {
         int size = buffer.readInt();
         List<RoomEntry> entries = new ArrayList<>();
         for (int i = 0; i < size; i++) {
+            int id = buffer.readInt();
             String roomName = buffer.readUtf();
             int difficulty = buffer.readInt();
             int maxPlayers = buffer.readInt();
             List<UUID> players = buffer.readList(FriendlyByteBuf::readUUID);
             boolean started = buffer.readBoolean();
-            entries.add(new RoomEntry(roomName, difficulty, maxPlayers, players, started));
+            entries.add(new RoomEntry(id, roomName, difficulty, maxPlayers, players, started));
         }
         return new RoomDataPacket(entries);
     }

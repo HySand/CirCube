@@ -1,0 +1,11 @@
+{
+  "pack.cgp.name": "CirCube Gun Pack",
+  "pack.cgp.desc": "Add some variant weapons for the default gun packs.",
+  
+  "cgp.gun.uzigold.name": "UZI Gold",
+  "cgp.gun.m16a4gold.name": "M16A4 Gold",
+  "cgp.gun.m700gold.name": "M700 Gold",
+  "cgp.gun.m1911gold.name": "M1911 Gold",
+  "cgp.gun.ak47gold.name": "AKM Gold",
+  "cgp.gun.rpkgold.name": "RPK Gold"
+}

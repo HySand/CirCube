@@ -6,7 +6,8 @@ import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import me.zephyr.circube.config.CirCubeConfigs;
-import me.zephyr.circube.content.vlobby.RoomEntry;
+import me.zephyr.circube.content.vlobby.Dungeon;
+import me.zephyr.circube.content.vlobby.dungeons.LostCity;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +23,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
-import static me.zephyr.circube.util.DataManager.addGameToList;
+import static me.zephyr.circube.util.DataManager.addDungeonToList;
 
 @Mod(CirCube.MOD_ID)
 public class CirCube {
@@ -66,15 +67,15 @@ public class CirCube {
     }
 
     private void onDedicatedServerSetup(FMLDedicatedServerSetupEvent event) {
-        RoomEntry entry1 = new RoomEntry("1", 0, 4);
-        RoomEntry entry2 = new RoomEntry("2", 1, 8);
-        RoomEntry entry3 = new RoomEntry("3", 2, 1);
-        RoomEntry entry4 = new RoomEntry("4", 3, 2);
-        addGameToList(entry1);
-        addGameToList(entry2);
-        addGameToList(entry3);
-        addGameToList(entry4);
-        CirCube.LOGGER.info("Adding games to list");
+        int dungeonId = 0;
+        Dungeon dungeon1 = new LostCity(dungeonId++, "dungeon1", 2, 3);
+        Dungeon dungeon2 = new LostCity(dungeonId++, "dungeon2", 1, 1);
+        Dungeon dungeon3 = new LostCity(dungeonId++, "dungeon3", 0, 8);
+        Dungeon dungeon4 = new LostCity(dungeonId++, "dungeon4", 3, 4);
+        addDungeonToList(dungeon1);
+        addDungeonToList(dungeon2);
+        addDungeonToList(dungeon3);
+        addDungeonToList(dungeon4);
     }
 
     public static CreateRegistrate getRegistrate() {

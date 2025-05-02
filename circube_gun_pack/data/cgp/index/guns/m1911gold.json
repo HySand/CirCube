@@ -1,0 +1,7 @@
+{
+  "name": "cgp.gun.m1911gold.name",
+  "display": "cgp:m1911gold_display",
+  "data": "cgp:m1911gold_data",
+  "tooltip": "tacz.gun.m1911.desc",
+  "type": "pistol"
+}
