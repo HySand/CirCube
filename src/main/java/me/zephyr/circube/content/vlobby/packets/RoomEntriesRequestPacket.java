@@ -11,7 +11,9 @@ import net.minecraftforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class RoomEntriesRequestPacket {
     public RoomEntriesRequestPacket() {
@@ -31,7 +33,8 @@ public class RoomEntriesRequestPacket {
                 List<Dungeon> dungeons = DataManager.getDungeonList();
                 List<RoomEntry> entries = new ArrayList<>();
                 for (Dungeon dungeon : dungeons) {
-                    RoomEntry entry = new RoomEntry(dungeon.getId(), dungeon.getName(), dungeon.getDifficulty(), dungeon.getMaxPlayers(), dungeon.getPlayers(), dungeon.isStarted());
+                    List<UUID> uuids = dungeon.getPlayers().stream().map(ServerPlayer::getUUID).collect(Collectors.toList());
+                    RoomEntry entry = new RoomEntry(dungeon.getId(), dungeon.getName(), dungeon.getDifficulty(), dungeon.getMaxPlayers(), uuids, dungeon.isStarted());
                     entries.add(entry);
                 }
                 CirCubePackets.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new RoomDataPacket(entries));

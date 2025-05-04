@@ -6,17 +6,13 @@ import me.zephyr.circube.CirCube;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -24,14 +20,6 @@ import java.util.concurrent.TimeUnit;
 import static me.zephyr.circube.CirCube.MOD_ID;
 
 public class DungeonEvents {
-    @Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.DEDICATED_SERVER)
-    public class QuitQueueEvent {
-        @SubscribeEvent
-        public static void onJoinServer(PlayerEvent.PlayerLoggedOutEvent event) {
-
-        }
-    }
-
     @Mod.EventBusSubscriber(modid = MOD_ID)
     public class CleanDimensionsEvent {
         @SubscribeEvent

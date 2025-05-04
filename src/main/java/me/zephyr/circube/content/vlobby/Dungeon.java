@@ -9,23 +9,25 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import static me.zephyr.circube.CirCube.MOD_ID;
-import static me.zephyr.circube.content.vlobby.DungeonManager.*;
+import static me.zephyr.circube.CirCube.forgeEventBus;
+import static me.zephyr.circube.content.vlobby.DungeonManager.instantiateDimension;
+import static me.zephyr.circube.content.vlobby.DungeonManager.unloadDimension;
 import static me.zephyr.circube.util.DataManager.getDungeonList;
 
 public abstract class Dungeon {
@@ -33,10 +35,10 @@ public abstract class Dungeon {
     private final String dungeonName;
     private final int difficulty;
     private final int maxPlayers;
-    private final List<UUID> players;
+    private final List<ServerPlayer> players;
     private boolean started;
+    private ServerLevel level;
 
-    private static final Set<ServerPlayer> trackedPlayers = new HashSet<>();
     private static final Set<LivingEntity> trackedMonsters = new HashSet<>();
 
     public Dungeon(int dungeonId, String dungeonName, int difficulty, int maxPlayers) {
@@ -49,23 +51,26 @@ public abstract class Dungeon {
     }
 
     public void setGameStatus(boolean start, MinecraftServer server) throws IOException {
-        if (start && isGameReadyToStart()) {
-            ServerLevel level = instantiateDimension(server, dungeonName);
-            started = true;
-            for (UUID uuid : players) {
-                ServerPlayer player = server.getPlayerList().getPlayer(uuid);
-                player.teleportTo(
-                        level,
-                        player.getX(),
-                        player.getY(),
-                        player.getZ(),
-                        0,
-                        0
-                );
-                track(player);
+        if (start) {
+            if (isGameReadyToStart() && !started) {
+                level = instantiateDimension(server, dungeonName);
+                started = true;
+                for (ServerPlayer player : players) {
+                    player.teleportTo(
+                            level,
+                            player.getX(),
+                            player.getY(),
+                            player.getZ(),
+                            0,
+                            0
+                    );
+                    new Tracker().register();
+                }
             }
         } else {
-            unloadDimension(server, dungeonnameMap.get(dungeonName));
+            CirCube.LOGGER.error(level.dimension().location().getPath());
+            unloadDimension(server, level.dimension().location().getPath());
+            players.clear();
             started = false;
         }
 
@@ -73,20 +78,20 @@ public abstract class Dungeon {
 
     public void addPlayerToGame(ServerPlayer player) {
         if (!started && !isGameReadyToStart()) {
-            removePlayerFromOtherGames(player.getUUID());
-            players.add(player.getUUID());
+            removePlayerFromOtherGames(player);
+            players.add(player);
         }
     }
 
     public void removePlayerFromGame(ServerPlayer player) {
         if (!started) {
-            players.remove(player.getUUID());
+            players.remove(player);
         }
     }
 
-    private void removePlayerFromOtherGames(UUID uuid) {
+    private void removePlayerFromOtherGames(ServerPlayer player) {
         for (Dungeon dungeon : getDungeonList()) {
-            dungeon.players.remove(uuid);
+            dungeon.players.remove(player);
         }
     }
 
@@ -102,7 +107,7 @@ public abstract class Dungeon {
         return dungeonName;
     }
 
-    public List<UUID> getPlayers() {
+    public List<ServerPlayer> getPlayers() {
         return players;
     }
 
@@ -118,53 +123,73 @@ public abstract class Dungeon {
         return maxPlayers;
     }
 
-    private void track(ServerPlayer player) {
-        trackedPlayers.add(player);
-    }
-
-    @Mod.EventBusSubscriber(modid = MOD_ID)
     public class Tracker {
         @SubscribeEvent
-        public static void onPlayerDead(LivingDeathEvent event) {
+        public void onPlayerDead(LivingDeathEvent event) {
             if (event.getEntity() instanceof ServerPlayer player && !event.isCanceled()) {
-                if (!trackedPlayers.contains(player)) return;
-                for (ServerPlayer trackedPlayer : trackedPlayers) {
+                if (!players.contains(player)) return;
+                for (ServerPlayer trackedPlayer : players) {
                     startCountdown(trackedPlayer, 5, "因有玩家死亡，将在%d秒后结束游戏", (p) -> {
-                        trackedPlayers.remove(trackedPlayer);
                         trackedPlayer.respawn();
-                        removeDungeonWorld(event.getEntity().getServer(), player);
+                        try {
+                            setGameStatus(false, event.getEntity().getServer());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     });
                 }
             }
         }
 
         @SubscribeEvent
-        public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
             if (event.getEntity() instanceof ServerPlayer player) {
-                if (!trackedPlayers.contains(player)) return;
-                for (ServerPlayer trackedPlayer : trackedPlayers) {
+                if (!players.contains(player)) return;
+                for (ServerPlayer trackedPlayer : players) {
                     startCountdown(trackedPlayer, 5, "因有玩家退出，将在%d秒后结束游戏", (p) -> {
-                        trackedPlayers.remove(trackedPlayer);
                         trackedPlayer.respawn();
-                        removeDungeonWorld(event.getEntity().getServer(), player);
+                        try {
+                            setGameStatus(false, event.getEntity().getServer());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     });
                 }
             }
         }
 
         @SubscribeEvent
-        public static void onPlayerPotionAdded(MobEffectEvent event) {
-            if (event.getEntity() instanceof ServerPlayer player && trackedPlayers.contains(player)) {
+        public void onPlayerPotionAdded(MobEffectEvent event) {
+            if (event.getEntity() instanceof ServerPlayer player && players.contains(player)) {
                 MobEffectInstance effect = event.getEffectInstance();
             }
         }
 
         @SubscribeEvent
-        public static void onKillEntity(LivingDeathEvent event) {
+        public void onKillEntity(LivingDeathEvent event) {
             Entity source = event.getSource().getEntity();
-            if (source instanceof ServerPlayer player && trackedPlayers.contains(player)) {
+            if (source instanceof ServerPlayer player && players.contains(player)) {
 
             }
+        }
+
+        @SubscribeEvent
+        public void onBreak(BlockEvent.BreakEvent event) {
+            if (players.contains(event.getPlayer())) {
+                event.setCanceled(true);
+            }
+        }
+
+        @SubscribeEvent
+        public void onBreak(BlockEvent.EntityPlaceEvent event) {
+            Entity source = event.getEntity();
+            if (source instanceof ServerPlayer player && players.contains(player)) {
+                event.setCanceled(true);
+            }
+        }
+
+        public void register() {
+            forgeEventBus.register(this);
         }
     }
 
@@ -181,15 +206,5 @@ public abstract class Dungeon {
             afterCountdown.accept(player);
             executor.shutdown();
         }, seconds, TimeUnit.SECONDS);
-    }
-
-    private static void removeDungeonWorld(MinecraftServer server, ServerPlayer player) {
-        String name = "";
-        for (int i = 0; i < getDungeonList().size(); i ++) {
-            if (getDungeonList().get(i).getPlayers().contains(player.getUUID())) {
-                name = getDungeonList().get(i).getName();
-            }
-        }
-        unloadDimension(server, dungeonnameMap.get(name));
     }
 }

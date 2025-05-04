@@ -1,7 +1,6 @@
 package me.zephyr.circube.content.vlobby;
 
 import commoble.infiniverse.api.InfiniverseAPI;
-import me.zephyr.circube.CirCube;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
