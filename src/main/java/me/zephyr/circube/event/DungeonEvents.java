@@ -2,7 +2,6 @@ package me.zephyr.circube.event;
 
 import commoble.infiniverse.api.InfiniverseAPI;
 import commoble.infiniverse.api.UnregisterDimensionEvent;
-import me.zephyr.circube.CirCube;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
@@ -30,7 +29,6 @@ public class DungeonEvents {
                 ResourceKey<Level> levelKey = level.dimension();
                 if (level.dimension().location().getNamespace().equals(MOD_ID)) {
                     api.markDimensionForUnregistration(server, levelKey);
-                    CirCube.LOGGER.debug(api.getLevelsPendingUnregistration().toString());
                 }
             });
         }

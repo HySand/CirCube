@@ -25,7 +25,11 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static me.zephyr.circube.CirCube.MOD_ID;
 
@@ -33,12 +37,13 @@ import static me.zephyr.circube.CirCube.MOD_ID;
 public class DungeonManager {
     public static Map<String, String> dungeonnameMap = new HashMap<>();
 
-    public static ServerLevel instantiateDimension(MinecraftServer server, String mapFolder) throws IOException {
+    public static ServerLevel instantiateDimension(MinecraftServer server, String mapName) throws IOException {
         String timestamp = String.valueOf(java.time.Instant.now().getEpochSecond());
-        copyDimensionFolder(mapFolder, timestamp);
-        dungeonnameMap.put(mapFolder, mapFolder + "_" + timestamp);
+        String mapFolder = mapName.toLowerCase() + "_" + timestamp;
+        copyDimensionFolder(mapName, timestamp);
+        dungeonnameMap.put(mapName, mapFolder);
         InfiniverseAPI api = InfiniverseAPI.get();
-        ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(MOD_ID, mapFolder + "_" + timestamp));
+        ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(MOD_ID, mapFolder));
         return api.getOrCreateLevel(server, levelKey, () -> createLevel(server));
     }
 
@@ -69,35 +74,26 @@ public class DungeonManager {
         return new LevelStem(typeHolder, flatGenerator);
     }
 
-    public static void copyDimensionFolder(String folderName, String timestamp) throws IOException {
+    public static void copyDimensionFolder(String mapName, String timestamp) throws IOException {
         Path serverRoot = Path.of(".");
-        Path source = serverRoot.resolve("Resources").resolve(folderName);
-        Path target = serverRoot.resolve("world").resolve("dimensions").resolve(MOD_ID).resolve(folderName + "_" + timestamp);
+        Path source = serverRoot.resolve("Resources").resolve(mapName.toLowerCase());
+        Path target = serverRoot.resolve("world").resolve("dimensions").resolve(MOD_ID).resolve(mapName + "_" + timestamp);
 
-        if (Files.exists(target)) {
-            Files.walk(target)
-                    .sorted(Comparator.reverseOrder())
-                    .forEach(path -> {
-                        try {
-                            Files.delete(path);
-                        } catch (IOException e) {
-                            throw new UncheckedIOException("Failed to delete: " + path, e);
-                        }
-                    });
-        }
-
-        Files.walk(source).forEach(src -> {
-            try {
-                Path dest = target.resolve(source.relativize(src));
-                if (Files.isDirectory(src)) {
-                    Files.createDirectories(dest);
-                } else {
-                    Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING);
+        try (Stream<Path> paths = Files.walk(source)) {
+            paths.forEach(src -> {
+                try {
+                    Path dest = target.resolve(source.relativize(src));
+                    if (Files.isDirectory(src)) {
+                        Files.createDirectories(dest);
+                    } else {
+                        Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
                 }
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        });
+            });
+        }
     }
+
 
 }    

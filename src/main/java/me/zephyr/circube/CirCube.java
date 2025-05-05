@@ -7,7 +7,10 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import me.zephyr.circube.config.CirCubeConfigs;
 import me.zephyr.circube.content.vlobby.Dungeon;
-import me.zephyr.circube.content.vlobby.dungeons.LostCity;
+import me.zephyr.circube.content.vlobby.dungeons.Arena;
+import me.zephyr.circube.content.vlobby.dungeons.Pit;
+import me.zephyr.circube.content.vlobby.dungeons.Test;
+import me.zephyr.circube.content.vlobby.dungeons.Workshop;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -68,14 +71,14 @@ public class CirCube {
 
     private void onDedicatedServerSetup(FMLDedicatedServerSetupEvent event) {
         int dungeonId = 0;
-        Dungeon dungeon1 = new LostCity(dungeonId++, "dungeon1", 2, 3);
-        Dungeon dungeon2 = new LostCity(dungeonId++, "dungeon2", 1, 1);
-        Dungeon dungeon3 = new LostCity(dungeonId++, "dungeon3", 0, 8);
-        Dungeon dungeon4 = new LostCity(dungeonId++, "dungeon4", 3, 4);
-        addDungeonToList(dungeon1);
-        addDungeonToList(dungeon2);
-        addDungeonToList(dungeon3);
-        addDungeonToList(dungeon4);
+        Dungeon arena = new Arena(dungeonId++, "arena", 1, 3);
+        Dungeon cave = new Pit(dungeonId++, "cave", 3, 3);
+        Dungeon workshop = new Workshop(dungeonId++, "workshop", 3, 3);
+        Dungeon test = new Test(dungeonId++, "testd", 0, 1);
+        addDungeonToList(arena);
+        addDungeonToList(cave);
+        addDungeonToList(workshop);
+        addDungeonToList(test);
     }
 
     public static CreateRegistrate getRegistrate() {

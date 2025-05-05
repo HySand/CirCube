@@ -12,6 +12,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -98,10 +100,10 @@ public class MechanicalBeaconBlock extends KineticBlock implements IBE<Mechanica
             } else {
                 String beaconId = be.getBeaconId();
                 if (DataManager.addBeaconToPlayerData((ServerPlayer) player, beaconId)) {
+                    level.playSound(null, be.getBlockPos(), SoundEvents.ENDER_DRAGON_GROWL, SoundSource.BLOCKS, 0.5F, 2F);
                     DataManager.addBeaconToMemory((ServerPlayer) player, beaconId);
                     CirCubeXaerosMinimap.addWaypoint(be.getBeaconName(), be.getBlockPos(), (ServerPlayer) player);
                 }
-
             }
         }
 

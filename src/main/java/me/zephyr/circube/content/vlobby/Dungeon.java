@@ -2,15 +2,14 @@ package me.zephyr.circube.content.vlobby;
 
 import me.zephyr.circube.CirCube;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -31,40 +30,45 @@ import static me.zephyr.circube.content.vlobby.DungeonManager.unloadDimension;
 import static me.zephyr.circube.util.DataManager.getDungeonList;
 
 public abstract class Dungeon {
-    private final int dungeonId;
-    private final String dungeonName;
-    private final int difficulty;
-    private final int maxPlayers;
-    private final List<ServerPlayer> players;
-    private boolean started;
-    private ServerLevel level;
+    protected final int dungeonId;
+    protected final String dungeonName;
+    protected final int difficulty;
+    protected final int maxPlayers;
+    protected final List<ServerPlayer> players;
+    protected boolean started;
+    protected ServerLevel level;
+    protected Tracker tracker;
+    protected BlockPos spawnPosition;
 
-    private static final Set<LivingEntity> trackedMonsters = new HashSet<>();
+    protected static final Set<LivingEntity> trackedMonsters = new HashSet<>();
 
-    public Dungeon(int dungeonId, String dungeonName, int difficulty, int maxPlayers) {
+    public Dungeon(int dungeonId, String dungeonName, int difficulty, int maxPlayers, BlockPos spawnPosition) {
         this.dungeonId = dungeonId;
         this.dungeonName = dungeonName;
         this.difficulty = difficulty;
         this.maxPlayers = maxPlayers;
         this.players = new ArrayList<>(maxPlayers);
-
+        this.tracker = new Tracker();
+        this.spawnPosition = spawnPosition;
     }
 
     public void setGameStatus(boolean start, MinecraftServer server) throws IOException {
         if (start) {
             if (isGameReadyToStart() && !started) {
                 level = instantiateDimension(server, dungeonName);
+                tracker.register();
+                initDungeon();
                 started = true;
+                if (spawnPosition == null) return;
                 for (ServerPlayer player : players) {
                     player.teleportTo(
                             level,
-                            player.getX(),
-                            player.getY(),
-                            player.getZ(),
+                            spawnPosition.getX(),
+                            spawnPosition.getY(),
+                            spawnPosition.getZ(),
                             0,
                             0
                     );
-                    new Tracker().register();
                 }
             }
         } else {
@@ -72,6 +76,7 @@ public abstract class Dungeon {
             unloadDimension(server, level.dimension().location().getPath());
             players.clear();
             started = false;
+            tracker.unregister();
         }
 
     }
@@ -159,21 +164,6 @@ public abstract class Dungeon {
         }
 
         @SubscribeEvent
-        public void onPlayerPotionAdded(MobEffectEvent event) {
-            if (event.getEntity() instanceof ServerPlayer player && players.contains(player)) {
-                MobEffectInstance effect = event.getEffectInstance();
-            }
-        }
-
-        @SubscribeEvent
-        public void onKillEntity(LivingDeathEvent event) {
-            Entity source = event.getSource().getEntity();
-            if (source instanceof ServerPlayer player && players.contains(player)) {
-
-            }
-        }
-
-        @SubscribeEvent
         public void onBreak(BlockEvent.BreakEvent event) {
             if (players.contains(event.getPlayer())) {
                 event.setCanceled(true);
@@ -181,7 +171,7 @@ public abstract class Dungeon {
         }
 
         @SubscribeEvent
-        public void onBreak(BlockEvent.EntityPlaceEvent event) {
+        public void onPlace(BlockEvent.EntityPlaceEvent event) {
             Entity source = event.getEntity();
             if (source instanceof ServerPlayer player && players.contains(player)) {
                 event.setCanceled(true);
@@ -190,6 +180,10 @@ public abstract class Dungeon {
 
         public void register() {
             forgeEventBus.register(this);
+        }
+
+        public void unregister() {
+            forgeEventBus.unregister(this);
         }
     }
 
@@ -207,4 +201,6 @@ public abstract class Dungeon {
             executor.shutdown();
         }, seconds, TimeUnit.SECONDS);
     }
+
+    protected abstract void initDungeon();
 }
