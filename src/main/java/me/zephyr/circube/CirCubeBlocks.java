@@ -148,6 +148,7 @@ public class CirCubeBlocks {
             .initialProperties(() -> Blocks.BARRIER)
             .properties(p -> p
                     .noOcclusion()
+                    .isSuffocating((state, level, pos) -> false)
                     .noLootTable()
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(-1.0F, Float.MAX_VALUE))

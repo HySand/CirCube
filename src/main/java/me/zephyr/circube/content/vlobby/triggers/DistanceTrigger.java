@@ -48,7 +48,7 @@ public class DistanceTrigger extends Trigger {
                 }
             } else {
                 if (targetEntity.isRemoved()) return;
-                if (player.distanceTo(targetEntity) <= range) {
+                if (player.distanceToSqr(targetEntity) <= range) {
                     action.run();
                     if (!repeat) stop();
                     break;

@@ -1,6 +1,5 @@
 package me.zephyr.circube.content.vlobby;
 
-import me.zephyr.circube.CirCube;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -9,16 +8,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.GameRules;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +36,10 @@ public abstract class Dungeon {
     protected boolean started;
     protected ServerLevel level;
     protected Tracker tracker;
+    protected Protect protect;
     protected BlockPos spawnPosition;
+    protected long startTime;
+    private final Map<UUID, Integer> playerKillCount = new HashMap<>();
 
     protected static final Set<LivingEntity> trackedMonsters = new HashSet<>();
 
@@ -49,6 +50,7 @@ public abstract class Dungeon {
         this.maxPlayers = maxPlayers;
         this.players = new ArrayList<>(maxPlayers);
         this.tracker = new Tracker();
+        this.protect = new Protect();
         this.spawnPosition = spawnPosition;
     }
 
@@ -56,7 +58,10 @@ public abstract class Dungeon {
         if (start) {
             if (isGameReadyToStart() && !started) {
                 level = instantiateDimension(server, dungeonName);
+                level.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, level.getServer());
+                level.getGameRules().getRule(GameRules.RULE_DOMOBLOOT).set(false, level.getServer());
                 tracker.register();
+                protect.register();
                 initDungeon();
                 started = true;
                 if (spawnPosition == null) return;
@@ -70,9 +75,9 @@ public abstract class Dungeon {
                             0
                     );
                 }
+                startTime = System.currentTimeMillis();
             }
         } else {
-            CirCube.LOGGER.error(level.dimension().location().getPath());
             unloadDimension(server, level.dimension().location().getPath());
             players.clear();
             started = false;
@@ -131,7 +136,8 @@ public abstract class Dungeon {
     public class Tracker {
         @SubscribeEvent
         public void onPlayerDead(LivingDeathEvent event) {
-            if (event.getEntity() instanceof ServerPlayer player && !event.isCanceled()) {
+            if (event.isCanceled()) return;
+            if (event.getEntity() instanceof ServerPlayer player) {
                 if (!players.contains(player)) return;
                 for (ServerPlayer trackedPlayer : players) {
                     startCountdown(trackedPlayer, 5, "因有玩家死亡，将在%d秒后结束游戏", (p) -> {
@@ -143,6 +149,9 @@ public abstract class Dungeon {
                         }
                     });
                 }
+            } else if (event.getEntity() instanceof Monster && event.getSource().getEntity() instanceof ServerPlayer player && players.contains(player)) {
+                UUID id = player.getUUID();
+                playerKillCount.put(id, playerKillCount.getOrDefault(id, 0) + 1);
             }
         }
 
@@ -153,6 +162,7 @@ public abstract class Dungeon {
                 for (ServerPlayer trackedPlayer : players) {
                     startCountdown(trackedPlayer, 5, "因有玩家退出，将在%d秒后结束游戏", (p) -> {
                         trackedPlayer.respawn();
+                        protect.unregister();
                         try {
                             setGameStatus(false, event.getEntity().getServer());
                         } catch (IOException e) {
@@ -163,6 +173,16 @@ public abstract class Dungeon {
             }
         }
 
+        public void register() {
+            forgeEventBus.register(this);
+        }
+
+        public void unregister() {
+            forgeEventBus.unregister(this);
+        }
+    }
+
+    public class Protect {
         @SubscribeEvent
         public void onBreak(BlockEvent.BreakEvent event) {
             if (players.contains(event.getPlayer())) {
@@ -203,4 +223,40 @@ public abstract class Dungeon {
     }
 
     protected abstract void initDungeon();
+
+    protected void missionComplete() throws IOException {
+        tracker.unregister();
+        long elapsedSeconds = (System.currentTimeMillis() - startTime) / 1000;
+        for (ServerPlayer player : players) {
+            player.sendSystemMessage(Component.literal("§6=== 地牢结算 ==="));
+            player.sendSystemMessage(Component.literal("§e用时：§f" + formatDuration(elapsedSeconds)));
+            player.sendSystemMessage(Component.literal("§e击杀统计："));
+
+            for (ServerPlayer p : players) {
+                UUID id = p.getUUID();
+                int kills = playerKillCount.getOrDefault(id, 0);
+                player.sendSystemMessage(Component.literal("§f - " + p.getGameProfile().getName() + "：§b" + kills + " 次"));
+            }
+
+            player.sendSystemMessage(Component.literal("§6================"));
+
+            startCountdown(player, 60, "任务完成，将在%d秒后结束游戏", (p) -> {
+                try {
+                    setGameStatus(false, level.getServer());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+
+    private static String formatDuration(long elapsedSeconds) {
+        int minutes = (int) (elapsedSeconds / 60);
+        int seconds = (int) (elapsedSeconds % 60);
+        if (minutes > 0) {
+            return String.format("%d分%d秒", minutes, seconds);
+        } else {
+            return String.format("%d秒", seconds);
+        }
+    }
 }

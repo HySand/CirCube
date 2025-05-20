@@ -1,0 +1,119 @@
+{
+    "providers": [
+        {
+            "type": "ttf",
+            "file": "minecraft:font.ttf",
+            "shift": [
+                0,
+                1
+            ],
+            "size": 9.5,
+            "oversample": 16,
+            "skip": "《》（【「丨？！：，。",
+            "?skip": "汉字"
+        },
+        {
+            "type": "ttf",
+            "file": "minecraft:font.ttf",
+            "shift": [
+                -2.5,
+                1
+            ],
+            "size": 9.5,
+            "oversample": 16,
+            "skip": "》丨？！：，。",
+            "?skip": "《（【「"
+        },        
+        {
+            "type": "ttf",
+            "file": "minecraft:font.ttf",
+            "shift": [
+                -2.0,
+                1
+            ],
+            "size": 9.5,
+            "oversample": 16,
+            "skip": "》！，。",
+            "?skip": "？丨："
+        },
+        {
+            "type": "ttf",
+            "file": "minecraft:font.ttf",
+            "shift": [
+                -1.5,
+                1
+            ],
+            "size": 9.5,
+            "oversample": 16,
+            "skip": "》，。",
+            "?skip": "！"
+        },
+        {
+            "type": "ttf",
+            "file": "minecraft:font.ttf",
+            "shift": [
+                1.5,
+                1
+            ],
+            "size": 9.5,
+            "oversample": 16,
+            "skip": "，。",
+            "?skip": "》"
+        },
+        {
+            "type": "ttf",
+            "file": "minecraft:font.ttf",
+            "shift": [
+                -1.5,
+                1.5
+            ],
+            "size": 9.5,
+            "oversample": 16,
+            "skip": "，。",
+            "?skip": "，。"
+        },
+        {
+            "type": "bitmap",
+            "file": "minecraft:items/levels.png",
+            "ascent": 7,
+            "height": 8,
+            "chars": [
+               "\uDB80\uDE28\uDB80\uDE29\uDB80\uDE2A\uDB80\uDE2B\uDB80\uDE2C",
+               "\uDB80\uDE2D\uDB80\uDE2E\uDB80\uDE2F\uDB80\uDE30\uDB80\uDE31",
+               "\uDB80\uDE32\uDB80\uDE33\uDB80\uDE34\uDB80\uDE35\uDB80\uDE36",
+               "\uDB80\uDE37\uDB80\uDE38\uDB80\uDE39\uDB80\uDE3A\uDB80\uDE3B",
+               "\uDB80\uDE3C\uDB80\uDE3D\uDB80\uDE3E\uDB80\uDE3F\uDB80\uDE40",
+               "\uDB80\uDE41\uDB80\uDE42\uDB80\uDE43\uDB80\uDE44\uDB80\uDE45",
+               "\uDB80\uDE46\uDB80\uDE47\uDB80\uDE48\uDB80\uDE49\uDB80\uDE4A",
+               "\uDB80\uDE4B\uDB80\uDE4C\uDB80\uDE4D\uDB80\uDE4E\uDB80\uDE4F",
+               "\uDB80\uDE50\uDB80\uDE51\uDB80\uDE52\uDB80\uDE53\uDB80\uDE54",
+               "\uDB80\uDE55\uDB80\uDE56\uDB80\uDE57\uDB80\uDE58\uDB80\uDE59"
+               ]
+        },
+        {
+            "type": "bitmap",
+            "file": "minecraft:items/servers.png",
+            "ascent": 7,
+            "height": 8,
+            "chars": [
+               "\uDB81\uDD19\uDB81\uDD1E\uDB81\uDD23\uDB81\uDD28",
+               "\uDB81\uDD1A\uDB81\uDD1F\uDB81\uDD24\uDB81\uDD29",
+               "\uDB81\uDD1B\uDB81\uDD20\uDB81\uDD25\uDB81\uDD2A",
+               "\uDB81\uDD1C\uDB81\uDD21\uDB81\uDD26\uDB81\uDD2B",
+               "\uDB81\uDD1D\uDB81\uDD22\uDB81\uDD27\uDB81\uDD2C"
+               ]
+        },
+        {
+            "type": "bitmap",
+            "file": "minecraft:items/coins.png",
+            "ascent": 7,
+            "height": 8,
+            "chars": [
+               "\uDB81\uDD2D",
+               "\uDB81\uDD2E",
+               "\uDB81\uDD2F",
+               "\uDB81\uDD30"
+               ]
+        }
+    ]
+}

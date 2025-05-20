@@ -24,7 +24,7 @@ public class TaczEvent {
         @SubscribeEvent
         public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
             Player player = event.player;
-            if (player.tickCount % 100 != 0) return;
+            if (player.tickCount % 60 != 0 || player.isCreative()) return;
             int gunCount = 0;
             List<ItemStack> allItems = new ArrayList<>(player.getInventory().items);
             allItems.add(player.getOffhandItem());
@@ -46,9 +46,11 @@ public class TaczEvent {
 
                         }
                     }
-                    if (gunCount > 6) {
-                        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 2));
+                    if (gunCount > 8) {
+                        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 6));
                         return;
+                    } else if (gunCount > 6) {
+                        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
                     }
                 }
             }

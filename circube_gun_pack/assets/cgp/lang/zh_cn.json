@@ -2,10 +2,18 @@
   "pack.cgp.name": "CirCube 枪包",
   "pack.cgp.desc": "增加一些默认枪包的变种武器。",
 
-  "cgp.gun.uzigold.name": "黄金乌兹冲锋枪",
-  "cgp.gun.m16a4gold.name": "黄金M16A4 制式步枪",
-  "cgp.gun.m700gold.name": "黄金M700 狙击步枪",
-  "cgp.gun.m1911gold.name": "黄金M1911 手枪",
-  "cgp.gun.ak47gold.name": "黄金AKM 突击步枪",
-  "cgp.gun.rpkgold.name": "黄金RPK 轻机枪"
+  "cgp.gun.uzi_gold.name": "黄金 | 乌兹冲锋枪",
+  "cgp.gun.m16a4_gold.name": "黄金 | M16A4 制式步枪",
+  "cgp.gun.m700_gold.name": "黄金 | M700 狙击步枪",
+  "cgp.gun.m1911_gold.name": "黄金 | M1911 手枪",
+  "cgp.gun.ak47_gold.name": "黄金 | AKM 突击步枪",
+  "cgp.gun.rpk_gold.name": "黄金 | RPK 轻机枪",
+  "cgp.gun.glock_17_gold.name": "黄金 | 格洛克 17 手枪",
+  "cgp.gun.m4a1_gold.name": "黄金 | M4A1 卡宾枪",
+  "cgp.gun.hk_mp5a5_gold.name": "黄金 | MP5A5 冲锋枪",
+  "cgp.gun.db_short_gold.name": "黄金 | DB-2 杜林人",
+  "cgp.gun.m320_gold.name": "黄金 | M320 榴弹发射器",
+  "cgp.gun.mk14_gold.name": "黄金 | MK14 EBR 精确射手步枪",
+  "cgp.gun.spr15hb_gold.name": "黄金 | SPR-15 HB “射手座” 反狙击步枪",
+  "cgp.gun.ai_awp_gold.name": "黄金 | 精密国际 AWM 狙击步枪"
 }

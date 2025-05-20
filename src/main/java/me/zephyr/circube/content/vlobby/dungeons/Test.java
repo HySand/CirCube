@@ -1,6 +1,5 @@
 package me.zephyr.circube.content.vlobby.dungeons;
 
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.content.vlobby.Dungeon;
 import me.zephyr.circube.content.vlobby.DungeonStage;
 import me.zephyr.circube.content.vlobby.DungeonStageChain;
@@ -9,6 +8,8 @@ import me.zephyr.circube.content.vlobby.triggers.EntityDeathTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Zombie;
+
+import java.io.IOException;
 
 public class Test extends Dungeon {
     public Test(int dungeonId, String dungeonName, int difficulty, int maxPlayers) {
@@ -28,18 +29,16 @@ public class Test extends Dungeon {
         protected void runStage() {
             BlockPos pos = new BlockPos(43, -46, 46);
             Runnable runnable = () -> {
-                CirCube.LOGGER.debug("ARRIVED");
                 Zombie zombie = EntityType.ZOMBIE.create(level);
                 zombie.moveTo(43, -45, 36);
                 level.addFreshEntity(zombie);
                 Runnable runnable2 = () -> {
-                    CirCube.LOGGER.debug("KILLED");
                     complete();
                 };
                 EntityDeathTrigger entityDeathTrigger = new EntityDeathTrigger(zombie, false, runnable2);
                 entityDeathTrigger.start();
             };
-            DistanceTrigger distanceTrigger = new DistanceTrigger(pos, level, 15, false, runnable);
+            DistanceTrigger distanceTrigger = new DistanceTrigger(pos, level, 25, false, runnable);
             distanceTrigger.start();
         }
     }
@@ -49,18 +48,20 @@ public class Test extends Dungeon {
         protected void runStage() {
             BlockPos pos = new BlockPos(42, -45, 14);
             Runnable runnable = () -> {
-                CirCube.LOGGER.debug("ARRIVED");
                 Zombie zombie = EntityType.ZOMBIE.create(level);
                 zombie.moveTo(42, -45, 1);
                 level.addFreshEntity(zombie);
                 Runnable runnable2 = () -> {
-                    CirCube.LOGGER.debug("KILLED");
-                    complete();
+                    try {
+                        missionComplete();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 };
                 EntityDeathTrigger entityDeathTrigger = new EntityDeathTrigger(zombie, false, runnable2);
                 entityDeathTrigger.start();
             };
-            DistanceTrigger distanceTrigger = new DistanceTrigger(pos, level, 15, false, runnable);
+            DistanceTrigger distanceTrigger = new DistanceTrigger(pos, level, 25, false, runnable);
             distanceTrigger.start();
         }
     }
