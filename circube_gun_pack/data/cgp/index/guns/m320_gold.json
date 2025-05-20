@@ -1,0 +1,7 @@
+{
+  "name": "cgp.gun.m320_gold.name",
+  "display": "cgp:m320_gold_display",
+  "data": "cgp:m320_gold_data",
+  "tooltip": "tacz.gun.m320.desc",
+  "type": "rpg"
+}

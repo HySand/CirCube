@@ -1,0 +1,7 @@
+{
+  "name": "cgp.gun.m700_gold.name",
+  "display": "cgp:m700_gold_display",
+  "data": "cgp:m700_gold_data",
+  "tooltip": "tacz.gun.m700.desc",
+  "type": "sniper"
+}

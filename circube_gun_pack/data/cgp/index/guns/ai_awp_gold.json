@@ -1,0 +1,7 @@
+{
+  "name": "cgp.gun.ai_awp_gold.name",
+  "display": "cgp:ai_awp_gold_display",
+  "data": "cgp:ai_awp_gold_data",
+  "tooltip": "tacz.gun.ai_awp.desc",
+  "type": "sniper"
+}

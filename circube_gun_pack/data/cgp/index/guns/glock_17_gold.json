@@ -1,0 +1,7 @@
+{
+  "name": "cgp.gun.glock_17_gold.name",
+  "display": "cgp:glock_17_gold_display",
+  "data": "cgp:glock_17_gold_data",
+  "tooltip": "tacz.gun.glock_17.desc",
+  "type": "pistol"
+}

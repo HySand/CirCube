@@ -1,0 +1,8 @@
+{
+  "name": "cgp.gun.mk14_gold.name",
+  "display": "cgp:mk14_gold_display",
+  "data": "cgp:mk14_gold_data",
+  "tooltip": "tacz.gun.mk14.desc",
+  "type": "rifle",
+  "sort": 4
+}

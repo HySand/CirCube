@@ -1,0 +1,7 @@
+{
+  "name": "cgp.gun.db_short_gold.name",
+  "display": "cgp:db_short_gold_display",
+  "data": "cgp:db_short_gold_data",
+  "tooltip": "tacz.gun.db_short.desc",
+  "type": "shotgun"
+}

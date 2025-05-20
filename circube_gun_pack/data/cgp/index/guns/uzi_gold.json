@@ -1,0 +1,7 @@
+{
+  "name": "cgp.gun.uzi_gold.name",
+  "display": "cgp:uzi_gold_display",
+  "data": "cgp:uzi_gold_data",
+  "tooltip": "tacz.gun.uzi.desc",
+  "type": "smg"
+}
