@@ -1,4 +1,4 @@
-package me.zephyr.circube;
+package me.zephyr.circube.data;
 
 
 import com.google.gson.JsonElement;
@@ -6,18 +6,36 @@ import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
+import me.zephyr.circube.CirCube;
+import me.zephyr.circube.CirCubeKeys;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.data.event.GatherDataEvent;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 @SuppressWarnings("removal")
-public class Registration {
+public class CirCubeDataGen {
     private static final CreateRegistrate REGISTRATE = CirCube.getRegistrate();
 
     public static void gatherData(GatherDataEvent event) {
-        REGISTRATE.addDataGenerator(ProviderType.LANG, registrateLangProvider -> {
-            BiConsumer<String, String> langConsumer = registrateLangProvider::add;
+        addExtraRegistrateData();
+
+        DataGenerator generator = event.getGenerator();
+        PackOutput output = generator.getPackOutput();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+
+        GeneratedEntriesProvider generatedEntriesProvider = new GeneratedEntriesProvider(output, lookupProvider);
+        lookupProvider = generatedEntriesProvider.getRegistryProvider();
+        generator.addProvider(event.includeServer(), generatedEntriesProvider);
+    }
+
+    private static void addExtraRegistrateData() {
+        REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
+            BiConsumer<String, String> langConsumer = provider::add;
 
             provideDefaultLang("interface", langConsumer);
             provideDefaultLang("tooltips", langConsumer);

@@ -185,6 +185,9 @@ dependencies {
 
     implementation(fg.deobf("commoble.infiniverse:${infiniverse_branch}:${infiniverse_version}"))
 
+    runtimeOnly(fg.deobf('curse.maven:flowing-fluids-1108809:6494804'))
+    runtimeOnly(fg.deobf('curse.maven:jade-324717:6271651'))
+
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"

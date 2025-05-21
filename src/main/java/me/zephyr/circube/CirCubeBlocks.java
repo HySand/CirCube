@@ -15,6 +15,7 @@ import me.zephyr.circube.content.beacon.MechanicalBeaconBlock;
 import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
 import me.zephyr.circube.content.beacon.MechanicalBeaconRenderer;
 import me.zephyr.circube.content.beacon.MechanicalBeaconVisual;
+import me.zephyr.circube.content.geyser.GeyserBlock;
 import me.zephyr.circube.content.light.AndesiteLightBlock;
 import me.zephyr.circube.content.light.AndesiteLightBlockEntity;
 import me.zephyr.circube.content.light.BrassLightBlock;
@@ -153,6 +154,17 @@ public class CirCubeBlocks {
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(-1.0F, Float.MAX_VALUE))
             .blockstate(simpleCubeAll("shadow"))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<GeyserBlock> GEYSER = REGISTRATE
+            .block("geyser", GeyserBlock::new)
+            .initialProperties(() -> Blocks.DEEPSLATE)
+            .properties(p -> p
+                    .noLootTable()
+                    .mapColor(MapColor.DEEPSLATE)
+                    .strength(-1.0F, Float.MAX_VALUE))
+            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
             .simpleItem()
             .register();
 

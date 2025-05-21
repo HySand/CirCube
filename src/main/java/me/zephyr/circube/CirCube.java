@@ -11,6 +11,8 @@ import me.zephyr.circube.content.vlobby.dungeons.Arena;
 import me.zephyr.circube.content.vlobby.dungeons.Pit;
 import me.zephyr.circube.content.vlobby.dungeons.Test;
 import me.zephyr.circube.content.vlobby.dungeons.Workshop;
+import me.zephyr.circube.data.CirCubeDataGen;
+import me.zephyr.circube.worldgen.CirCubeFeatures;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -62,10 +64,11 @@ public class CirCube {
         CirCubeBlocks.register();
         CirCubeItems.register();
         CirCubeFluids.register();
+        CirCubeFeatures.register(modEventBus);
         CirCubeMenuTypes.register();
         CirCubeCreativeTabs.register(modEventBus);
         CirCubeConfigs.register(context);
-        modEventBus.addListener(EventPriority.LOWEST, Registration::gatherData);
+        modEventBus.addListener(EventPriority.LOWEST, CirCubeDataGen::gatherData);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CirCubeClient.onCirCubeClient(modEventBus, forgeEventBus));
     }
 

@@ -75,3 +75,17 @@ mandatory = true
 versionRange = "[24.2.0,)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "tacz"
+mandatory = true
+versionRange = "[1.1.5,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "infiniverse"
+mandatory = true
+versionRange = "[1.0.0.5,)"
+ordering = "NONE"
+side = "BOTH"
