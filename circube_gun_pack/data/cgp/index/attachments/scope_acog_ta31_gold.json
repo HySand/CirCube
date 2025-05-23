@@ -1,0 +1,7 @@
+{
+  "name": "tacz.attachment.scope_acog_ta31.name",
+  "display": "cgp:scope_acog_ta31_gold_display",
+  "data": "tacz:scope_acog_ta31_data",
+  "type": "scope",
+  "sort": 100
+}

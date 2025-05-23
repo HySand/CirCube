@@ -1,0 +1,23 @@
+{
+  "slot": "cgp:attachment/slot/scope_contender_gold",
+  "model": "tacz:attachment/scope_contender_geo",
+  "texture": "cgp:attachment/uv/scope_contender_gold",
+  "lod": {
+    "model": "tacz:attachment/lod/scope_contender",
+    "texture": "cgp:attachment/lod/scope_contender_gold"
+  },
+  "zoom": [
+    4.25
+  ],
+  "views": [
+    2
+  ],
+  "views_fov": [
+    30.0
+  ],
+  "scope": true,
+  "sounds": {
+    "install": "tacz:attachments/scope_general_d",
+    "uninstall": "tacz:attachments/scope_general_d"
+  }
+}

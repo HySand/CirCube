@@ -1,0 +1,6 @@
+{
+  "name": "tacz.attachment.muzzle_brake_pioneer.name",
+  "display": "cgp:muzzle_brake_pioneer_gold_display",
+  "data": "tacz:muzzle_brake_pioneer_data",
+  "type": "muzzle"
+}

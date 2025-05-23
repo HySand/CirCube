@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeKeys;
+import me.zephyr.circube.data.recipes.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -31,6 +32,12 @@ public class CirCubeDataGen {
         GeneratedEntriesProvider generatedEntriesProvider = new GeneratedEntriesProvider(output, lookupProvider);
         lookupProvider = generatedEntriesProvider.getRegistryProvider();
         generator.addProvider(event.includeServer(), generatedEntriesProvider);
+
+        generator.addProvider(event.includeServer(), new CirCubeStandardRecipeGen(output));
+        generator.addProvider(event.includeServer(), new CirCubeMixingRecipeGen(output));
+        generator.addProvider(event.includeClient(), new CirCubeCuttingRecipeGen(output));
+        generator.addProvider(event.includeServer(), new CirCubeSequencedAssemblyRecipeGen(output));
+        generator.addProvider(event.includeServer(), new CirCubeMechanicalCraftingRecipeGen(output));
     }
 
     private static void addExtraRegistrateData() {

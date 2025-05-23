@@ -23,6 +23,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -68,6 +69,8 @@ public class CirCube {
         CirCubeMenuTypes.register();
         CirCubeCreativeTabs.register(modEventBus);
         CirCubeConfigs.register(context);
+
+        modEventBus.addListener(CirCube::init);
         modEventBus.addListener(EventPriority.LOWEST, CirCubeDataGen::gatherData);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CirCubeClient.onCirCubeClient(modEventBus, forgeEventBus));
     }
@@ -82,6 +85,12 @@ public class CirCube {
         addDungeonToList(cave);
         addDungeonToList(workshop);
         addDungeonToList(test);
+    }
+
+    public static void init(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            CirCubeContraptionMovementSettings.registerDefaults();
+        });
     }
 
     public static CreateRegistrate getRegistrate() {

@@ -1,0 +1,9 @@
+{
+  "slot": "cgp:attachment/slot/muzzle_brake_pioneer_gold",
+  "model": "tacz:attachment/muzzle_brake_pioneer_geo",
+  "texture": "cgp:attachment/uv/muzzle_brake_pioneer_gold",
+  "sounds": {
+    "install": "tacz:attachments/attachment_general_a",
+    "uninstall": "tacz:attachments/attachment_general_uninstall"
+  }
+}

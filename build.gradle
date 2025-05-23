@@ -66,7 +66,7 @@ minecraft {
     // However, it must be at "META-INF/accesstransformer.cfg" in the final mod jar to be loaded by Forge.
     // This default location is a best practice to automatically put the file in the right place in the final jar.
     // See https://docs.minecraftforge.net/en/latest/advanced/accesstransformers/ for more information.
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -183,10 +183,15 @@ dependencies {
     implementation(fg.deobf('curse.maven:xaeros-minimap-fair-play-edition-263466:5548212'))
     runtimeOnly(fg.deobf('curse.maven:xaeros-world-map-317780:6212636'))
 
+    //implementation(fg.deobf('curse.maven:create-alloyed-564792:6276815'))
+
     implementation(fg.deobf("commoble.infiniverse:${infiniverse_branch}:${infiniverse_version}"))
 
     runtimeOnly(fg.deobf('curse.maven:flowing-fluids-1108809:6494804'))
     runtimeOnly(fg.deobf('curse.maven:jade-324717:6271651'))
+
+    implementation(fg.deobf('curse.maven:create-diesel-generators-869316:6286179'))
+
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar

@@ -14,7 +14,8 @@ public class CirCubeShapes {
                     .add(2, 3, 2, 14, 8, 14)
                     .add(3, 8, 3, 13, 16, 13)
                     .build(),
-            GEYSER = getShape(2, 0, 2, 14, 4, 14).build();
+            GEYSER = getShape(0, 0, 0, 16, 3, 16)
+                    .add(2, 3, 2, 14, 6.5, 14).build();
 
 
     private static AllShapes.Builder getShape(VoxelShape shape) {

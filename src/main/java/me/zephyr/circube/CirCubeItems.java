@@ -72,6 +72,27 @@ public class CirCubeItems {
     public static final ItemEntry<Item> PLASTIC = REGISTRATE
             .item("plastic", Item::new)
             .register();
+    public static final ItemEntry<Item> STEEL_INGOT = REGISTRATE
+            .item("steel_ingot", Item::new)
+            .register();
+    public static final ItemEntry<Item> RAW_STEEL_INGOT = REGISTRATE
+            .item("raw_steel_ingot", Item::new)
+            .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_STEEL_INGOT = REGISTRATE
+            .item("incomplete_steel_ingot", SequencedAssemblyItem::new)
+            .register();
+    public static final ItemEntry<Item> REINFORCED_IRON_SHEET = REGISTRATE
+            .item("reinforced_iron_sheet", Item::new)
+            .register();
+    public static final ItemEntry<Item> REINFORCED_GOLDEN_SHEET = REGISTRATE
+            .item("reinforced_golden_sheet", Item::new)
+            .register();
+    public static final ItemEntry<Item> REINFORCED_COPPER_SHEET = REGISTRATE
+            .item("reinforced_copper_sheet", Item::new)
+            .register();
+    public static final ItemEntry<Item> REINFORCED_BRASS_SHEET = REGISTRATE
+            .item("reinforced_brass_sheet", Item::new)
+            .register();
 
     public static final ItemEntry<Item> BRASS_SHELL = REGISTRATE
             .item("brass_shell", Item::new)
@@ -79,14 +100,23 @@ public class CirCubeItems {
     public static final ItemEntry<Item> SHELL = REGISTRATE
             .item("shell", Item::new)
             .register();
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_RBAPB = REGISTRATE
-            .item("incomplete_rbapb", SequencedAssemblyItem::new)
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_SMALL_AMMO = REGISTRATE
+            .item("incomplete_small_ammo", SequencedAssemblyItem::new)
             .register();
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_SLAP = REGISTRATE
-            .item("incomplete_slap", SequencedAssemblyItem::new)
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_LARGE_AMMO = REGISTRATE
+            .item("incomplete_large_ammo", SequencedAssemblyItem::new)
             .register();
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_GAS_PISTOL_AMMO = REGISTRATE
-            .item("incomplete_gas_pistol_ammo", SequencedAssemblyItem::new)
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_MICRO_AMMO = REGISTRATE
+            .item("incomplete_micro_ammo", SequencedAssemblyItem::new)
+            .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_SHOTGUN_AMMO = REGISTRATE
+            .item("incomplete_shotgun_ammo", SequencedAssemblyItem::new)
+            .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_MASSIVE_AMMO = REGISTRATE
+            .item("incomplete_massive_ammo", SequencedAssemblyItem::new)
+            .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_SPECIAL_AMMO = REGISTRATE
+            .item("incomplete_special_ammo", SequencedAssemblyItem::new)
             .register();
 
     private static <C extends AbstractContainerMenu, S extends Screen & MenuAccess<C>> MenuEntry<C> register(String name, ForgeMenuFactory<C> factory, NonNullSupplier<ScreenFactory<C, S>> screenFactory) {
