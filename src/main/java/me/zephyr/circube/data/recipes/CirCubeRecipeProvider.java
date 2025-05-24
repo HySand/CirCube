@@ -171,5 +171,17 @@ public class CirCubeRecipeProvider extends CreateRecipeProvider {
             return Ingredient.of(Tags.Items.INGOTS_NETHERITE);
         }
 
+        static TagKey<Item> steel() {
+            return AllTags.forgeItemTag("ingots/steel");
+        }
+
+        static TagKey<Item> steelNugget() {
+            return AllTags.forgeItemTag("nuggets/steel");
+        }
+
+        static TagKey<Item> steelBlock() {
+            return AllTags.forgeItemTag("storage_blocks/steel");
+        }
+
     }
 }

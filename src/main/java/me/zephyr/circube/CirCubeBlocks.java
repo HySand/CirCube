@@ -21,16 +21,18 @@ import me.zephyr.circube.content.light.AndesiteLightBlockEntity;
 import me.zephyr.circube.content.light.BrassLightBlock;
 import me.zephyr.circube.content.light.BrassLightBlockEntity;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.Tags;
 
 import static com.simibubi.create.foundation.data.BlockStateGen.simpleCubeAll;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
-import static com.simibubi.create.foundation.data.TagGen.axeOnly;
-import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
+import static com.simibubi.create.foundation.data.TagGen.*;
 
 
 @SuppressWarnings("removal")
@@ -168,6 +170,21 @@ public class CirCubeBlocks {
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
             .item()
             .transform(customItemModel())
+            .register();
+
+    public static final BlockEntry<Block> STEEL_BLOCK = REGISTRATE.block("steel_block", Block::new)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
+            .properties(p -> p.mapColor(MapColor.TERRACOTTA_CYAN)
+                    .requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
+            .blockstate(simpleCubeAll("steel_block"))
+            .tag(BlockTags.NEEDS_DIAMOND_TOOL)
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .transform(tagBlockAndItem("storage_blocks/steel"))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Steel")
             .register();
 
     public static void register() {

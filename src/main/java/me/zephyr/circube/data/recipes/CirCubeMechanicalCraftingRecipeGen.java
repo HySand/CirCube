@@ -1,11 +1,8 @@
 package me.zephyr.circube.data.recipes;
 
 import com.google.common.base.Supplier;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
 import me.zephyr.circube.CirCube;
-import me.zephyr.circube.CirCubeBlocks;
 import me.zephyr.circube.CirCubeItems;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.data.PackOutput;
@@ -33,11 +30,11 @@ public class CirCubeMechanicalCraftingRecipeGen extends CirCubeRecipeProvider {
                     .recipe(b -> b
                             .key('N', Ingredient.of(I.copperNugget()))
                             .key('S', Ingredient.of(I.copperSheet()))
+                            .patternLine(" N N ")
                             .patternLine("SSSSS")
-                            .patternLine("SNSNS")
+                            .patternLine(" N N ")
                             .patternLine("SSSSS")
-                            .patternLine("SNSNS")
-                            .patternLine("SSSSS")
+                            .patternLine(" N N ")
                             .disallowMirrored()),
             REINFORCED_GOLDEN_SHEET = create(CirCubeItems.REINFORCED_GOLDEN_SHEET::get).returns(2)
                     .recipe(b -> b
@@ -59,26 +56,16 @@ public class CirCubeMechanicalCraftingRecipeGen extends CirCubeRecipeProvider {
                             .patternLine("SNSNS")
                             .patternLine("SSSSS")
                             .disallowMirrored()),
-            ANDESITE_BEACON = create(CirCubeBlocks.ANDESITE_BEACON::get).returns(1)
+            REINFORCED_STEEL_SHEET = create(CirCubeItems.REINFORCED_STEEL_SHEET::get).returns(3)
                     .recipe(b -> b
-                            .key('S', Ingredient.of(CirCubeItems.STABILIZER))
-                            .key('D', Ingredient.of(AllBlocks.DEPOT))
-                            .key('C', Ingredient.of(AllBlocks.ANDESITE_CASING))
-                            .patternLine(" S ")
-                            .patternLine(" D ")
-                            .patternLine(" C ")
-                            .patternLine(" C ")
-                            .disallowMirrored()),
-            BRASS_BEACON = create(CirCubeBlocks.BRASS_BEACON::get).returns(1)
-                    .recipe(b -> b
-                            .key('S', Ingredient.of(CirCubeItems.STABILIZER))
-                            .key('D', Ingredient.of(AllBlocks.DEPOT))
-                            .key('C', Ingredient.of(AllBlocks.BRASS_CASING))
-                            .patternLine(" S ")
-                            .patternLine(" D ")
-                            .patternLine(" C ")
-                            .patternLine(" C ")
-                            .disallowMirrored());;
+                            .key('N', Ingredient.of(I.steelNugget()))
+                            .key('S', Ingredient.of(CirCubeItems.STEEL_SHEET.get()))
+                            .patternLine("SSSSS")
+                            .patternLine("SNSNS")
+                            .patternLine("SSSSS")
+                            .patternLine("SNSNS")
+                            .patternLine("SSSSS")
+                            .disallowMirrored());
 
     public CirCubeMechanicalCraftingRecipeGen(PackOutput output) {
         super(output);

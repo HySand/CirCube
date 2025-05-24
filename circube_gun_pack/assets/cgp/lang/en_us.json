@@ -14,6 +14,8 @@
   "cgp.gun.db_short_gold.name": "DB-2 Durin Gold",
   "cgp.gun.m320_gold.name": "M320 Grenade Launcher Gold",
   "cgp.gun.mk14_gold.name": "MK14 EBR Gold",
-  "cgp.gun.spr15hb_gold.name": "SPR-15 HB \"Sagittarius\"",
-  "cgp.gun.ai_awp_gold.name": "Accuracy International AWM",
+  "cgp.gun.spr15hb_gold.name": "SPR-15 HB \"Sagittarius\" Gold",
+  "cgp.gun.ai_awp_gold.name": "Accuracy International AWM Gold",
+
+  "cgp.attachment.scope_standard_8x.name": "Standard 8x Scope"
 }

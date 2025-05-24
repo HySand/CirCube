@@ -1,10 +1,8 @@
 package me.zephyr.circube.data.recipes;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.data.recipe.CompatMetals;
@@ -16,23 +14,18 @@ import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeBlocks;
 import me.zephyr.circube.CirCubeItems;
 import net.createmod.catnip.platform.CatnipServices;
-import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -41,11 +34,8 @@ import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
@@ -65,12 +55,59 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("SCS")
                     .pattern("RSR")),
             BRASS_LIGHT = create(CirCubeBlocks.BRASS_LIGHT).unlockedBy(() -> Items.SOUL_TORCH)
-            .viaShaped(b -> b.define('C', AllBlocks.BRASS_CASING)
-                    .define('R', AllItems.POLISHED_ROSE_QUARTZ)
-                    .define('S', Items.SOUL_TORCH)
-                    .pattern("RSR")
-                    .pattern("SCS")
-                    .pattern("RSR"));
+                    .viaShaped(b -> b.define('C', AllBlocks.BRASS_CASING)
+                            .define('R', AllItems.POLISHED_ROSE_QUARTZ)
+                            .define('S', Items.SOUL_TORCH)
+                            .pattern("RSR")
+                            .pattern("SCS")
+                            .pattern("RSR")),
+            KINETIC_MECHANISM = create(CirCubeItems.KINETIC_MECHANISM).unlockedBy(() -> AllItems.COPPER_SHEET)
+                    .viaShaped(b -> b.define('S', AllItems.COPPER_SHEET)
+                            .define('C', I.cog())
+                            .define('L', AllBlocks.LARGE_COGWHEEL.get())
+                            .define('Z', I.zincNugget())
+                            .pattern("ZCL")
+                            .pattern("SSS")),
+            ANDESITE_BEACON = create(CirCubeBlocks.ANDESITE_BEACON).unlockedBy(() -> CirCubeItems.STABILIZER)
+                    .viaShaped(b -> b
+                            .define('S', CirCubeItems.STABILIZER.get())
+                            .define('D', AllBlocks.DEPOT.get())
+                            .define('C', AllBlocks.ANDESITE_CASING.get())
+                            .pattern("S")
+                            .pattern("D")
+                            .pattern("C")),
+            BRASS_BEACON = create(CirCubeBlocks.BRASS_BEACON).unlockedBy(() -> CirCubeItems.STABILIZER)
+                    .viaShaped(b -> b
+                            .define('S', CirCubeItems.STABILIZER.get())
+                            .define('D', AllBlocks.DEPOT.get())
+                            .define('C', AllBlocks.BRASS_CASING.get())
+                            .pattern("S")
+                            .pattern("D")
+                            .pattern("C"));
+
+    private Marker MATERIALS = enterFolder("materials");
+
+    GeneratedRecipe
+
+            STEEL_COMPACT = metalCompacting(ImmutableList.of(CirCubeItems.STEEL_NUGGET, CirCubeItems.STEEL_INGOT, CirCubeBlocks.STEEL_BLOCK),
+            ImmutableList.of(I::steelNugget, I::steel, I::steelBlock));
+
+    private Marker MISC = enterFolder("misc");
+
+    GeneratedRecipe
+
+            D4 = create(CirCubeItems.D4).unlockedBy(() -> AllItems.COPPER_NUGGET)
+            .viaShapeless(b -> b.requires(I.copperNugget())),
+            D6 = create(CirCubeItems.D6).unlockedBy(() -> Items.GOLD_NUGGET)
+                    .viaShapeless(b -> b.requires(Items.GOLD_NUGGET)),
+            D8 = create(CirCubeItems.D8).unlockedBy(() -> Items.IRON_NUGGET)
+                    .viaShapeless(b -> b.requires(Items.IRON_NUGGET)),
+            D10 = create(CirCubeItems.D10).unlockedBy(() -> AllItems.ZINC_NUGGET)
+                    .viaShapeless(b -> b.requires(I.zincNugget())),
+            D12 = create(CirCubeItems.D12).unlockedBy(() -> AllItems.ANDESITE_ALLOY)
+                    .viaShapeless(b -> b.requires(I.andesiteAlloy())),
+            D20 = create(CirCubeItems.D20).unlockedBy(() -> AllItems.BRASS_NUGGET)
+                    .viaShapeless(b -> b.requires(I.brassNugget()));
 
     static class Marker {
     }
@@ -258,7 +295,6 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
             return this;
         }
 
-        // FIXME 5.1 refactor - recipe categories as markers instead of sections?
         GeneratedRecipe viaShaped(UnaryOperator<ShapedRecipeBuilder> builder) {
             return register(consumer -> {
                 ShapedRecipeBuilder b =

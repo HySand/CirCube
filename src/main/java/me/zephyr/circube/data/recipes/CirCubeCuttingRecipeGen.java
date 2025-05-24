@@ -2,7 +2,6 @@ package me.zephyr.circube.data.recipes;
 
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllRecipeTypes;
-import com.simibubi.create.foundation.data.recipe.CuttingRecipeGen;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import me.zephyr.circube.CirCubeItems;
 import net.minecraft.data.PackOutput;

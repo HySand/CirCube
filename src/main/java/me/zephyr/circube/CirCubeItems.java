@@ -1,7 +1,9 @@
 package me.zephyr.circube;
 
+import com.simibubi.create.AllTags;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.builders.MenuBuilder.ForgeMenuFactory;
 import com.tterrag.registrate.builders.MenuBuilder.ScreenFactory;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -74,6 +76,19 @@ public class CirCubeItems {
             .register();
     public static final ItemEntry<Item> STEEL_INGOT = REGISTRATE
             .item("steel_ingot", Item::new)
+            .tag(AllTags.forgeItemTag("ingots/steel"))
+            .register();
+    public static final ItemEntry<Item> STEEL_SHEET = REGISTRATE
+            .item("steel_sheet", Item::new)
+            .tag(AllTags.forgeItemTag("plates/steel"))
+            .register();
+    public static final ItemEntry<Item> STEEL_NUGGET = REGISTRATE
+            .item("steel_nugget", Item::new)
+            .tag(AllTags.forgeItemTag("nuggets/steel"))
+            .register();
+    public static final ItemEntry<CombustibleItem> GRAPHITE_POWDER = REGISTRATE
+            .item("graphite_powder", CombustibleItem::new)
+            .onRegister(i -> i.setBurnTime(600))
             .register();
     public static final ItemEntry<Item> RAW_STEEL_INGOT = REGISTRATE
             .item("raw_steel_ingot", Item::new)
@@ -92,6 +107,9 @@ public class CirCubeItems {
             .register();
     public static final ItemEntry<Item> REINFORCED_BRASS_SHEET = REGISTRATE
             .item("reinforced_brass_sheet", Item::new)
+            .register();
+    public static final ItemEntry<Item> REINFORCED_STEEL_SHEET = REGISTRATE
+            .item("reinforced_steel_sheet", Item::new)
             .register();
 
     public static final ItemEntry<Item> BRASS_SHELL = REGISTRATE
