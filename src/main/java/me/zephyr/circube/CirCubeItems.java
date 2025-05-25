@@ -74,6 +74,9 @@ public class CirCubeItems {
     public static final ItemEntry<Item> PLASTIC = REGISTRATE
             .item("plastic", Item::new)
             .register();
+    public static final ItemEntry<Item> RAW_STEEL_INGOT = REGISTRATE
+            .item("raw_steel_ingot", Item::new)
+            .register();
     public static final ItemEntry<Item> STEEL_INGOT = REGISTRATE
             .item("steel_ingot", Item::new)
             .tag(AllTags.forgeItemTag("ingots/steel"))
@@ -90,9 +93,7 @@ public class CirCubeItems {
             .item("graphite_powder", CombustibleItem::new)
             .onRegister(i -> i.setBurnTime(600))
             .register();
-    public static final ItemEntry<Item> RAW_STEEL_INGOT = REGISTRATE
-            .item("raw_steel_ingot", Item::new)
-            .register();
+
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_STEEL_INGOT = REGISTRATE
             .item("incomplete_steel_ingot", SequencedAssemblyItem::new)
             .register();
@@ -115,9 +116,13 @@ public class CirCubeItems {
     public static final ItemEntry<Item> BRASS_SHELL = REGISTRATE
             .item("brass_shell", Item::new)
             .register();
+    public static final ItemEntry<Item> STEEL_SHELL = REGISTRATE
+            .item("steel_shell", Item::new)
+            .register();
     public static final ItemEntry<Item> SHELL = REGISTRATE
             .item("shell", Item::new)
             .register();
+
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_SMALL_AMMO = REGISTRATE
             .item("incomplete_small_ammo", SequencedAssemblyItem::new)
             .register();

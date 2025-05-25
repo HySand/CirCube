@@ -13,7 +13,10 @@ public class CirCubeCuttingRecipeGen extends ProcessingRecipeGen {
     GeneratedRecipe
 
             BRASS_SHELL = create(MOD_ID, AllItems.BRASS_SHEET::get, b -> b.duration(200)
-            .output(CirCubeItems.BRASS_SHELL.get(), 6));
+            .output(CirCubeItems.BRASS_SHELL.get(), 6)),
+
+            STEEL_SHELL = create(MOD_ID, CirCubeItems.STEEL_SHEET::get, b -> b.duration(500)
+            .output(CirCubeItems.STEEL_SHELL.get(), 6));
 
     public CirCubeCuttingRecipeGen(PackOutput output) {
         super(output);

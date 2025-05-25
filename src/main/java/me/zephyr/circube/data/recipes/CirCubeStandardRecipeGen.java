@@ -3,8 +3,11 @@ package me.zephyr.circube.data.recipes;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.jesz.createdieselgenerators.CDGBlocks;
+import com.jesz.createdieselgenerators.CDGItems;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.recipe.CompatMetals;
 import com.simibubi.create.foundation.data.recipe.Mods;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -14,10 +17,13 @@ import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeBlocks;
 import me.zephyr.circube.CirCubeItems;
 import net.createmod.catnip.platform.CatnipServices;
+import net.lpcamors.optical.blocks.COBlocks;
+import net.lpcamors.optical.items.COItems;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -28,6 +34,7 @@ import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
@@ -40,8 +47,94 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
+import static me.zephyr.circube.CirCube.MOD_ID;
+
 public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
     final List<GeneratedRecipe> all = new ArrayList<>();
+
+    private Marker CRAFTING = enterFolder("/");
+
+    GeneratedRecipe
+
+            ENGINE_PISTON = create(CDGItems.ENGINE_PISTON).unlockedBy(() -> I.sealedMechanism()).withNamespace("createdieselgenerators")
+            .viaShaped(b -> b.define('A', I.sealedMechanism())
+                    .define('S', I.shaft())
+                    .define('Z', I.zincNugget())
+                    .pattern("A  ")
+                    .pattern(" S ")
+                    .pattern("  Z")),
+
+    BLAZE_BURNER = create(CDGBlocks.BURNER).unlockedBy(() -> CirCubeItems.REINFORCED_COPPER_SHEET).withNamespace("createdieselgenerators")
+            .viaShaped(b -> b.define('B', AllBlocks.BLAZE_BURNER)
+                    .define('#', CirCubeItems.REINFORCED_BRASS_SHEET)
+                    .define('@', CirCubeItems.REINFORCED_COPPER_SHEET)
+                    .define('I', I.shaft())
+                    .define('A', I.andesiteAlloy())
+                    .pattern("A#A")
+                    .pattern("IBI")
+                    .pattern("A@A")),
+
+    CHEMICAL_TURRET = create(CDGBlocks.CHEMICAL_TURRET).unlockedBy(() -> CDGItems.CHEMICAL_SPRAYER).withNamespace("createdieselgenerators")
+            .viaShaped(b -> b.define('S', CDGItems.CHEMICAL_SPRAYER)
+                    .define('@', I.precisionMechanism())
+                    .define('#', CirCubeItems.REINFORCED_COPPER_SHEET)
+                    .define('C', I.copperCasing())
+                    .pattern("##S")
+                    .pattern("#  ")
+                    .pattern("@C ")),
+
+    CANISTER = create(CDGBlocks.CANISTER).unlockedByTag(() -> I.steelSheet()).withNamespace("createdieselgenerators")
+            .viaShaped(b -> b.define('#', I.steelSheet())
+                    .define('A', I.andesiteAlloy())
+                    .define('B', Blocks.BARREL)
+                    .pattern("A A")
+                    .pattern("#B#")
+                    .pattern("###")),
+
+    OIL_BARREL = create(CDGBlocks.OIL_BARREL).unlockedByTag(() -> Tags.Items.BARRELS_WOODEN).withNamespace("createdieselgenerators")
+            .viaShaped(b -> b.define('B', I.steelSheet())
+                    .define('C', Tags.Items.BARRELS_WOODEN)
+                    .pattern("BCB")),
+
+    DIESEL_ENGINE = create(CDGBlocks.DIESEL_ENGINE).unlockedBy(() -> CirCubeItems.REINFORCED_BRASS_SHEET).withNamespace("createdieselgenerators")
+            .viaShaped(b -> b.define('K', I.kineticMechanism())
+                    .define('P', CDGItems.ENGINE_PISTON)
+                    .define('B', CirCubeItems.REINFORCED_BRASS_SHEET.get())
+                    .define('F', Items.FLINT)
+                    .define('S', Blocks.POLISHED_BLACKSTONE_SLAB)
+                    .pattern("PFP")
+                    .pattern("BKB")
+                    .pattern("SSS")),
+
+    LARGE_DIESEL_ENGINE = create(CDGBlocks.MODULAR_DIESEL_ENGINE).unlockedBy(() -> CDGBlocks.DIESEL_ENGINE).withNamespace("createdieselgenerators")
+            .viaShaped(b -> b.define('B', CirCubeItems.REINFORCED_BRASS_SHEET.get())
+                    .define('C', CDGBlocks.DIESEL_ENGINE)
+                    .define('S', Blocks.POLISHED_BLACKSTONE_SLAB)
+                    .define('A', I.andesiteAlloy())
+                    .pattern(" A ")
+                    .pattern("BCB")
+                    .pattern(" S ")),
+
+    HUGE_DIESEL_ENGINE = create(CDGBlocks.HUGE_DIESEL_ENGINE).unlockedBy(() -> AllBlocks.STEAM_ENGINE).withNamespace("createdieselgenerators")
+            .viaShaped(b -> b.define('S', AllBlocks.STEAM_ENGINE.get())
+                    .define('P', AllBlocks.FLUID_PIPE.get())
+                    .define('R', CirCubeItems.REINFORCED_BRASS_SHEET.get())
+                    .define('F', Items.FLINT)
+                    .define('A', I.andesiteAlloy())
+                    .define('B', I.brassBlock())
+                    .pattern("AFA")
+                    .pattern("PSP")
+                    .pattern("RBR")),
+
+    BEAM_FOCUSER = create(COBlocks.BEAM_FOCUSER).unlockedBy(() -> COItems.OPTICAL_DEVICE).withNamespace("create_optical").withoutMarker()
+            .viaShaped(b -> b.define('O', COItems.OPTICAL_DEVICE.get())
+                    .define('R', CirCubeItems.REINFORCED_STEEL_SHEET.get())
+                    .define('I', I.shaft())
+                    .define('C', I.andesiteCasing())
+                    .pattern(" O ")
+                    .pattern("ICI")
+                    .pattern(" R "));
+
 
     private Marker KINETICS = enterFolder("kinetics");
 
@@ -54,43 +147,234 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("RSR")
                     .pattern("SCS")
                     .pattern("RSR")),
-            BRASS_LIGHT = create(CirCubeBlocks.BRASS_LIGHT).unlockedBy(() -> Items.SOUL_TORCH)
-                    .viaShaped(b -> b.define('C', AllBlocks.BRASS_CASING)
-                            .define('R', AllItems.POLISHED_ROSE_QUARTZ)
-                            .define('S', Items.SOUL_TORCH)
-                            .pattern("RSR")
-                            .pattern("SCS")
-                            .pattern("RSR")),
-            KINETIC_MECHANISM = create(CirCubeItems.KINETIC_MECHANISM).unlockedBy(() -> AllItems.COPPER_SHEET)
-                    .viaShaped(b -> b.define('S', AllItems.COPPER_SHEET)
-                            .define('C', I.cog())
-                            .define('L', AllBlocks.LARGE_COGWHEEL.get())
-                            .define('Z', I.zincNugget())
-                            .pattern("ZCL")
-                            .pattern("SSS")),
-            ANDESITE_BEACON = create(CirCubeBlocks.ANDESITE_BEACON).unlockedBy(() -> CirCubeItems.STABILIZER)
-                    .viaShaped(b -> b
-                            .define('S', CirCubeItems.STABILIZER.get())
-                            .define('D', AllBlocks.DEPOT.get())
-                            .define('C', AllBlocks.ANDESITE_CASING.get())
-                            .pattern("S")
-                            .pattern("D")
-                            .pattern("C")),
-            BRASS_BEACON = create(CirCubeBlocks.BRASS_BEACON).unlockedBy(() -> CirCubeItems.STABILIZER)
-                    .viaShaped(b -> b
-                            .define('S', CirCubeItems.STABILIZER.get())
-                            .define('D', AllBlocks.DEPOT.get())
-                            .define('C', AllBlocks.BRASS_CASING.get())
-                            .pattern("S")
-                            .pattern("D")
-                            .pattern("C"));
+
+    BRASS_LIGHT = create(CirCubeBlocks.BRASS_LIGHT).unlockedBy(() -> Items.SOUL_TORCH)
+            .viaShaped(b -> b.define('C', AllBlocks.BRASS_CASING)
+                    .define('R', AllItems.POLISHED_ROSE_QUARTZ)
+                    .define('S', Items.SOUL_TORCH)
+                    .pattern("RSR")
+                    .pattern("SCS")
+                    .pattern("RSR")),
+
+    KINETIC_MECHANISM = create(CirCubeItems.KINETIC_MECHANISM).unlockedBy(() -> AllItems.COPPER_SHEET)
+            .viaShaped(b -> b.define('S', AllItems.COPPER_SHEET)
+                    .define('C', I.cog())
+                    .define('L', AllBlocks.LARGE_COGWHEEL.get())
+                    .define('Z', I.zincNugget())
+                    .pattern("ZCL")
+                    .pattern("SSS")),
+
+    ANDESITE_BEACON = create(CirCubeBlocks.ANDESITE_BEACON).unlockedBy(() -> CirCubeItems.STABILIZER)
+            .viaShaped(b -> b
+                    .define('S', CirCubeItems.STABILIZER.get())
+                    .define('D', AllBlocks.DEPOT.get())
+                    .define('C', AllBlocks.ANDESITE_CASING.get())
+                    .pattern("S")
+                    .pattern("D")
+                    .pattern("C")),
+
+    BRASS_BEACON = create(CirCubeBlocks.BRASS_BEACON).unlockedBy(() -> CirCubeItems.STABILIZER)
+            .viaShaped(b -> b
+                    .define('S', CirCubeItems.STABILIZER.get())
+                    .define('D', AllBlocks.DEPOT.get())
+                    .define('C', AllBlocks.BRASS_CASING.get())
+                    .pattern("S")
+                    .pattern("D")
+                    .pattern("C")),
+
+    PISTON_EXTENSION_POLE = create(AllBlocks.PISTON_EXTENSION_POLE).returns(2).withNamespace("create")
+            .unlockedBy(I::andesiteAlloy)
+            .viaShaped(b -> b.define('A', I.andesiteAlloy())
+                    .define('S', Items.STICK)
+                    .define('G', CirCubeItems.GRAPHITE_POWDER.get())
+                    .pattern("SSS")
+                    .pattern("AGA")
+                    .pattern("SSS")),
+
+    MECHANICAL_PRESS = create(AllBlocks.MECHANICAL_PRESS).unlockedBy(I::andesiteCasing).withNamespace("create")
+            .viaShaped(b -> b.define('C', I.andesiteCasing())
+                    .define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
+                    .define('S', I.shaft())
+                    .define('I', AllTags.forgeItemTag("storage_blocks/iron"))
+                    .pattern(" P ")
+                    .pattern("SCS")
+                    .pattern(" I ")),
+
+    MECHANICAL_MIXER = create(AllBlocks.MECHANICAL_MIXER).unlockedBy(I::andesiteAlloy).withNamespace("create")
+            .viaShaped(b -> b.define('C', I.andesiteCasing())
+                    .define('S', I.cog())
+                    .define('I', AllItems.WHISK.get())
+                    .define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
+                    .pattern(" P ")
+                    .pattern("SCS")
+                    .pattern(" I ")),
+
+    DEPLOYER = create(AllBlocks.DEPLOYER).unlockedBy(I::electronTube).withNamespace("create")
+            .viaShaped(b -> b.define('I', AllItems.BRASS_HAND.get())
+                    .define('B', I.electronTube())
+                    .define('S', I.shaft())
+                    .define('C', I.andesiteCasing())
+                    .pattern(" B ")
+                    .pattern("SCS")
+                    .pattern(" I ")),
+
+    ITEM_VAULT = create(AllBlocks.ITEM_VAULT).unlockedByTag(() -> Tags.Items.BARRELS_WOODEN).withNamespace("create")
+            .viaShaped(b -> b.define('B', I.steelSheet())
+                    .define('C', Tags.Items.BARRELS_WOODEN)
+                    .pattern("B")
+                    .pattern("C")
+                    .pattern("B")),
+
+    MECHANICAL_ARM = create(AllBlocks.MECHANICAL_ARM::get).unlockedBy(I::brassCasing).returns(1).withNamespace("create")
+            .viaShaped(b -> b.define('L', CirCubeItems.REINFORCED_BRASS_SHEET)
+                    .define('O', CirCubeItems.REINFORCED_STEEL_SHEET)
+                    .define('I', I.precisionMechanism())
+                    .define('A', I.andesiteAlloy())
+                    .define('C', I.brassCasing())
+                    .pattern("OLA")
+                    .pattern("L  ")
+                    .pattern("IC ")),
+
+    TRAIN_CONTROLS = create(AllBlocks.TRAIN_CONTROLS).unlockedBy(I::railwayCasing).withNamespace("create")
+            .viaShaped(b -> b.define('I', I.integratedCircuit())
+                    .define('B', Items.LEVER)
+                    .define('C', I.railwayCasing())
+                    .pattern("B")
+                    .pattern("C")
+                    .pattern("I")),
+
+    CONTRAPTION_CONTROLS = create(AllBlocks.CONTRAPTION_CONTROLS).unlockedBy(I::andesiteAlloy).withNamespace("create")
+            .viaShaped(b -> b.define('B', ItemTags.BUTTONS)
+                    .define('C', I.andesiteCasing())
+                    .define('I', I.integratedCircuit())
+                    .pattern("B")
+                    .pattern("C")
+                    .pattern("I")),
+
+    MECHANICAL_DRILL = create(AllBlocks.MECHANICAL_DRILL).unlockedBy(I::andesiteCasing).withNamespace("create")
+            .viaShaped(b -> b.define('C', I.andesiteCasing())
+                    .define('A', I.andesiteAlloy())
+                    .define('I', I.steel())
+                    .pattern(" A ")
+                    .pattern("AIA")
+                    .pattern(" C ")),
+
+    WATER_WHEEL = create(AllBlocks.WATER_WHEEL).unlockedBy(I::andesiteAlloy).withNamespace("create")
+            .viaShaped(b -> b.define('S', I.planks())
+                    .define('C', I.kineticMechanism())
+                    .pattern("SSS")
+                    .pattern("SCS")
+                    .pattern("SSS")),
+
+    WINDMILL_BEARING = create(AllBlocks.WINDMILL_BEARING).unlockedBy(I::andesiteAlloy).withNamespace("create")
+            .viaShaped(b -> b.define('B', I.ironSheet())
+                    .define('C', I.stone())
+                    .define('I', I.kineticMechanism())
+                    .pattern("B")
+                    .pattern("C")
+                    .pattern("I")),
+
+    MECHANICAL_BEARING = create(AllBlocks.MECHANICAL_BEARING).unlockedBy(I::andesiteCasing).withNamespace("create")
+            .viaShaped(b -> b.define('B', CirCubeItems.REINFORCED_IRON_SHEET.get())
+                    .define('C', I.andesiteCasing())
+                    .define('I', I.shaft())
+                    .pattern("B")
+                    .pattern("C")
+                    .pattern("I")),
+
+    CLOCKWORK_BEARING = create(AllBlocks.CLOCKWORK_BEARING).unlockedBy(I::brassCasing).withNamespace("create")
+            .viaShaped(b -> b.define('S', I.integratedCircuit())
+                    .define('B', CirCubeItems.REINFORCED_IRON_SHEET.get())
+                    .define('C', I.brassCasing())
+                    .pattern("B")
+                    .pattern("C")
+                    .pattern("S")),
+
+    STEAM_ENGINE = create(AllBlocks.STEAM_ENGINE).unlockedByTag(I::copper).withNamespace("create")
+            .viaShaped(b -> b.define('P', CirCubeItems.SEALED_MECHANISM.get())
+                    .define('C', CirCubeItems.REINFORCED_COPPER_SHEET.get())
+                    .define('A', I.andesiteAlloy())
+                    .define('S', I.kineticMechanism())
+                    .pattern(" P ")
+                    .pattern("ASA")
+                    .pattern("CCC")),
+
+    GANTRY_PINION = create(AllBlocks.GANTRY_CARRIAGE).unlockedBy(I::andesiteCasing).withNamespace("create")
+            .viaShaped(b -> b.define('B', CirCubeItems.REINFORCED_IRON_SHEET.get())
+                    .define('C', I.andesiteCasing())
+                    .define('I', I.logisticsMechanism())
+                    .pattern("B")
+                    .pattern("C")
+                    .pattern("I")),
+
+    ROPE_PULLEY = create(AllBlocks.ROPE_PULLEY).unlockedBy(I::andesiteAlloy).withNamespace("create")
+            .viaShaped(b -> b.define('B', I.andesiteCasing())
+                    .define('C', ItemTags.WOOL)
+                    .define('I', CirCubeItems.REINFORCED_IRON_SHEET.get())
+                    .pattern("B")
+                    .pattern("C")
+                    .pattern("I")),
+
+    HOSE_PULLEY = create(AllBlocks.HOSE_PULLEY).unlockedByTag(I::copper).withNamespace("create")
+            .viaShaped(b -> b.define('B', I.copperCasing())
+                    .define('C', Items.DRIED_KELP_BLOCK)
+                    .define('I', CirCubeItems.REINFORCED_COPPER_SHEET.get())
+                    .pattern("B")
+                    .pattern("C")
+                    .pattern("I")),
+
+    ELEVATOR_PULLEY = create(AllBlocks.ELEVATOR_PULLEY).unlockedByTag(I::brass).withNamespace("create")
+            .viaShaped(b -> b.define('B', I.brassCasing())
+                    .define('C', Items.DRIED_KELP_BLOCK)
+                    .define('I', CirCubeItems.REINFORCED_IRON_SHEET.get())
+                    .pattern("B")
+                    .pattern("C")
+                    .pattern("I")),
+
+    PORTABLE_STORAGE_INTERFACE = create(AllBlocks.PORTABLE_STORAGE_INTERFACE).unlockedBy(I::andesiteCasing).withNamespace("create")
+            .viaShapeless(b -> b.requires(I.andesiteCasing())
+                    .requires(AllBlocks.CHUTE.get())
+                    .requires(I.logisticsMechanism())),
+
+    PORTABLE_FLUID_INTERFACE = create(AllBlocks.PORTABLE_FLUID_INTERFACE).unlockedBy(I::copperCasing).withNamespace("create")
+            .viaShapeless(b -> b.requires(I.copperCasing())
+                    .requires(AllBlocks.CHUTE.get())
+                    .requires(I.logisticsMechanism()));
 
     private Marker MATERIALS = enterFolder("materials");
 
     GeneratedRecipe
 
             STEEL_COMPACT = metalCompacting(ImmutableList.of(CirCubeItems.STEEL_NUGGET, CirCubeItems.STEEL_INGOT, CirCubeBlocks.STEEL_BLOCK),
-            ImmutableList.of(I::steelNugget, I::steel, I::steelBlock));
+            ImmutableList.of(I::steelNugget, I::steel, I::steelBlock)),
+
+            TRANSMITTER = create(AllItems.TRANSMITTER).unlockedByTag(I::copper).withNamespace("create")
+            .viaShaped(b -> b.define('L', I.copperSheet())
+                    .define('N', Items.LIGHTNING_ROD)
+                    .define('R', I.integratedCircuit())
+                    .pattern(" N ")
+                    .pattern("LLL")
+                    .pattern(" R "));
+
+    private Marker LOGISTICS = enterFolder("logistics");
+
+    GeneratedRecipe
+
+            REDSTONE_REQUESTER = create(AllBlocks.REDSTONE_REQUESTER).unlockedBy(I::cardboard).withNamespace("create")
+            .viaShaped(b -> b.define('C', I.redstone())
+                    .define('B', I.steel())
+                    .define('A', I.stockLink())
+                    .pattern("C")
+                    .pattern("A")
+                    .pattern("B")),
+
+            PACKAGE_FROGPORT = create(AllBlocks.PACKAGE_FROGPORT).unlockedBy(I::cardboard).withNamespace("create")
+            .viaShaped(b -> b.define('C', I.logisticsMechanism())
+                    .define('B', Tags.Items.SLIMEBALLS)
+                    .define('A', I.vault())
+                    .pattern("B")
+                    .pattern("A")
+                    .pattern("C"));
 
     private Marker MISC = enterFolder("misc");
 
@@ -104,10 +388,17 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .viaShapeless(b -> b.requires(Items.IRON_NUGGET)),
             D10 = create(CirCubeItems.D10).unlockedBy(() -> AllItems.ZINC_NUGGET)
                     .viaShapeless(b -> b.requires(I.zincNugget())),
-            D12 = create(CirCubeItems.D12).unlockedBy(() -> AllItems.ANDESITE_ALLOY)
-                    .viaShapeless(b -> b.requires(I.andesiteAlloy())),
+            D12 = create(CirCubeItems.D12).unlockedBy(() -> CirCubeItems.STEEL_NUGGET)
+                    .viaShapeless(b -> b.requires(I.steelNugget())),
             D20 = create(CirCubeItems.D20).unlockedBy(() -> AllItems.BRASS_NUGGET)
-                    .viaShapeless(b -> b.requires(I.brassNugget()));
+                    .viaShapeless(b -> b.requires(I.brassNugget())),
+
+            TUFF = create(() -> Blocks.TUFF).unlockedBy(() -> CirCubeItems.GRAPHITE_POWDER).returns(5)
+            .viaShaped(b -> b.define('#', Blocks.MUD)
+                    .define('G', CirCubeItems.GRAPHITE_POWDER)
+                    .pattern("#G#")
+                    .pattern("G#G")
+                    .pattern("#G#"));
 
     static class Marker {
     }
@@ -236,6 +527,8 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
         private String suffix;
         private Supplier<? extends ItemLike> result;
         private ResourceLocation compatDatagenOutput;
+        private String namespace;
+        private boolean defaultPath;
         List<ICondition> recipeConditions;
 
         private Supplier<ItemPredicate> unlockedBy;
@@ -246,6 +539,8 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
             this.recipeConditions = new ArrayList<>();
             this.suffix = "";
             this.amount = 1;
+            this.namespace = MOD_ID;
+            this.defaultPath = false;
         }
 
         public GeneratedRecipeBuilder(String path, Supplier<? extends ItemLike> result) {
@@ -260,6 +555,16 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
 
         GeneratedRecipeBuilder returns(int amount) {
             this.amount = amount;
+            return this;
+        }
+
+        GeneratedRecipeBuilder withNamespace(String namespace) {
+            this.namespace = namespace;
+            return this;
+        }
+
+        GeneratedRecipeBuilder withoutMarker() {
+            this.defaultPath = true;
             return this;
         }
 
@@ -301,7 +606,8 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                         builder.apply(ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result.get(), amount));
                 if (unlockedBy != null)
                     b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
-                b.save(consumer, createLocation("crafting"));
+                ResourceLocation id = defaultPath ? defaultLocation() : createLocation("crafting");
+                b.save(consumer, id);
             });
         }
 
@@ -334,11 +640,24 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
         }
 
         private ResourceLocation createSimpleLocation(String recipeType) {
-            return CirCube.asResource(recipeType + "/" + getRegistryName().getPath() + suffix);
+            if (namespace.equals(MOD_ID)) {
+                return CirCube.asResource(recipeType + "/" + getRegistryName().getPath() + suffix);
+            }
+            return ResourceLocation.fromNamespaceAndPath(namespace, recipeType + "/" + getRegistryName().getPath() + suffix);
         }
 
         private ResourceLocation createLocation(String recipeType) {
-            return CirCube.asResource(recipeType + "/" + path + "/" + getRegistryName().getPath() + suffix);
+            if (namespace.equals(MOD_ID)) {
+                return CirCube.asResource(recipeType + "/" + path + "/" + getRegistryName().getPath() + suffix);
+            }
+            return ResourceLocation.fromNamespaceAndPath(namespace, recipeType + "/" + path + "/" + getRegistryName().getPath() + suffix);
+        }
+
+        private ResourceLocation defaultLocation() {
+            if (namespace.equals(MOD_ID)) {
+                return CirCube.asResource(getRegistryName().getPath() + suffix);
+            }
+            return ResourceLocation.fromNamespaceAndPath(namespace, getRegistryName().getPath() + suffix);
         }
 
         private ResourceLocation getRegistryName() {

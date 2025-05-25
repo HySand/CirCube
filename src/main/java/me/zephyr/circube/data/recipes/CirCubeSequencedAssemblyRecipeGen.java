@@ -9,7 +9,11 @@ import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipeB
 import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeFluids;
 import me.zephyr.circube.CirCubeItems;
+import net.lpcamors.optical.COMod;
+import net.lpcamors.optical.items.COItems;
+import net.lpcamors.optical.recipes.FocusingRecipe;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
@@ -68,9 +72,8 @@ public class CirCubeSequencedAssemblyRecipeGen extends CirCubeRecipeProvider {
                     .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.cog()))
                     .addStep(DeployerApplicationRecipe::new, rb -> rb.require(AllBlocks.LARGE_COGWHEEL.get()))
                     .addStep(DeployerApplicationRecipe::new, rb -> rb.require(CirCubeItems.REINFORCED_GOLDEN_SHEET.get()))
-                    .addStep(PressingRecipe::new, rb -> rb)
-                    .addStep(DeployerApplicationRecipe::new, rb -> rb.require(AllItems.ELECTRON_TUBE.get()))),
-            NETHERITE_INGOT = create("netherite_ingot", b -> b.require(I.gold())
+                    .addStep(PressingRecipe::new, rb -> rb)),
+            NETHERITE_INGOT = create("netherite_ingot", b -> b.require(CirCubeItems.REINFORCED_GOLDEN_SHEET.get())
                     .transitionTo(CirCubeItems.INCOMPLETE_NETHERITE_INGOT.get())
                     .addOutput(Items.NETHERITE_INGOT, 75)
                     .addOutput(AllItems.GOLDEN_SHEET.get(), 5)
@@ -92,8 +95,24 @@ public class CirCubeSequencedAssemblyRecipeGen extends CirCubeRecipeProvider {
                     .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.BLAZE_POWDER))
                     .addStep(PressingRecipe::new, rb -> rb)
                     .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.BLAZE_POWDER))
-                    .addStep(PressingRecipe::new, rb -> rb));
-    ;
+                    .addStep(PressingRecipe::new, rb -> rb)),
+            OPTICAL_DEVICE = createCO("optical_device", b -> b.require(Items.AMETHYST_SHARD)
+                    .transitionTo(COItems.INCOMPLETE_OPTICAL_DEVICE)
+                    .addOutput(COItems.OPTICAL_DEVICE, 100)
+                    .loops(3)
+                    .addStep(DeployerApplicationRecipe::new, rb -> rb.require(CirCubeItems.REINFORCED_STEEL_SHEET))
+                    .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.GLASS_PANE))
+                    .addStep(FillingRecipe::new, rb -> rb.require(Fluids.WATER, 500))
+                    .addStep(PressingRecipe::new, rb -> rb)),
+            OPTICAL_DEVICE_FOCUSING = createCO("optical_device_focusing", b -> b.require(CirCubeItems.REINFORCED_STEEL_SHEET)
+                    .transitionTo(COItems.INCOMPLETE_OPTICAL_DEVICE)
+                    .addOutput(COItems.OPTICAL_DEVICE, 100)
+                    .loops(1)
+                    .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.AMETHYST_SHARD))
+                    .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.steelSheet()))
+                    .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.GLASS_PANE))
+                    .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.steelSheet()))
+                    .addStep(FocusingRecipe::gamma, p -> p));
 
 
     public CirCubeSequencedAssemblyRecipeGen(PackOutput output) {
@@ -103,6 +122,14 @@ public class CirCubeSequencedAssemblyRecipeGen extends CirCubeRecipeProvider {
     protected GeneratedRecipe create(String name, UnaryOperator<SequencedAssemblyRecipeBuilder> transform) {
         GeneratedRecipe generatedRecipe =
                 c -> transform.apply(new SequencedAssemblyRecipeBuilder(CirCube.asResource(name)))
+                        .build(c);
+        all.add(generatedRecipe);
+        return generatedRecipe;
+    }
+
+    protected GeneratedRecipe createCO(String name, UnaryOperator<SequencedAssemblyRecipeBuilder> transform) {
+        GeneratedRecipe generatedRecipe =
+                c -> transform.apply(new SequencedAssemblyRecipeBuilder(ResourceLocation.fromNamespaceAndPath(COMod.ID, name)))
                         .build(c);
         all.add(generatedRecipe);
         return generatedRecipe;

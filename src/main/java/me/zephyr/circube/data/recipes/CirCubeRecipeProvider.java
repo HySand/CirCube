@@ -4,6 +4,7 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.recipe.CreateRecipeProvider;
+import me.zephyr.circube.CirCubeItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -181,6 +182,26 @@ public class CirCubeRecipeProvider extends CreateRecipeProvider {
 
         static TagKey<Item> steelBlock() {
             return AllTags.forgeItemTag("storage_blocks/steel");
+        }
+
+        static TagKey<Item> steelSheet() {
+            return AllTags.forgeItemTag("plates/steel");
+        }
+
+        static ItemLike kineticMechanism() {
+            return CirCubeItems.KINETIC_MECHANISM.get();
+        }
+
+        static ItemLike logisticsMechanism() {
+            return CirCubeItems.LOGISTICS_MECHANISM.get();
+        }
+
+        static ItemLike integratedCircuit() {
+            return CirCubeItems.INTEGRATED_CIRCUIT.get();
+        }
+
+        static ItemLike sealedMechanism() {
+            return CirCubeItems.SEALED_MECHANISM.get();
         }
 
     }

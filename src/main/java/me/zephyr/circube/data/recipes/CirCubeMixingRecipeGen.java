@@ -9,6 +9,7 @@ import me.zephyr.circube.CirCubeItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 
 import static me.zephyr.circube.CirCube.MOD_ID;
 

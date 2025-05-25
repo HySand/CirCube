@@ -166,7 +166,7 @@ public class CirCubeBlocks {
                     .noLootTable()
                     .mapColor(MapColor.DEEPSLATE)
                     .strength(100, 1200))
-            .transform(axeOnly())
+            .transform(pickaxeOnly())
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
             .item()
             .transform(customItemModel())

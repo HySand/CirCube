@@ -1,0 +1,6 @@
+{
+  "name": "tacz.attachment.muzzle_silencer_mirage.name",
+  "display": "cgp:muzzle_silencer_mirage_gold_display",
+  "data": "tacz:muzzle_silencer_mirage_data",
+  "type": "muzzle"
+}

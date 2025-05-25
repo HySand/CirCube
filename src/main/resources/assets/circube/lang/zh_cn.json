@@ -107,6 +107,7 @@
   "item.circube.steel_ingot": "钢锭",
   "item.circube.steel_nugget": "钢粒",
   "item.circube.steel_sheet": "钢板",
+  "item.circube.steel_shell": "钢弹壳",
   "item.circube.ten_sided_die": "十面骰",
   "item.circube.ten_sided_die.tooltip.behaviour1": "掷出一枚_1-10_点的骰子。可以一次性掷出多个骰子。",
   "item.circube.ten_sided_die.tooltip.condition1": "右击时",
