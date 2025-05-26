@@ -62,4 +62,12 @@ public class Utils {
         }
         return sb.toString();
     }
+
+    public static String generatePassword() {
+        long timestamp = System.currentTimeMillis();
+
+        String binary = Long.toBinaryString(timestamp);
+
+        return String.format("%12s", binary.substring(Math.max(0, binary.length() - 12))).replace(' ', '0');
+    }
 }

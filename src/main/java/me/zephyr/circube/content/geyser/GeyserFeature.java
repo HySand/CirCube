@@ -52,7 +52,7 @@ public class GeyserFeature extends Feature<OreConfiguration> {
     }
 
     protected boolean shouldSkipAirCheck(RandomSource pRandom, float pChance) {
-        return pChance <= 0 ? true : pChance >= 1 ? false : pRandom.nextFloat() >= pChance;
+        return pChance <= 0 || !(pChance >= 1) && pRandom.nextFloat() >= pChance;
     }
 }
 

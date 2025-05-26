@@ -11,6 +11,8 @@ import com.tterrag.registrate.util.entry.MenuEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import me.zephyr.circube.content.dice.DiceItem;
 import me.zephyr.circube.content.stabilizer.StabilizerItem;
+import me.zephyr.circube.content.treasure.CaveBoxItem;
+import me.zephyr.circube.content.treasure.WorkshopBoxItem;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -92,6 +94,30 @@ public class CirCubeItems {
     public static final ItemEntry<CombustibleItem> GRAPHITE_POWDER = REGISTRATE
             .item("graphite_powder", CombustibleItem::new)
             .onRegister(i -> i.setBurnTime(600))
+            .register();
+
+    public static final ItemEntry<Item> RED_KEY = REGISTRATE
+            .item("red_key", Item::new)
+            .tag(AllTags.forgeItemTag("keys"))
+            .register();
+    public static final ItemEntry<Item> BLUE_KEY = REGISTRATE
+            .item("blue_key", Item::new)
+            .tag(AllTags.forgeItemTag("keys"))
+            .register();
+    public static final ItemEntry<Item> LOCKED_CAVE_BOX = REGISTRATE
+            .item("locked_cave_box", Item::new)
+            .register();
+    public static final ItemEntry<CaveBoxItem> CAVE_BOX = REGISTRATE
+            .item("cave_box", CaveBoxItem::new)
+            .register();
+    public static final ItemEntry<Item> LOCKED_WORKSHOP_BOX = REGISTRATE
+            .item("locked_workshop_box", Item::new)
+            .register();
+    public static final ItemEntry<WorkshopBoxItem> WORKSHOP_BOX = REGISTRATE
+            .item("workshop_box", WorkshopBoxItem::new)
+            .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_TREASURE_BOX = REGISTRATE
+            .item("incomplete_treasure_box", SequencedAssemblyItem::new)
             .register();
 
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_STEEL_INGOT = REGISTRATE

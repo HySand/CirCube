@@ -52,7 +52,7 @@ import static me.zephyr.circube.CirCube.MOD_ID;
 public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
     final List<GeneratedRecipe> all = new ArrayList<>();
 
-    private Marker CRAFTING = enterFolder("/");
+    private final Marker CRAFTING = enterFolder("/");
 
     GeneratedRecipe
 
@@ -136,7 +136,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern(" R "));
 
 
-    private Marker KINETICS = enterFolder("kinetics");
+    private final Marker KINETICS = enterFolder("kinetics");
 
     GeneratedRecipe
 
@@ -341,22 +341,36 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .requires(AllBlocks.CHUTE.get())
                     .requires(I.logisticsMechanism()));
 
-    private Marker MATERIALS = enterFolder("materials");
+    private final Marker MATERIALS = enterFolder("materials");
 
     GeneratedRecipe
 
             STEEL_COMPACT = metalCompacting(ImmutableList.of(CirCubeItems.STEEL_NUGGET, CirCubeItems.STEEL_INGOT, CirCubeBlocks.STEEL_BLOCK),
             ImmutableList.of(I::steelNugget, I::steel, I::steelBlock)),
 
-            TRANSMITTER = create(AllItems.TRANSMITTER).unlockedByTag(I::copper).withNamespace("create")
+    TRANSMITTER = create(AllItems.TRANSMITTER).unlockedByTag(I::copper).withNamespace("create")
             .viaShaped(b -> b.define('L', I.copperSheet())
                     .define('N', Items.LIGHTNING_ROD)
                     .define('R', I.integratedCircuit())
                     .pattern(" N ")
                     .pattern("LLL")
-                    .pattern(" R "));
+                    .pattern(" R ")),
 
-    private Marker LOGISTICS = enterFolder("logistics");
+    RED_KEY = create(CirCubeItems.RED_KEY).unlockedByTag(I::steelNugget)
+            .viaShaped(b -> b.define('L', I.steelNugget())
+                    .define('R', I.redstone())
+                    .pattern("  R")
+                    .pattern(" R ")
+                    .pattern("L  ")),
+
+    BLUE_KEY = create(CirCubeItems.BLUE_KEY).unlockedByTag(I::steelNugget)
+            .viaShaped(b -> b.define('L', I.steelNugget())
+                    .define('R', Items.LAPIS_LAZULI)
+                    .pattern("  R")
+                    .pattern(" R ")
+                    .pattern("L  "));
+
+    private final Marker LOGISTICS = enterFolder("logistics");
 
     GeneratedRecipe
 
@@ -368,7 +382,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("A")
                     .pattern("B")),
 
-            PACKAGE_FROGPORT = create(AllBlocks.PACKAGE_FROGPORT).unlockedBy(I::cardboard).withNamespace("create")
+    PACKAGE_FROGPORT = create(AllBlocks.PACKAGE_FROGPORT).unlockedBy(I::cardboard).withNamespace("create")
             .viaShaped(b -> b.define('C', I.logisticsMechanism())
                     .define('B', Tags.Items.SLIMEBALLS)
                     .define('A', I.vault())
@@ -376,7 +390,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("A")
                     .pattern("C"));
 
-    private Marker MISC = enterFolder("misc");
+    private final Marker MISC = enterFolder("misc");
 
     GeneratedRecipe
 
@@ -393,7 +407,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
             D20 = create(CirCubeItems.D20).unlockedBy(() -> AllItems.BRASS_NUGGET)
                     .viaShapeless(b -> b.requires(I.brassNugget())),
 
-            TUFF = create(() -> Blocks.TUFF).unlockedBy(() -> CirCubeItems.GRAPHITE_POWDER).returns(5)
+    TUFF = create(() -> Blocks.TUFF).unlockedBy(() -> CirCubeItems.GRAPHITE_POWDER).returns(5)
             .viaShaped(b -> b.define('#', Blocks.MUD)
                     .define('G', CirCubeItems.GRAPHITE_POWDER)
                     .pattern("#G#")
@@ -523,7 +537,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
 
     class GeneratedRecipeBuilder {
 
-        private String path;
+        private final String path;
         private String suffix;
         private Supplier<? extends ItemLike> result;
         private ResourceLocation compatDatagenOutput;
@@ -679,7 +693,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
 
         class GeneratedCookingRecipeBuilder {
 
-            private Supplier<Ingredient> ingredient;
+            private final Supplier<Ingredient> ingredient;
             private float exp;
             private int cookingTime;
 

@@ -78,7 +78,7 @@ public class CirCubeMechanicalCraftingRecipeGen extends CirCubeRecipeProvider {
     class GeneratedRecipeBuilder {
 
         private String suffix;
-        private Supplier<ItemLike> result;
+        private final Supplier<ItemLike> result;
         private int amount;
 
         public GeneratedRecipeBuilder(Supplier<ItemLike> result) {

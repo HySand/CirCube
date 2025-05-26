@@ -9,7 +9,6 @@ import me.zephyr.circube.CirCubeItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
 
 import static me.zephyr.circube.CirCube.MOD_ID;
 
@@ -25,21 +24,24 @@ public class CirCubeMixingRecipeGen extends ProcessingRecipeGen {
             .require(Items.COAL)
             .output(CirCubeItems.RAW_STEEL_INGOT.get(), 6)
             .requiresHeat(HeatCondition.SUPERHEATED)),
-            SHELL = create(ResourceLocation.fromNamespaceAndPath(MOD_ID, "shell"), b -> b.require(Items.RED_DYE)
-                    .require(CirCubeItems.PLASTIC.get())
-                    .require(CirCubeRecipeProvider.I.brassNugget())
-                    .output(CirCubeItems.SHELL.get(), 4)
-                    .requiresHeat(HeatCondition.HEATED)),
-            PLASTIC = create(ResourceLocation.fromNamespaceAndPath(MOD_ID, "plastic"), b -> b.require(Items.GLOWSTONE_DUST)
-                    .require(CDGFluids.GASOLINE.get(), 500)
-                    .output(CirCubeItems.PLASTIC.get(), 3)
-                    .requiresHeat(HeatCondition.SUPERHEATED)),
-            MOLTEN_GOLD = create(ResourceLocation.fromNamespaceAndPath(MOD_ID, "molten_gold"), b -> b.require(Items.GOLD_INGOT)
-                    .require(Items.GOLD_INGOT)
-                    .require(Items.GOLD_INGOT)
-                    .require(Items.GOLD_INGOT)
-                    .output(CirCubeFluids.MOLTEN_GOLD.get(), 500)
-                    .requiresHeat(HeatCondition.HEATED));
+
+    SHELL = create(ResourceLocation.fromNamespaceAndPath(MOD_ID, "shell"), b -> b.require(Items.RED_DYE)
+            .require(CirCubeItems.PLASTIC.get())
+            .require(CirCubeRecipeProvider.I.brassNugget())
+            .output(CirCubeItems.SHELL.get(), 4)
+            .requiresHeat(HeatCondition.HEATED)),
+
+    PLASTIC = create(ResourceLocation.fromNamespaceAndPath(MOD_ID, "plastic"), b -> b.require(Items.GLOWSTONE_DUST)
+            .require(CDGFluids.GASOLINE.get(), 500)
+            .output(CirCubeItems.PLASTIC.get(), 3)
+            .requiresHeat(HeatCondition.SUPERHEATED)),
+
+    MOLTEN_GOLD = create(ResourceLocation.fromNamespaceAndPath(MOD_ID, "molten_gold"), b -> b.require(Items.GOLD_INGOT)
+            .require(Items.GOLD_INGOT)
+            .require(Items.GOLD_INGOT)
+            .require(Items.GOLD_INGOT)
+            .output(CirCubeFluids.MOLTEN_GOLD.get(), 500)
+            .requiresHeat(HeatCondition.HEATED));
 
     public CirCubeMixingRecipeGen(PackOutput output) {
         super(output);

@@ -13,7 +13,7 @@ import static me.zephyr.circube.CirCube.MOD_ID;
 import static me.zephyr.circube.content.light.AndesiteLightBlockEntity.activatedAndesiteLight;
 import static me.zephyr.circube.content.light.BrassLightBlockEntity.activatedBrassLight;
 
-public class LightHandler {
+public class LightEvents {
     @Mod.EventBusSubscriber(modid = MOD_ID)
     public class PreventMobSpawnNearLight {
         @SubscribeEvent

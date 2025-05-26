@@ -80,7 +80,7 @@ side = "BOTH"
 modId = "tacz"
 mandatory = true
 versionRange = "[1.1.5,)"
-ordering = "NONE"
+ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]

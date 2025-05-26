@@ -204,5 +204,9 @@ public class CirCubeRecipeProvider extends CreateRecipeProvider {
             return CirCubeItems.SEALED_MECHANISM.get();
         }
 
+        static TagKey<Item> key() {
+            return AllTags.forgeItemTag("keys");
+        }
+
     }
 }

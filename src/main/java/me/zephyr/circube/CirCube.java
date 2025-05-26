@@ -12,6 +12,7 @@ import me.zephyr.circube.content.vlobby.dungeons.Pit;
 import me.zephyr.circube.content.vlobby.dungeons.Test;
 import me.zephyr.circube.content.vlobby.dungeons.Workshop;
 import me.zephyr.circube.data.CirCubeDataGen;
+import me.zephyr.circube.event.PasswordCrackingEvents;
 import me.zephyr.circube.worldgen.CirCubeFeatures;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.resources.ResourceKey;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 import static me.zephyr.circube.util.DataManager.addDungeonToList;
+import static me.zephyr.circube.util.Utils.generatePassword;
 
 @Mod(CirCube.MOD_ID)
 public class CirCube {
@@ -69,6 +71,8 @@ public class CirCube {
         CirCubeMenuTypes.register();
         CirCubeCreativeTabs.register(modEventBus);
         CirCubeConfigs.register(context);
+
+        PasswordCrackingEvents.PASSWORD = generatePassword();
 
         modEventBus.addListener(CirCube::init);
         modEventBus.addListener(EventPriority.LOWEST, CirCubeDataGen::gatherData);

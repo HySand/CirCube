@@ -1,10 +1,8 @@
 package me.zephyr.circube.data.recipes;
 
-import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
-import me.zephyr.circube.CirCube;
 import net.lpcamors.optical.CORecipeTypes;
 import net.lpcamors.optical.compat.jei.FocusingRecipeBuilder;
 import net.lpcamors.optical.recipes.FocusingRecipe;
@@ -23,8 +21,8 @@ public class CirCubeFocusingRecipeGen extends ProcessingRecipeGen {
     GeneratedRecipe
 
             BLAZE_POWDER = create(() -> ResourceLocation.fromNamespaceAndPath(MOD_ID, Items.BLAZE_POWDER.toString()), f -> (FocusingRecipeBuilder) f.require(Items.GLOWSTONE_DUST)
-                    .output(Items.BLAZE_POWDER)
-                    .duration(200), FocusingRecipeParams.BeamTypeCondition.GAMMA);
+            .output(Items.BLAZE_POWDER)
+            .duration(200), FocusingRecipeParams.BeamTypeCondition.GAMMA);
 
     public CirCubeFocusingRecipeGen(PackOutput generator) {
         super(generator);

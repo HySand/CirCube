@@ -284,7 +284,9 @@ public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu
                     renderActionTooltip(graphics, ImmutableList.of(CirCubeLang.translateDirect("gui.stabilizer.teleport")),
                             mx, my);
                     if (click == 0) {
-                        minecraft.player.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
+                        if (!minecraft.player.isCreative()) {
+                            minecraft.player.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
+                        }
                         String levelName = entry.getLevelName();
                         BlockPos targetPos = entry.getLocation();
                         CirCubePackets.CHANNEL.sendToServer(new TeleportPacket(levelName, targetPos, entry.getPositionControl()));
