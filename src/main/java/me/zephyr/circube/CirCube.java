@@ -66,7 +66,7 @@ public class CirCube {
         CirCubePackets.register();
         CirCubeBlocks.register();
         CirCubeItems.register();
-        CirCubeFluids.register();
+        CirCubeEffects.register(modEventBus);
         CirCubeFeatures.register(modEventBus);
         CirCubeMenuTypes.register();
         CirCubeCreativeTabs.register(modEventBus);
@@ -82,11 +82,11 @@ public class CirCube {
     private void onDedicatedServerSetup(FMLDedicatedServerSetupEvent event) {
         int dungeonId = 0;
         Dungeon arena = new Arena(dungeonId++, "arena", 1, 3);
-        Dungeon cave = new Pit(dungeonId++, "cave", 3, 3);
+        Dungeon pit = new Pit(dungeonId++, "pit", 3, 3);
         Dungeon workshop = new Workshop(dungeonId++, "workshop", 3, 3);
         Dungeon test = new Test(dungeonId++, "testd", 0, 1);
         addDungeonToList(arena);
-        addDungeonToList(cave);
+        addDungeonToList(pit);
         addDungeonToList(workshop);
         addDungeonToList(test);
     }

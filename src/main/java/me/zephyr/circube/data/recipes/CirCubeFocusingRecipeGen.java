@@ -2,7 +2,6 @@ package me.zephyr.circube.data.recipes;
 
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import net.lpcamors.optical.CORecipeTypes;
 import net.lpcamors.optical.compat.jei.FocusingRecipeBuilder;
 import net.lpcamors.optical.recipes.FocusingRecipe;
@@ -16,7 +15,7 @@ import java.util.function.UnaryOperator;
 
 import static me.zephyr.circube.CirCube.MOD_ID;
 
-public class CirCubeFocusingRecipeGen extends ProcessingRecipeGen {
+public class CirCubeFocusingRecipeGen extends CirCubeProcessingRecipeGen {
 
     GeneratedRecipe
 

@@ -1,11 +1,11 @@
 package me.zephyr.circube.util;
 
 import me.zephyr.circube.CirCubePackets;
-import me.zephyr.circube.content.beacon.MechanicalBeaconBlock;
-import me.zephyr.circube.content.beacon.MechanicalBeaconBlockEntity;
-import me.zephyr.circube.content.beacon.PositionControl;
-import me.zephyr.circube.content.beacon.packets.BeaconDataPacket;
-import me.zephyr.circube.content.stabilizer.StabilizerEntry;
+import me.zephyr.circube.content.teleport.beacon.MechanicalBeaconBlock;
+import me.zephyr.circube.content.teleport.beacon.MechanicalBeaconBlockEntity;
+import me.zephyr.circube.content.teleport.beacon.PositionControl;
+import me.zephyr.circube.content.teleport.beacon.packets.BeaconDataPacket;
+import me.zephyr.circube.content.teleport.item.StabilizerEntry;
 import me.zephyr.circube.content.vlobby.Dungeon;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;

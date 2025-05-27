@@ -2,7 +2,7 @@ package me.zephyr.circube.compact;
 
 import com.simibubi.create.compat.jei.GhostIngredientHandler;
 import me.zephyr.circube.CirCube;
-import me.zephyr.circube.content.beacon.MechanicalBeaconScreen;
+import me.zephyr.circube.content.teleport.beacon.MechanicalBeaconScreen;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;

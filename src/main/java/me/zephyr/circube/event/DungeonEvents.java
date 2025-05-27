@@ -18,47 +18,46 @@ import java.util.concurrent.TimeUnit;
 
 import static me.zephyr.circube.CirCube.MOD_ID;
 
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class DungeonEvents {
-    @Mod.EventBusSubscriber(modid = MOD_ID)
-    public class CleanDimensionsEvent {
-        @SubscribeEvent
-        public static void onServerStart(ServerStartedEvent event) {
-            MinecraftServer server = event.getServer();
-            InfiniverseAPI api = InfiniverseAPI.get();
-            server.getAllLevels().forEach(level -> {
-                ResourceKey<Level> levelKey = level.dimension();
-                if (level.dimension().location().getNamespace().equals(MOD_ID)) {
-                    api.markDimensionForUnregistration(server, levelKey);
+
+    @SubscribeEvent
+    public static void onServerStart(ServerStartedEvent event) {
+        MinecraftServer server = event.getServer();
+        InfiniverseAPI api = InfiniverseAPI.get();
+        server.getAllLevels().forEach(level -> {
+            ResourceKey<Level> levelKey = level.dimension();
+            if (level.dimension().location().getNamespace().equals(MOD_ID)) {
+                api.markDimensionForUnregistration(server, levelKey);
+            }
+        });
+    }
+
+    @SubscribeEvent
+    public static void onDimensionUnregister(UnregisterDimensionEvent event) {
+        Path serverRoot = Path.of(".");
+        Path target = serverRoot.resolve("world").resolve("dimensions").resolve(MOD_ID).resolve(event.getLevel().dimension().location().getPath());
+
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.schedule(() -> {
+            if (Files.exists(target)) {
+                try {
+                    Files.walk(target)
+                            .sorted(java.util.Comparator.reverseOrder())
+                            .forEach(path -> {
+                                try {
+                                    Files.delete(path);
+                                } catch (IOException e) {
+                                    throw new RuntimeException("Failed to delete: " + path, e);
+                                }
+                            });
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
-        }
+            }
+        }, 3, TimeUnit.SECONDS);
 
-        @SubscribeEvent
-        public static void onDimensionUnregister(UnregisterDimensionEvent event) throws IOException {
-            Path serverRoot = Path.of(".");
-            Path target = serverRoot.resolve("world").resolve("dimensions").resolve(MOD_ID).resolve(event.getLevel().dimension().location().getPath());
-
-            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-            executor.schedule(() -> {
-                if (Files.exists(target)) {
-                    try {
-                        Files.walk(target)
-                                .sorted(java.util.Comparator.reverseOrder())
-                                .forEach(path -> {
-                                    try {
-                                        Files.delete(path);
-                                    } catch (IOException e) {
-                                        throw new RuntimeException("Failed to delete: " + path, e);
-                                    }
-                                });
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, 3, TimeUnit.SECONDS);
-
-            executor.shutdown();
-        }
+        executor.shutdown();
     }
 
 }

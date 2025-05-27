@@ -2,8 +2,8 @@ package me.zephyr.circube;
 
 import me.zephyr.circube.compact.packets.AddWaypointPacket;
 import me.zephyr.circube.compact.packets.RenameWaypointPacket;
-import me.zephyr.circube.content.beacon.packets.*;
-import me.zephyr.circube.content.stabilizer.packets.*;
+import me.zephyr.circube.content.teleport.beacon.packets.*;
+import me.zephyr.circube.content.teleport.item.packets.*;
 import me.zephyr.circube.content.vlobby.packets.JoinRoomPacket;
 import me.zephyr.circube.content.vlobby.packets.LeaveRoomPacket;
 import me.zephyr.circube.content.vlobby.packets.RoomDataPacket;

@@ -15,33 +15,28 @@ import java.util.List;
 
 import static me.zephyr.circube.CirCube.MOD_ID;
 
+@Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
 public class AntiCheat {
-    private static final List<String> BANNED_MODS = Arrays.asList("xray", "atianxray", "forgeautofish", "tweakerge", "tweakeroo");
+    private static final List<String> BANNED_MODS = Arrays.asList("xray", "atianxray", "forgeautofish", "tweakerge", "tweakeroo", "litematica");
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
-    public class ModChecker {
-        @SubscribeEvent
-        public static void onLoadComplete(FMLLoadCompleteEvent event) {
-            for (String modId : BANNED_MODS) {
-                if (ModList.get().isLoaded(modId)) {
-                    Minecraft.getInstance().execute(() -> Minecraft.getInstance().stop());
-                }
+    @SubscribeEvent
+    public static void onLoadComplete(FMLLoadCompleteEvent event) {
+        for (String modId : BANNED_MODS) {
+            if (ModList.get().isLoaded(modId)) {
+                Minecraft.getInstance().execute(() -> Minecraft.getInstance().stop());
             }
         }
     }
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
-    public class ResourcePackChecker {
-        @SubscribeEvent
-        public static void onResourceReload(RegisterClientReloadListenersEvent event) {
-            Minecraft minecraft = Minecraft.getInstance();
-            Collection<Pack> pack = minecraft.getResourcePackRepository().getSelectedPacks();
-            pack.forEach(p -> {
-                if (p.getId().toLowerCase().contains("ray")) {
-                    Minecraft.getInstance().execute(() -> Minecraft.getInstance().stop());
-                }
-            });
-        }
+    @SubscribeEvent
+    public static void onResourceReload(RegisterClientReloadListenersEvent event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Collection<Pack> pack = minecraft.getResourcePackRepository().getSelectedPacks();
+        pack.forEach(p -> {
+            if (p.getId().toLowerCase().contains("ray")) {
+                Minecraft.getInstance().execute(() -> Minecraft.getInstance().stop());
+            }
+        });
     }
 
 

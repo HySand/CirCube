@@ -2,13 +2,12 @@ package me.zephyr.circube.data.recipes;
 
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.Create;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import me.zephyr.circube.CirCubeItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
-public class CirCubeMillingRecipeGen extends ProcessingRecipeGen {
+public class CirCubeMillingRecipeGen extends CirCubeProcessingRecipeGen {
     GeneratedRecipe
             COAL = create(ResourceLocation.fromNamespaceAndPath(Create.ID, Items.COAL.toString()), b -> b.duration(100)
             .require(Items.COAL)

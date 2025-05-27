@@ -35,12 +35,14 @@ public class CirCubeDataGen {
 
         generator.addProvider(event.includeServer(), new CirCubeStandardRecipeGen(output));
         generator.addProvider(event.includeServer(), new CirCubeMillingRecipeGen(output));
+        generator.addProvider(event.includeServer(), new CirCubeCrushingRecipeGen(output));
         generator.addProvider(event.includeServer(), new CirCubePressingRecipeGen(output));
         generator.addProvider(event.includeServer(), new CirCubeCompactingRecipeGen(output));
         generator.addProvider(event.includeServer(), new CirCubeMixingRecipeGen(output));
         generator.addProvider(event.includeClient(), new CirCubeCuttingRecipeGen(output));
         generator.addProvider(event.includeServer(), new CirCubeSequencedAssemblyRecipeGen(output));
         generator.addProvider(event.includeServer(), new CirCubeMechanicalCraftingRecipeGen(output));
+        generator.addProvider(event.includeServer(), new CirCubeWashingRecipeGen(output));
         generator.addProvider(event.includeServer(), new CirCubeFocusingRecipeGen(output));
         generator.addProvider(event.includeServer(), new CirCubeBulkFermentingRecipeGen(output));
     }

@@ -1,5 +1,6 @@
 package me.zephyr.circube.data.recipes;
 
+import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -64,6 +65,15 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern(" S ")
                     .pattern("  Z")),
 
+    PUMPJACK_HOLE = create(CDGBlocks.PUMPJACK_HOLE).unlockedBy(() -> ACItemRegistry.TECTONIC_SHARD.get()).withNamespace("createdieselgenerators")
+            .viaShaped(b -> b.define('T', ACItemRegistry.TECTONIC_SHARD.get())
+                    .define('F', AllBlocks.FLUID_PIPE.get())
+                    .define('C', Blocks.CHAIN)
+                    .define('G', I.copperCasing())
+                    .pattern(" F ")
+                    .pattern("CGC")
+                    .pattern(" T ")),
+
     BLAZE_BURNER = create(CDGBlocks.BURNER).unlockedBy(() -> CirCubeItems.REINFORCED_COPPER_SHEET).withNamespace("createdieselgenerators")
             .viaShaped(b -> b.define('B', AllBlocks.BLAZE_BURNER)
                     .define('#', CirCubeItems.REINFORCED_BRASS_SHEET)
@@ -76,6 +86,15 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
 
     CHEMICAL_TURRET = create(CDGBlocks.CHEMICAL_TURRET).unlockedBy(() -> CDGItems.CHEMICAL_SPRAYER).withNamespace("createdieselgenerators")
             .viaShaped(b -> b.define('S', CDGItems.CHEMICAL_SPRAYER)
+                    .define('@', I.precisionMechanism())
+                    .define('#', CirCubeItems.REINFORCED_COPPER_SHEET)
+                    .define('C', I.copperCasing())
+                    .pattern("##S")
+                    .pattern("#  ")
+                    .pattern("@C ")),
+
+    CHEMICAL_TURRET_LIGHTER = create(CDGBlocks.CHEMICAL_TURRET).unlockedBy(() -> CDGItems.CHEMICAL_SPRAYER_LIGHTER).withNamespace("createdieselgenerators").withSuffix("lighter")
+            .viaShaped(b -> b.define('S', CDGItems.CHEMICAL_SPRAYER_LIGHTER)
                     .define('@', I.precisionMechanism())
                     .define('#', CirCubeItems.REINFORCED_COPPER_SHEET)
                     .define('C', I.copperCasing())

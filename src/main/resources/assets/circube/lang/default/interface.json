@@ -33,5 +33,6 @@
   "circube.recipe.password_cracking.unknown": "Unknown",
   "circube.tooltip.beacon_name": "Name:",
   "circube.tooltip.beacon_owner": "Owner:",
-  "itemGroup.circube": "CirCube Addon"
+  "itemGroup.circube": "CirCube Addon",
+  "effect.circube.pure_light": "Pure Light"
 }

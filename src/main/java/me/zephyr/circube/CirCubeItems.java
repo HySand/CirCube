@@ -10,8 +10,9 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.MenuEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import me.zephyr.circube.content.dice.DiceItem;
-import me.zephyr.circube.content.stabilizer.StabilizerItem;
-import me.zephyr.circube.content.treasure.CaveBoxItem;
+import me.zephyr.circube.content.teleport.item.PurifiedDarknessItem;
+import me.zephyr.circube.content.teleport.item.StabilizerItem;
+import me.zephyr.circube.content.treasure.PitBoxItem;
 import me.zephyr.circube.content.treasure.WorkshopBoxItem;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
@@ -26,6 +27,9 @@ public class CirCubeItems {
             .register();
     public static final ItemEntry<StabilizerItem> STABILIZER = REGISTRATE
             .item("stabilizer", StabilizerItem::new)
+            .register();
+    public static final ItemEntry<PurifiedDarknessItem> PURIFIED_DARKNESS = REGISTRATE
+            .item("purified_darkness", PurifiedDarknessItem::new)
             .register();
     public static final ItemEntry<DiceItem> D4 = REGISTRATE
             .item("four_sided_die", DiceItem::new)
@@ -104,11 +108,11 @@ public class CirCubeItems {
             .item("blue_key", Item::new)
             .tag(AllTags.forgeItemTag("keys"))
             .register();
-    public static final ItemEntry<Item> LOCKED_CAVE_BOX = REGISTRATE
-            .item("locked_cave_box", Item::new)
+    public static final ItemEntry<Item> LOCKED_PIT_BOX = REGISTRATE
+            .item("locked_pit_box", Item::new)
             .register();
-    public static final ItemEntry<CaveBoxItem> CAVE_BOX = REGISTRATE
-            .item("cave_box", CaveBoxItem::new)
+    public static final ItemEntry<PitBoxItem> PIT_BOX = REGISTRATE
+            .item("pit_box", PitBoxItem::new)
             .register();
     public static final ItemEntry<Item> LOCKED_WORKSHOP_BOX = REGISTRATE
             .item("locked_workshop_box", Item::new)
