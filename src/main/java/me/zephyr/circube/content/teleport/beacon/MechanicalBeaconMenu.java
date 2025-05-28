@@ -39,6 +39,10 @@ public class MechanicalBeaconMenu extends GhostItemMenu<MechanicalBeaconBlockEnt
         this.positionControl = be.getPositionMode();
     }
 
+    public static MechanicalBeaconMenu create(int id, Inventory inv, MechanicalBeaconBlockEntity be) {
+        return new MechanicalBeaconMenu(CirCubeMenuTypes.MECHANICAL_BEACON_MENU.get(), id, inv, be);
+    }
+
     @Override
     protected ItemStackHandler createGhostInventory() {
         ItemStackHandler newInv = new ItemStackHandler(1);
@@ -86,10 +90,6 @@ public class MechanicalBeaconMenu extends GhostItemMenu<MechanicalBeaconBlockEnt
     protected void saveData(MechanicalBeaconBlockEntity mechanicalBeaconBlockEntity) {
         if (mechanicalBeaconBlockEntity.getLevel().isClientSide())
             CirCubePackets.CHANNEL.sendToServer(new BeaconIconUpdatePacket(pos, ghostInventory.getStackInSlot(0)));
-    }
-
-    public static MechanicalBeaconMenu create(int id, Inventory inv, MechanicalBeaconBlockEntity be) {
-        return new MechanicalBeaconMenu(CirCubeMenuTypes.MECHANICAL_BEACON_MENU.get(), id, inv, be);
     }
 
     @Override

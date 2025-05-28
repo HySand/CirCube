@@ -19,15 +19,14 @@ import static me.zephyr.circube.CirCube.MOD_NAME;
 public enum CirCubeKeys {
     VLOBBY_MENU("vlobby_menu", GLFW.GLFW_KEY_L, "Open CirCube Lobby Menu");
 
-    CirCubeKeys(int defaultKey) {
-        this("", defaultKey, "");
-    }
-
-    private KeyMapping keybind;
     private final String description;
     private final String translation;
     private final int key;
     private final boolean modifiable;
+    private KeyMapping keybind;
+    CirCubeKeys(int defaultKey) {
+        this("", defaultKey, "");
+    }
 
     CirCubeKeys(String description, int defaultKey, String translation) {
         this.description = MOD_ID + ".keyinfo." + description;
@@ -53,27 +52,6 @@ public enum CirCubeKeys {
         }
     }
 
-    public KeyMapping getKeybind() {
-        return keybind;
-    }
-
-    public boolean isPressed() {
-        if (!modifiable)
-            return isKeyDown(key);
-        return keybind.isDown();
-    }
-
-    public String getBoundKey() {
-        return keybind.getTranslatedKeyMessage()
-                .getString()
-                .toUpperCase();
-    }
-
-    public int getBoundCode() {
-        return keybind.getKey()
-                .getValue();
-    }
-
     public static boolean isKeyDown(int key) {
         return InputConstants.isKeyDown(Minecraft.getInstance()
                 .getWindow()
@@ -96,5 +74,26 @@ public enum CirCubeKeys {
 
     public static boolean altDown() {
         return Screen.hasAltDown();
+    }
+
+    public KeyMapping getKeybind() {
+        return keybind;
+    }
+
+    public boolean isPressed() {
+        if (!modifiable)
+            return isKeyDown(key);
+        return keybind.isDown();
+    }
+
+    public String getBoundKey() {
+        return keybind.getTranslatedKeyMessage()
+                .getString()
+                .toUpperCase();
+    }
+
+    public int getBoundCode() {
+        return keybind.getKey()
+                .getValue();
     }
 }

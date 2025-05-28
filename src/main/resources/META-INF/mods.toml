@@ -73,7 +73,7 @@ side = "BOTH"
 modId = "xaerominimapfair"
 mandatory = true
 versionRange = "[24.2.0,)"
-ordering = "NONE"
+ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
@@ -87,5 +87,12 @@ side = "BOTH"
 modId = "infiniverse"
 mandatory = true
 versionRange = "[1.0.0.5,)"
-ordering = "NONE"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "alexscaves"
+mandatory = true
+versionRange = "[2.0.2,)"
+ordering = "AFTER"
 side = "BOTH"

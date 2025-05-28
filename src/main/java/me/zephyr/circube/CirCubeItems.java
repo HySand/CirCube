@@ -10,12 +10,14 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.MenuEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import me.zephyr.circube.content.dice.DiceItem;
-import me.zephyr.circube.content.teleport.item.PurifiedDarknessItem;
+import me.zephyr.circube.content.teleport.item.PureLightEffect;
 import me.zephyr.circube.content.teleport.item.StabilizerItem;
 import me.zephyr.circube.content.treasure.PitBoxItem;
 import me.zephyr.circube.content.treasure.WorkshopBoxItem;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 
@@ -28,8 +30,16 @@ public class CirCubeItems {
     public static final ItemEntry<StabilizerItem> STABILIZER = REGISTRATE
             .item("stabilizer", StabilizerItem::new)
             .register();
-    public static final ItemEntry<PurifiedDarknessItem> PURIFIED_DARKNESS = REGISTRATE
-            .item("purified_darkness", PurifiedDarknessItem::new)
+    public static final ItemEntry<Item> LIGHT_CHORUS_FRUIT = REGISTRATE
+            .item("light_chorus_fruit", Item::new)
+            .properties(p -> p.food(new FoodProperties.Builder().nutrition(4)
+                    .saturationMod(0.3F)
+                    .effect(() -> new MobEffectInstance(CirCubeEffects.PURE_LIGHT.get(), 20 * 300, 0), 1)
+                    .alwaysEat()
+                    .build()))
+            .register();
+    public static final ItemEntry<Item> PURIFIED_DARKNESS = REGISTRATE
+            .item("purified_darkness", Item::new)
             .register();
     public static final ItemEntry<DiceItem> D4 = REGISTRATE
             .item("four_sided_die", DiceItem::new)

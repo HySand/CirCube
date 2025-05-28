@@ -28,20 +28,19 @@ import static me.zephyr.circube.content.vlobby.DungeonManager.unloadDimension;
 import static me.zephyr.circube.util.DataManager.getDungeonList;
 
 public abstract class Dungeon {
+    protected static final Set<LivingEntity> trackedMonsters = new HashSet<>();
     protected final int dungeonId;
     protected final String dungeonName;
     protected final int difficulty;
     protected final int maxPlayers;
     protected final List<ServerPlayer> players;
+    private final Map<UUID, Integer> playerKillCount = new HashMap<>();
     protected boolean started;
     protected ServerLevel level;
     protected Tracker tracker;
     protected Protect protect;
     protected BlockPos spawnPosition;
     protected long startTime;
-    private final Map<UUID, Integer> playerKillCount = new HashMap<>();
-
-    protected static final Set<LivingEntity> trackedMonsters = new HashSet<>();
 
     public Dungeon(int dungeonId, String dungeonName, int difficulty, int maxPlayers, BlockPos spawnPosition) {
         this.dungeonId = dungeonId;
@@ -52,6 +51,31 @@ public abstract class Dungeon {
         this.tracker = new Tracker();
         this.protect = new Protect();
         this.spawnPosition = spawnPosition;
+    }
+
+    public static void startCountdown(ServerPlayer player, int seconds, String messageFormat, Consumer<ServerPlayer> afterCountdown) {
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        for (int i = seconds; i > 0; i--) {
+            final int remainingSeconds = i;
+            executor.schedule(() -> {
+                String message = String.format(messageFormat, remainingSeconds);
+                player.sendSystemMessage(Component.literal(message).withStyle(ChatFormatting.YELLOW), true);
+            }, seconds - i, TimeUnit.SECONDS);
+        }
+        executor.schedule(() -> {
+            afterCountdown.accept(player);
+            executor.shutdown();
+        }, seconds, TimeUnit.SECONDS);
+    }
+
+    private static String formatDuration(long elapsedSeconds) {
+        int minutes = (int) (elapsedSeconds / 60);
+        int seconds = (int) (elapsedSeconds % 60);
+        if (minutes > 0) {
+            return String.format("%d分%d秒", minutes, seconds);
+        } else {
+            return String.format("%d秒", seconds);
+        }
     }
 
     public void setGameStatus(boolean start, MinecraftServer server) throws IOException {
@@ -133,6 +157,34 @@ public abstract class Dungeon {
         return maxPlayers;
     }
 
+    protected abstract void initDungeon();
+
+    protected void missionComplete() throws IOException {
+        tracker.unregister();
+        long elapsedSeconds = (System.currentTimeMillis() - startTime) / 1000;
+        for (ServerPlayer player : players) {
+            player.sendSystemMessage(Component.literal("§6=== 地牢结算 ==="));
+            player.sendSystemMessage(Component.literal("§e用时：§f" + formatDuration(elapsedSeconds)));
+            player.sendSystemMessage(Component.literal("§e击杀统计："));
+
+            for (ServerPlayer p : players) {
+                UUID id = p.getUUID();
+                int kills = playerKillCount.getOrDefault(id, 0);
+                player.sendSystemMessage(Component.literal("§f - " + p.getGameProfile().getName() + "：§b" + kills + " 次"));
+            }
+
+            player.sendSystemMessage(Component.literal("§6================"));
+
+            startCountdown(player, 60, "任务完成，将在%d秒后结束游戏", (p) -> {
+                try {
+                    setGameStatus(false, level.getServer());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+
     public class Tracker {
         @SubscribeEvent
         public void onPlayerDead(LivingDeathEvent event) {
@@ -204,59 +256,6 @@ public abstract class Dungeon {
 
         public void unregister() {
             forgeEventBus.unregister(this);
-        }
-    }
-
-    public static void startCountdown(ServerPlayer player, int seconds, String messageFormat, Consumer<ServerPlayer> afterCountdown) {
-        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        for (int i = seconds; i > 0; i--) {
-            final int remainingSeconds = i;
-            executor.schedule(() -> {
-                String message = String.format(messageFormat, remainingSeconds);
-                player.sendSystemMessage(Component.literal(message).withStyle(ChatFormatting.YELLOW), true);
-            }, seconds - i, TimeUnit.SECONDS);
-        }
-        executor.schedule(() -> {
-            afterCountdown.accept(player);
-            executor.shutdown();
-        }, seconds, TimeUnit.SECONDS);
-    }
-
-    protected abstract void initDungeon();
-
-    protected void missionComplete() throws IOException {
-        tracker.unregister();
-        long elapsedSeconds = (System.currentTimeMillis() - startTime) / 1000;
-        for (ServerPlayer player : players) {
-            player.sendSystemMessage(Component.literal("§6=== 地牢结算 ==="));
-            player.sendSystemMessage(Component.literal("§e用时：§f" + formatDuration(elapsedSeconds)));
-            player.sendSystemMessage(Component.literal("§e击杀统计："));
-
-            for (ServerPlayer p : players) {
-                UUID id = p.getUUID();
-                int kills = playerKillCount.getOrDefault(id, 0);
-                player.sendSystemMessage(Component.literal("§f - " + p.getGameProfile().getName() + "：§b" + kills + " 次"));
-            }
-
-            player.sendSystemMessage(Component.literal("§6================"));
-
-            startCountdown(player, 60, "任务完成，将在%d秒后结束游戏", (p) -> {
-                try {
-                    setGameStatus(false, level.getServer());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        }
-    }
-
-    private static String formatDuration(long elapsedSeconds) {
-        int minutes = (int) (elapsedSeconds / 60);
-        int seconds = (int) (elapsedSeconds % 60);
-        if (minutes > 0) {
-            return String.format("%d分%d秒", minutes, seconds);
-        } else {
-            return String.format("%d秒", seconds);
         }
     }
 }

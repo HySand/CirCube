@@ -44,11 +44,9 @@ import java.util.stream.Collectors;
 public class StabilizerScreen extends AbstractSimiContainerScreen<StabilizerMenu> {
     private static final int CARD_HEADER = 18;
     private static final int CARD_WIDTH = 124;
-
-    private List<Rect2i> extraAreas = Collections.emptyList();
-
     private final LerpedFloat scroll = LerpedFloat.linear().startWithValue(0);
     private final List<StabilizerEntry> teleportEntries = new ArrayList<>();
+    private List<Rect2i> extraAreas = Collections.emptyList();
     private IconButton cancelButton;
 
     private boolean modified = false;

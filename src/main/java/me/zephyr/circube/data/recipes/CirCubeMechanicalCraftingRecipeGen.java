@@ -75,10 +75,15 @@ public class CirCubeMechanicalCraftingRecipeGen extends CirCubeRecipeProvider {
         return new GeneratedRecipeBuilder(result);
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "CirCube's Mechanical Crafting Recipes";
+    }
+
     class GeneratedRecipeBuilder {
 
-        private String suffix;
         private final Supplier<ItemLike> result;
+        private String suffix;
         private int amount;
 
         public GeneratedRecipeBuilder(Supplier<ItemLike> result) {
@@ -107,10 +112,5 @@ public class CirCubeMechanicalCraftingRecipeGen extends CirCubeRecipeProvider {
                 b.build(consumer, location);
             });
         }
-    }
-
-    @Override
-    public @NotNull String getName() {
-        return "CirCube's Mechanical Crafting Recipes";
     }
 }

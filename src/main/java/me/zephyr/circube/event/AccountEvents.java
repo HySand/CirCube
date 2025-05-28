@@ -2,7 +2,6 @@ package me.zephyr.circube.event;
 
 import me.zephyr.circube.CirCubeEffects;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -25,7 +24,7 @@ public class AccountEvents {
 
         if (!data.getBoolean("HasJoinedBefore")) {
             data.putBoolean("HasJoinedBefore", true);
-            player.addEffect(new MobEffectInstance(CirCubeEffects.PURE_LIGHT.get(), 216000, 0, false, false));
+            player.addEffect(new MobEffectInstance(CirCubeEffects.PURE_LIGHT.get(), 360000, 0, true, false));
         }
     }
 

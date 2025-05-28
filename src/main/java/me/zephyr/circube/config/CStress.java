@@ -29,6 +29,34 @@ public class CStress extends ConfigBase {
     protected final Map<ResourceLocation, ConfigValue<Double>> capacities = new HashMap<>();
     protected final Map<ResourceLocation, ConfigValue<Double>> impacts = new HashMap<>();
 
+    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setNoImpact() {
+        return setImpact(0);
+    }
+
+    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setImpact(double value) {
+        return builder -> {
+            assertFromCirCube(builder);
+            ResourceLocation id = CirCube.asResource(builder.getName());
+            DEFAULT_IMPACTS.put(id, value);
+            return builder;
+        };
+    }
+
+    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setCapacity(double value) {
+        return builder -> {
+            assertFromCirCube(builder);
+            ResourceLocation id = CirCube.asResource(builder.getName());
+            DEFAULT_CAPACITIES.put(id, value);
+            return builder;
+        };
+    }
+
+    private static void assertFromCirCube(BlockBuilder<?, ?> builder) {
+        if (!builder.getOwner().getModid().equals(MOD_ID)) {
+            throw new IllegalStateException("Unrelated blocks cannot be added to the config of CirCube.");
+        }
+    }
+
     @Override
     public void registerAll(Builder builder) {
         builder.comment(".", Comments.su, Comments.impact)
@@ -59,34 +87,6 @@ public class CStress extends ConfigBase {
         ResourceLocation id = CatnipServices.REGISTRIES.getKeyOrThrow(block);
         ConfigValue<Double> value = this.capacities.get(id);
         return value == null ? null : value::get;
-    }
-
-    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setNoImpact() {
-        return setImpact(0);
-    }
-
-    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setImpact(double value) {
-        return builder -> {
-            assertFromCirCube(builder);
-            ResourceLocation id = CirCube.asResource(builder.getName());
-            DEFAULT_IMPACTS.put(id, value);
-            return builder;
-        };
-    }
-
-    public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setCapacity(double value) {
-        return builder -> {
-            assertFromCirCube(builder);
-            ResourceLocation id = CirCube.asResource(builder.getName());
-            DEFAULT_CAPACITIES.put(id, value);
-            return builder;
-        };
-    }
-
-    private static void assertFromCirCube(BlockBuilder<?, ?> builder) {
-        if (!builder.getOwner().getModid().equals(MOD_ID)) {
-            throw new IllegalStateException("Unrelated blocks cannot be added to the config of CirCube.");
-        }
     }
 
     private static class Comments {

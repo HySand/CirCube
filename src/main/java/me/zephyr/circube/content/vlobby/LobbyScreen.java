@@ -44,6 +44,19 @@ public class LobbyScreen extends AbstractSimiScreen {
         super();
     }
 
+    private static ResourceLocation getSkinLocation(UUID uuid) {
+        GameProfile profile = new GameProfile(uuid, null);
+        Minecraft minecraft = Minecraft.getInstance();
+        Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textures = minecraft.getSkinManager().getInsecureSkinInformation(profile);
+
+        if (textures.containsKey(MinecraftProfileTexture.Type.SKIN)) {
+            MinecraftProfileTexture skinTexture = textures.get(MinecraftProfileTexture.Type.SKIN);
+            return minecraft.getSkinManager().registerTexture(skinTexture, MinecraftProfileTexture.Type.SKIN);
+        } else {
+            return DefaultPlayerSkin.getDefaultSkin(profile.getId());
+        }
+    }
+
     private void loadLobbyEntries() {
         if (minecraft != null && minecraft.player != null) {
             CirCubePackets.CHANNEL.sendToServer(new RoomEntriesRequestPacket());
@@ -133,7 +146,6 @@ public class LobbyScreen extends AbstractSimiScreen {
 
         UIRenderHelper.swapAndBlitColor(UIRenderHelper.framebuffer, minecraft.getMainRenderTarget());
     }
-
 
     public int renderRoomEntry(GuiGraphics graphics, RoomEntry entry, int yOffset, int mouseX, int mouseY,
                                float partialTicks) {
@@ -332,19 +344,6 @@ public class LobbyScreen extends AbstractSimiScreen {
     private void renderActionTooltip(@Nullable GuiGraphics graphics, List<Component> tooltip, int mx, int my) {
         if (graphics != null)
             graphics.renderTooltip(font, tooltip, Optional.empty(), mx, my);
-    }
-
-    private static ResourceLocation getSkinLocation(UUID uuid) {
-        GameProfile profile = new GameProfile(uuid, null);
-        Minecraft minecraft = Minecraft.getInstance();
-        Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textures = minecraft.getSkinManager().getInsecureSkinInformation(profile);
-
-        if (textures.containsKey(MinecraftProfileTexture.Type.SKIN)) {
-            MinecraftProfileTexture skinTexture = textures.get(MinecraftProfileTexture.Type.SKIN);
-            return minecraft.getSkinManager().registerTexture(skinTexture, MinecraftProfileTexture.Type.SKIN);
-        } else {
-            return DefaultPlayerSkin.getDefaultSkin(profile.getId());
-        }
     }
 
     private boolean hasStartedGame(UUID uuid) {

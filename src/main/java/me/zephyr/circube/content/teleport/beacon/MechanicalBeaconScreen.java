@@ -31,15 +31,14 @@ import java.util.function.Consumer;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 public class MechanicalBeaconScreen extends AbstractSimiContainerScreen<MechanicalBeaconMenu> {
-    private EditBox nameBox;
-    private IconButton confirmButton;
-    protected CirCubeGuiTextures background;
     private final String name;
     private final BlockPos pos;
     private final boolean brass;
-    private PositionControl positionControl;
-
     private final ItemStack renderedItem;
+    protected CirCubeGuiTextures background;
+    private EditBox nameBox;
+    private IconButton confirmButton;
+    private PositionControl positionControl;
     private List<Rect2i> extraAreas = Collections.emptyList();
 
     public MechanicalBeaconScreen(MechanicalBeaconMenu container, Inventory inv, Component title) {

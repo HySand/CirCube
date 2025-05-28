@@ -12,6 +12,7 @@ import me.zephyr.circube.content.vlobby.dungeons.Pit;
 import me.zephyr.circube.content.vlobby.dungeons.Test;
 import me.zephyr.circube.content.vlobby.dungeons.Workshop;
 import me.zephyr.circube.data.CirCubeDataGen;
+import me.zephyr.circube.event.HealthAmplifier;
 import me.zephyr.circube.event.PasswordCrackingEvents;
 import me.zephyr.circube.worldgen.CirCubeFeatures;
 import net.createmod.catnip.lang.FontHelper;
@@ -38,15 +39,14 @@ public class CirCube {
     public static final String MOD_ID = "circube";
     public static final String MOD_NAME = "CirCube";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static IEventBus modEventBus;
-    public static IEventBus forgeEventBus;
-
     private static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID)
             .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
             .setTooltipModifierFactory(item ->
                     new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
                             .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
             );
+    public static IEventBus modEventBus;
+    public static IEventBus forgeEventBus;
 
     static {
         REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
@@ -58,6 +58,8 @@ public class CirCube {
         forgeEventBus = MinecraftForge.EVENT_BUS;
 
         forgeEventBus.register(this);
+
+        modEventBus.addListener(this::onCommonSetup);
         if (FMLEnvironment.dist == Dist.DEDICATED_SERVER)
             modEventBus.addListener(this::onDedicatedServerSetup);
 
@@ -74,9 +76,16 @@ public class CirCube {
 
         PasswordCrackingEvents.PASSWORD = generatePassword();
 
-        modEventBus.addListener(CirCube::init);
         modEventBus.addListener(EventPriority.LOWEST, CirCubeDataGen::gatherData);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CirCubeClient.onCirCubeClient(modEventBus, forgeEventBus));
+    }
+
+    public static CreateRegistrate getRegistrate() {
+        return REGISTRATE;
+    }
+
+    public static ResourceLocation asResource(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
     private void onDedicatedServerSetup(FMLDedicatedServerSetupEvent event) {
@@ -91,17 +100,10 @@ public class CirCube {
         addDungeonToList(test);
     }
 
-    public static void init(final FMLCommonSetupEvent event) {
+    private void onCommonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             CirCubeContraptionMovementSettings.registerDefaults();
+            HealthAmplifier.initBoss();
         });
-    }
-
-    public static CreateRegistrate getRegistrate() {
-        return REGISTRATE;
-    }
-
-    public static ResourceLocation asResource(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 }

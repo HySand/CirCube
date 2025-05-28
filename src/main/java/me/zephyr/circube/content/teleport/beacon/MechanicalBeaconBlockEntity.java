@@ -269,6 +269,10 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
         }
     }
 
+    public PositionControl getPositionMode() {
+        return positionMode;
+    }
+
     public void setPositionMode(PositionControl mode) {
         positionMode = mode;
         this.setChanged();
@@ -276,10 +280,6 @@ public class MechanicalBeaconBlockEntity extends KineticBlockEntity implements M
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
             DataManager.updateBeaconPositionMode((ServerLevel) level, hash, positionMode);
         }
-    }
-
-    public PositionControl getPositionMode() {
-        return positionMode;
     }
 
     @Override

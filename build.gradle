@@ -194,7 +194,7 @@ dependencies {
     implementation(fg.deobf('curse.maven:create-diesel-generators-869316:6286179'))
     implementation(fg.deobf('curse.maven:create-optical-1007714:6336887'))
 
-    runtimeOnly(fg.deobf('curse.maven:citadel-331936:6002521'))
+    implementation(fg.deobf('curse.maven:citadel-331936:6002521'))
     implementation(fg.deobf('curse.maven:alexs-caves-924854:5848216'))
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository

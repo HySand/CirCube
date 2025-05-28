@@ -13,18 +13,17 @@ import static me.zephyr.circube.CirCube.MOD_ID;
 import static me.zephyr.circube.content.light.AndesiteLightBlockEntity.activatedAndesiteLight;
 import static me.zephyr.circube.content.light.BrassLightBlockEntity.activatedBrassLight;
 
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class LightEvents {
-    @Mod.EventBusSubscriber(modid = MOD_ID)
-    public class PreventMobSpawnNearLight {
-        @SubscribeEvent
-        public static void onMobSpawn(MobSpawnEvent.FinalizeSpawn event) {
-            if (!event.isCanceled() && event.getEntity() instanceof Enemy && event.getSpawnType() == MobSpawnType.NATURAL) {
-                Entity entity = event.getEntity();
-                if (isNearLight(entity)) {
-                    event.setResult(Event.Result.DENY);
-                    event.setSpawnCancelled(true);
-                    event.setCanceled(true);
-                }
+
+    @SubscribeEvent
+    public static void onMobSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        if (!event.isCanceled() && event.getEntity() instanceof Enemy && event.getSpawnType() == MobSpawnType.NATURAL) {
+            Entity entity = event.getEntity();
+            if (isNearLight(entity)) {
+                event.setResult(Event.Result.DENY);
+                event.setSpawnCancelled(true);
+                event.setCanceled(true);
             }
         }
     }

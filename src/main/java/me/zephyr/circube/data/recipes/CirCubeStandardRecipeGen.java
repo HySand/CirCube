@@ -52,9 +52,8 @@ import static me.zephyr.circube.CirCube.MOD_ID;
 
 public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
     final List<GeneratedRecipe> all = new ArrayList<>();
-
+    String currentFolder = "";
     private final Marker CRAFTING = enterFolder("/");
-
     GeneratedRecipe
 
             ENGINE_PISTON = create(CDGItems.ENGINE_PISTON).unlockedBy(() -> I.sealedMechanism()).withNamespace("createdieselgenerators")
@@ -153,10 +152,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern(" O ")
                     .pattern("ICI")
                     .pattern(" R "));
-
-
     private final Marker KINETICS = enterFolder("kinetics");
-
     GeneratedRecipe
 
             ANDESITE_LIGHT = create(CirCubeBlocks.ANDESITE_LIGHT).unlockedBy(() -> Items.SOUL_TORCH)
@@ -359,9 +355,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
             .viaShapeless(b -> b.requires(I.copperCasing())
                     .requires(AllBlocks.CHUTE.get())
                     .requires(I.logisticsMechanism()));
-
     private final Marker MATERIALS = enterFolder("materials");
-
     GeneratedRecipe
 
             STEEL_COMPACT = metalCompacting(ImmutableList.of(CirCubeItems.STEEL_NUGGET, CirCubeItems.STEEL_INGOT, CirCubeBlocks.STEEL_BLOCK),
@@ -387,10 +381,30 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .define('R', Items.LAPIS_LAZULI)
                     .pattern("  R")
                     .pattern(" R ")
-                    .pattern("L  "));
+                    .pattern("L  ")),
+
+    TUFF = create(() -> Blocks.TUFF).unlockedBy(() -> CirCubeItems.GRAPHITE_POWDER).returns(5)
+            .viaShaped(b -> b.define('#', Blocks.MUD)
+                    .define('G', CirCubeItems.GRAPHITE_POWDER)
+                    .pattern("#G#")
+                    .pattern("G#G")
+                    .pattern("#G#")),
+
+    LIGHT_CHORUS_FRUIT = create(() -> CirCubeItems.LIGHT_CHORUS_FRUIT).unlockedBy(() -> CirCubeItems.PURIFIED_DARKNESS).returns(1)
+            .viaShaped(b -> b.define('F', Items.CHORUS_FRUIT)
+                    .define('D', CirCubeItems.PURIFIED_DARKNESS)
+                    .pattern(" D ")
+                    .pattern("DFD")
+                    .pattern(" D ")),
+
+    STABILIZER = create(() -> CirCubeItems.STABILIZER).unlockedBy(() -> CirCubeItems.PURIFIED_DARKNESS).returns(1)
+            .viaShapeless(b -> b.requires(CirCubeItems.PURIFIED_DARKNESS)
+                    .requires(Items.AMETHYST_SHARD)
+                    .requires(Items.AMETHYST_SHARD)
+                    .requires(Items.AMETHYST_SHARD)
+                    .requires(Items.ENDER_PEARL));
 
     private final Marker LOGISTICS = enterFolder("logistics");
-
     GeneratedRecipe
 
             REDSTONE_REQUESTER = create(AllBlocks.REDSTONE_REQUESTER).unlockedBy(I::cardboard).withNamespace("create")
@@ -408,9 +422,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("B")
                     .pattern("A")
                     .pattern("C"));
-
     private final Marker MISC = enterFolder("misc");
-
     GeneratedRecipe
 
             D4 = create(CirCubeItems.D4).unlockedBy(() -> AllItems.COPPER_NUGGET)
@@ -424,19 +436,11 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
             D12 = create(CirCubeItems.D12).unlockedBy(() -> CirCubeItems.STEEL_NUGGET)
                     .viaShapeless(b -> b.requires(I.steelNugget())),
             D20 = create(CirCubeItems.D20).unlockedBy(() -> AllItems.BRASS_NUGGET)
-                    .viaShapeless(b -> b.requires(I.brassNugget())),
+                    .viaShapeless(b -> b.requires(I.brassNugget()));
 
-    TUFF = create(() -> Blocks.TUFF).unlockedBy(() -> CirCubeItems.GRAPHITE_POWDER).returns(5)
-            .viaShaped(b -> b.define('#', Blocks.MUD)
-                    .define('G', CirCubeItems.GRAPHITE_POWDER)
-                    .pattern("#G#")
-                    .pattern("G#G")
-                    .pattern("#G#"));
-
-    static class Marker {
+    public CirCubeStandardRecipeGen(PackOutput p_i48262_1_) {
+        super(p_i48262_1_);
     }
-
-    String currentFolder = "";
 
     Marker enterFolder(String folder) {
         currentFolder = folder;
@@ -554,16 +558,88 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
         return recipe;
     }
 
+    @Override
+    public String getName() {
+        return "Create's Standard Recipes";
+    }
+
+    static class Marker {
+    }
+
+    private record ModdedCookingRecipeResult(FinishedRecipe wrapped, ResourceLocation outputOverride,
+                                             List<ICondition> conditions) implements FinishedRecipe {
+        @Override
+        public ResourceLocation getId() {
+            return wrapped.getId();
+        }
+
+        @Override
+        public RecipeSerializer<?> getType() {
+            return wrapped.getType();
+        }
+
+        @Override
+        public JsonObject serializeAdvancement() {
+            return wrapped.serializeAdvancement();
+        }
+
+        @Override
+        public ResourceLocation getAdvancementId() {
+            return wrapped.getAdvancementId();
+        }
+
+        @Override
+        public void serializeRecipeData(JsonObject object) {
+            wrapped.serializeRecipeData(object);
+            object.addProperty("result", outputOverride.toString());
+
+            JsonArray conds = new JsonArray();
+            conditions.forEach(c -> conds.add(CraftingHelper.serialize(c)));
+            object.add("conditions", conds);
+        }
+    }
+
+    private record ConditionSupportingShapelessRecipeResult(FinishedRecipe wrapped, List<ICondition> conditions)
+            implements FinishedRecipe {
+        @Override
+        public ResourceLocation getId() {
+            return wrapped.getId();
+        }
+
+        @Override
+        public RecipeSerializer<?> getType() {
+            return wrapped.getType();
+        }
+
+        @Override
+        public JsonObject serializeAdvancement() {
+            return wrapped.serializeAdvancement();
+        }
+
+        @Override
+        public ResourceLocation getAdvancementId() {
+            return wrapped.getAdvancementId();
+        }
+
+        @Override
+        public void serializeRecipeData(@NotNull JsonObject pJson) {
+            wrapped.serializeRecipeData(pJson);
+
+            JsonArray conds = new JsonArray();
+            conditions.forEach(c -> conds.add(CraftingHelper.serialize(c)));
+            pJson.add("conditions", conds);
+        }
+    }
+
     class GeneratedRecipeBuilder {
 
         private final String path;
+        List<ICondition> recipeConditions;
         private String suffix;
         private Supplier<? extends ItemLike> result;
         private ResourceLocation compatDatagenOutput;
         private String namespace;
         private boolean defaultPath;
-        List<ICondition> recipeConditions;
-
         private Supplier<ItemPredicate> unlockedBy;
         private int amount;
 
@@ -713,12 +789,11 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
         class GeneratedCookingRecipeBuilder {
 
             private final Supplier<Ingredient> ingredient;
-            private float exp;
-            private int cookingTime;
-
             private final RecipeSerializer<? extends AbstractCookingRecipe> FURNACE = RecipeSerializer.SMELTING_RECIPE,
                     SMOKER = RecipeSerializer.SMOKING_RECIPE, BLAST = RecipeSerializer.BLASTING_RECIPE,
                     CAMPFIRE = RecipeSerializer.CAMPFIRE_COOKING_RECIPE;
+            private float exp;
+            private int cookingTime;
 
             GeneratedCookingRecipeBuilder(Supplier<Ingredient> ingredient) {
                 this.ingredient = ingredient;
@@ -783,80 +858,6 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                             .getPath()));
                 });
             }
-        }
-    }
-
-    @Override
-    public String getName() {
-        return "Create's Standard Recipes";
-    }
-
-    public CirCubeStandardRecipeGen(PackOutput p_i48262_1_) {
-        super(p_i48262_1_);
-    }
-
-    private record ModdedCookingRecipeResult(FinishedRecipe wrapped, ResourceLocation outputOverride,
-                                             List<ICondition> conditions) implements FinishedRecipe {
-        @Override
-        public ResourceLocation getId() {
-            return wrapped.getId();
-        }
-
-        @Override
-        public RecipeSerializer<?> getType() {
-            return wrapped.getType();
-        }
-
-        @Override
-        public JsonObject serializeAdvancement() {
-            return wrapped.serializeAdvancement();
-        }
-
-        @Override
-        public ResourceLocation getAdvancementId() {
-            return wrapped.getAdvancementId();
-        }
-
-        @Override
-        public void serializeRecipeData(JsonObject object) {
-            wrapped.serializeRecipeData(object);
-            object.addProperty("result", outputOverride.toString());
-
-            JsonArray conds = new JsonArray();
-            conditions.forEach(c -> conds.add(CraftingHelper.serialize(c)));
-            object.add("conditions", conds);
-        }
-    }
-
-    private record ConditionSupportingShapelessRecipeResult(FinishedRecipe wrapped, List<ICondition> conditions)
-            implements FinishedRecipe {
-        @Override
-        public ResourceLocation getId() {
-            return wrapped.getId();
-        }
-
-        @Override
-        public RecipeSerializer<?> getType() {
-            return wrapped.getType();
-        }
-
-        @Override
-        public JsonObject serializeAdvancement() {
-            return wrapped.serializeAdvancement();
-        }
-
-        @Override
-        public ResourceLocation getAdvancementId() {
-            return wrapped.getAdvancementId();
-        }
-
-        @Override
-        public void serializeRecipeData(@NotNull JsonObject pJson) {
-            wrapped.serializeRecipeData(pJson);
-
-            JsonArray conds = new JsonArray();
-            conditions.forEach(c -> conds.add(CraftingHelper.serialize(c)));
-            pJson.add("conditions", conds);
         }
     }
 }

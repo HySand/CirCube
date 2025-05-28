@@ -11,9 +11,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 
 public class StabilizerMenu extends GhostItemMenu<ItemStack> {
+    static final int slots = 2;
     public boolean slotsActive = true;
     public int targetSlotsActive = 1;
-    static final int slots = 2;
 
     public StabilizerMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
