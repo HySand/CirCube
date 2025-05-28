@@ -1,0 +1,36 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "C": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "B": {
+      "item": "minecraft:glass_pane"
+    },
+    "D": {
+      "item": "minecraft:iron_helmet"
+    },
+    "A": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "E": {
+      "item": "create:fluid_pipe"
+    },
+    "F": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "G": {
+      "item": "create:fluid_valve"
+    }
+  },
+  "pattern": [
+    " ABA ",
+    "ACDCA",
+    "EFGFE"
+  ],
+  "result": {
+    "item": "protection_pixel:bloodprisoner_helmet",
+    "count": 1
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "B": {
+      "item": "create:cogwheel"
+    },
+    "C": {
+      "item": "protection_pixel:leggingslining"
+    },
+    "D": {
+      "item": "create:andesite_alloy"
+    },
+    "E": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "F": {
+      "item": "circube:reinforced_brass_sheet"
+    }
+  },
+  "pattern": [
+    " A A ",
+    "ABCBA",
+    "DE ED",
+    "AF FA"
+  ],
+  "result": {
+    "item": "protection_pixel:anchorpoint_leggings",
+    "count": 1
+  }
+}

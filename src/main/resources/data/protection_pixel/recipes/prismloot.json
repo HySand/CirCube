@@ -1,0 +1,40 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "B": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "C": {
+      "item": "create:large_cogwheel"
+    },
+    "D": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "E": {
+      "item": "create:andesite_alloy"
+    },
+    "F": {
+      "item": "protection_pixel:chestplatelining"
+    },
+     "H": {
+      "item": "create:electron_tube"
+    },
+    "G": {
+      "item": "create:gantry_shaft"
+    }
+  },
+  "pattern": [
+    "ABCBA",
+    "DEFED",
+    "AGHGA",
+    "A   A"
+  ],
+  "result": {
+    "item": "protection_pixel:wingsofprism_chestplate",
+    "count": 1
+  }
+}

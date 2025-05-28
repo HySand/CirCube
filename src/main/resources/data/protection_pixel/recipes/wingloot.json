@@ -1,0 +1,33 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "create:minecart_coupling"
+    },
+    "B": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "C": {
+      "item": "create:andesite_alloy"
+    },
+    "D": {
+      "item": "create:propeller"
+    },
+    "E": {
+      "item": "minecraft:elytra"
+    },
+    "F": {
+      "item": "minecraft:phantom_membrane"
+    }
+  },
+  "pattern": [
+    "AB BA",
+    "CDEDC",
+    "CFBFC"
+  ],
+  "result": {
+    "item": "protection_pixel:maneuveringwing",
+    "count": 1
+  }
+}

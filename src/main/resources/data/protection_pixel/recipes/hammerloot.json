@@ -1,0 +1,34 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "B": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "C": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "D": {
+      "item": "minecraft:iron_helmet"
+    },
+    "E": {
+      "item": "minecraft:glass_pane"
+    },
+    "F": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " AEA ",
+    "BFEFB",
+    "ACDCA",
+    "BCCCB"
+  ],
+  "result": {
+    "item": "protection_pixel:hammer_helmet",
+    "count": 1
+  }
+}

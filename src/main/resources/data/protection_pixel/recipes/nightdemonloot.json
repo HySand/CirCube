@@ -1,0 +1,36 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "B": {
+      "item": "minecraft:quartz"
+    },
+    "C": {
+      "item": "create:electron_tube"
+    },
+    "D": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "E": {
+      "item": "minecraft:glass_pane"
+    },
+    "F": {
+      "item": "minecraft:iron_helmet"
+    },
+    "G": {
+      "item": "circube:reinforced_brass_sheet"
+    }
+  },
+  "pattern": [
+    "ABCBA",
+    "DEFED",
+    " AGA "
+  ],
+  "result": {
+    "item": "protection_pixel:nightdemon_helmet",
+    "count": 1
+  }
+}

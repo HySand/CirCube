@@ -1,0 +1,32 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "create:cogwheel"
+    },
+    "B": {
+      "item": "circube:reinforced_copper_sheet"
+    },
+    "C": {
+      "item": "create:steam_engine"
+    },
+    "D": {
+      "item": "minecraft:redstone"
+    },
+    "E": {
+      "item": "circube:reinforced_iron_sheet"
+    }
+  },
+  "pattern": [
+    "ABBBA",
+    "CDEDC",
+    " BEB ",
+    "AE EA",
+    "BB BB"
+  ],
+  "result": {
+    "item": "protection_pixel:steamectoskeleton",
+    "count": 1
+  }
+}

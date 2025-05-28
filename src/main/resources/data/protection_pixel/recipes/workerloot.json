@@ -1,0 +1,43 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "create:cogwheel"
+    },
+    "B": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "C": {
+      "item": "protection_pixel:emptywatertank"
+    },
+    "D": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "E": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "F": {
+      "item": "create:andesite_alloy"
+    },
+    "G": {
+      "item": "protection_pixel:chestplatelining"
+    },
+    "I": {
+      "item": "create:brass_hand"
+    },
+    "H": {
+      "item": "circube:reinforced_iron_sheet"
+    }
+  },
+  "pattern": [
+    " A A ",
+    "BCDCB",
+    "EFGFE",
+    "HIBIH"
+  ],
+  "result": {
+    "item": "protection_pixel:workerhornet_chestplate",
+    "count": 1
+  }
+}

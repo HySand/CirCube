@@ -1,0 +1,37 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "create:cogwheel"
+    },
+    "B": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "C": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "D": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "E": {
+      "item": "create:andesite_alloy"
+    },
+    "F": {
+      "item": "protection_pixel:chestplatelining"
+    },
+    "G": {
+      "item": "create:mechanical_piston"
+    }
+  },
+  "pattern": [
+    "ABCBA",
+    "DEFED",
+    "CGCGC",
+    " C C "
+  ],
+  "result": {
+    "item": "protection_pixel:breaker_chestplate",
+    "count": 1
+  }
+}

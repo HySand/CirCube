@@ -1,0 +1,30 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "create:mechanical_pump"
+    },
+    "B": {
+      "item": "create:precision_mechanism"
+    },
+    "C": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "D": {
+      "item": "create:fluid_tank"
+    },
+    "E": {
+      "item": "create:fluid_pipe"
+    }
+  },
+  "pattern": [
+    " ABA ",
+    "CDEDC",
+    "CD DC"
+  ],
+  "result": {
+    "item": "protection_pixel:tacticaloxygensupplydevice",
+    "count": 1
+  }
+}

@@ -111,8 +111,9 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
 
     OIL_BARREL = create(CDGBlocks.OIL_BARREL).unlockedByTag(() -> Tags.Items.BARRELS_WOODEN).withNamespace("createdieselgenerators")
             .viaShaped(b -> b.define('B', I.steelSheet())
-                    .define('C', Tags.Items.BARRELS_WOODEN)
-                    .pattern("BCB")),
+                    .pattern("BBB")
+                    .pattern("B B")
+                    .pattern("BBB")),
 
     DIESEL_ENGINE = create(CDGBlocks.DIESEL_ENGINE).unlockedBy(() -> CirCubeItems.REINFORCED_BRASS_SHEET).withNamespace("createdieselgenerators")
             .viaShaped(b -> b.define('K', I.kineticMechanism())
@@ -152,6 +153,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern(" O ")
                     .pattern("ICI")
                     .pattern(" R "));
+
     private final Marker KINETICS = enterFolder("kinetics");
     GeneratedRecipe
 
@@ -354,7 +356,23 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
     PORTABLE_FLUID_INTERFACE = create(AllBlocks.PORTABLE_FLUID_INTERFACE).unlockedBy(I::copperCasing).withNamespace("create")
             .viaShapeless(b -> b.requires(I.copperCasing())
                     .requires(AllBlocks.CHUTE.get())
-                    .requires(I.logisticsMechanism()));
+                    .requires(I.logisticsMechanism())),
+
+    SEQUENCED_GEARSHIFT = create(AllBlocks.SEQUENCED_GEARSHIFT).unlockedBy(I::brassCasing).withNamespace("create")
+            .viaShapeless(b -> b.requires(I.brassCasing())
+                    .requires(I.cog())
+                    .requires(I.electronTube())
+                    .requires(I.integratedCircuit())),
+
+    CART_ASSEMBLER = create(AllBlocks.CART_ASSEMBLER).unlockedBy(I::andesiteAlloy).withNamespace("create")
+            .viaShaped(b -> b.define('L', ItemTags.LOGS)
+                    .define('R', I.redstone())
+                    .define('C', I.andesiteAlloy())
+                    .define('I', CirCubeItems.REINFORCED_IRON_SHEET.get())
+                    .pattern("III")
+                    .pattern("CRC")
+                    .pattern("L L"));
+
     private final Marker MATERIALS = enterFolder("materials");
     GeneratedRecipe
 
@@ -395,14 +413,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .define('D', CirCubeItems.PURIFIED_DARKNESS)
                     .pattern(" D ")
                     .pattern("DFD")
-                    .pattern(" D ")),
-
-    STABILIZER = create(() -> CirCubeItems.STABILIZER).unlockedBy(() -> CirCubeItems.PURIFIED_DARKNESS).returns(1)
-            .viaShapeless(b -> b.requires(CirCubeItems.PURIFIED_DARKNESS)
-                    .requires(Items.AMETHYST_SHARD)
-                    .requires(Items.AMETHYST_SHARD)
-                    .requires(Items.AMETHYST_SHARD)
-                    .requires(Items.ENDER_PEARL));
+                    .pattern(" D "));
 
     private final Marker LOGISTICS = enterFolder("logistics");
     GeneratedRecipe

@@ -1,0 +1,36 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "B": {
+      "item": "create:fluid_pipe"
+    },
+    "C": {
+      "item": "create:chute"
+    },
+    "D": {
+      "item": "create:cogwheel"
+    },
+    "E": {
+      "item": "protection_pixel:chestplatelining"
+    },
+    "F": {
+      "item": "create:portable_fluid_interface"
+    },
+     "G": {
+      "item": "create:mechanical_pump"
+    }
+  },
+  "pattern": [
+    "ABCBA",
+    "DAEAD",
+    "FGAGF"
+  ],
+  "result": {
+    "item": "protection_pixel:hellsnake_chestplate",
+    "count": 1
+  }
+}

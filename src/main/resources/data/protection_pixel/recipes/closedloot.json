@@ -1,0 +1,34 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "B": {
+      "item": "minecraft:glass_pane"
+    },
+    "C": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "D": {
+      "item": "minecraft:iron_helmet"
+    },
+    "E": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "F": {
+      "item": "circube:reinforced_brass_sheet"
+    }
+  },
+  "pattern": [
+    " A A ",
+    " BBB ",
+    "CBDBC",
+    " EFE "
+  ],
+  "result": {
+    "item": "protection_pixel:closed_helmet",
+    "count": 1
+  }
+}

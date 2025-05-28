@@ -1,0 +1,37 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "protection_pixel:hookitem"
+    },
+    "B": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "C": {
+      "item": "create:minecart_coupling"
+    },
+    "D": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "E": {
+      "item": "create:whisk"
+    },
+    "F": {
+      "item": "minecraft:string"
+    },
+    "G": {
+      "item": "create:cogwheel"
+    }
+  },
+  "pattern": [
+    "A   A",
+    "BCDCB",
+    "EF FE",
+    "G   G"
+  ],
+  "result": {
+    "item": "protection_pixel:hookcannon",
+    "count": 1
+  }
+}

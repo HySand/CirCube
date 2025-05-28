@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "T",
+    "A"
+  ],
+  "key": {
+    "T": {
+      "item": "create:transmitter"
+    },
+    "A": {
+      "item": "create:andesite_casing"
+    },
+    "S": {
+      "item": "circube:reinforced_steel_sheet"
+    }
+  },
+  "result": {
+    "item": "create_mobile_packages_unofficial:drone_port",
+    "count": 1
+  }
+}

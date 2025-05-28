@@ -1,0 +1,40 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "create:fluid_pipe"
+    },
+    "B": {
+      "item": "create:cogwheel"
+    },
+    "C": {
+      "item": "create:electron_tube"
+    },
+    "D": {
+      "item": "create:andesite_alloy"
+    },
+    "E": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "F": {
+      "item": "protection_pixel:chestplatelining"
+    },
+    "G": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "H": {
+      "item": "create:fluid_tank"
+    }
+  },
+  "pattern": [
+    "ABCBA",
+    "DEFED",
+    "EGHGE",
+    "EE EE"
+  ],
+  "result": {
+    "item": "protection_pixel:typhoon_chestplate",
+    "count": 1
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " a ",
+    "bcb",
+    " d "
+  ],
+  "key": {
+    "a": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "b": {
+      "item": "create:fluid_pipe"
+    },
+    "c": {
+      "item": "create:fluid_tank"
+    },
+    "d": {
+      "item": "create:empty_blaze_burner"
+    }
+  },
+  "result": {
+    "item": "protection_pixel:powerengine",
+    "count": 1
+  }
+}

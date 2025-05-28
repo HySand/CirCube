@@ -1,0 +1,34 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "create:electron_tube"
+    },
+    "B": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "C": {
+      "item": "create:precision_mechanism"
+    },
+    "D": {
+      "item": "create:fluid_tank"
+    },
+    "E": {
+      "item": "create:whisk"
+    },
+    "F": {
+      "item": "create:mechanical_pump"
+    }
+  },
+  "pattern": [
+    "ABCBA",
+    "ADEDA",
+    "DF FD",
+    " B B "
+  ],
+  "result": {
+    "item": "protection_pixel:blooddialysisdevice",
+    "count": 1
+  }
+}

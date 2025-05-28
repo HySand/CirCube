@@ -1,0 +1,37 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "B": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "C": {
+      "item": "create:cogwheel"
+    },
+    "D": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "E": {
+      "item": "minecraft:glass_pane"
+    },
+    "F": {
+      "item": "minecraft:iron_helmet"
+    },
+    "G": {
+      "item": "circube:reinforced_iron_sheet"
+    }
+  },
+  "pattern": [
+    "  A  ",
+    " BCB ",
+    "DEFED",
+    " AGA "
+  ],
+  "result": {
+    "item": "protection_pixel:lancer_helmet",
+    "count": 1
+  }
+}

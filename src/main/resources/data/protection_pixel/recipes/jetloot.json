@@ -1,0 +1,33 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "B": {
+      "item": "create:precision_mechanism"
+    },
+    "C": {
+      "item": "create:chute"
+    },
+    "D": {
+      "item": "create:mechanical_pump"
+    },
+    "E": {
+      "item": "create:fluid_tank"
+    },
+    "F": {
+      "item": "create:andesite_alloy"
+    }
+  },
+  "pattern": [
+    " ABA ",
+    "CDEDC",
+    "CFFFC"
+  ],
+  "result": {
+    "item": "protection_pixel:heatpulsethruster",
+    "count": 1
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "create:cogwheel"
+    },
+    "B": {
+      "item": "create:electron_tube"
+    },
+    "C": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "D": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "E": {
+      "item": "protection_pixel:chestplatelining"
+    },
+    "F": {
+      "item": "create:propeller"
+    },
+    "G": {
+      "item": "create:transmitter"
+    }
+  },
+  "pattern": [
+    "AGCGA",
+    "DCECD",
+    "DFBFD",
+    "CC CC"
+  ],
+  "result": {
+    "item": "protection_pixel:falconnest_chestplate",
+    "count": 1
+  }
+}

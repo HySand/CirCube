@@ -1,0 +1,40 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "B": {
+      "item": "protection_pixel:emptywatertank"
+    },
+    "C": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "D": {
+      "item": "create:propeller"
+    },
+    "E": {
+      "item": "minecraft:iron_helmet"
+    },
+    "F": {
+      "item": "minecraft:iron_nugget"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "H": {
+      "item": "circube:reinforced_brass_sheet"
+    }
+  },
+  "pattern": [
+    " ABA ",
+    "CDEDC",
+    " FGF ",
+    "  H  "
+  ],
+  "result": {
+    "item": "protection_pixel:plague_helmet",
+    "count": 1
+  }
+}

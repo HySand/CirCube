@@ -5,6 +5,8 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import com.simibubi.create.foundation.pack.ModFilePackResources;
+import com.tacz.guns.api.resource.ResourceManager;
 import me.zephyr.circube.config.CirCubeConfigs;
 import me.zephyr.circube.content.vlobby.Dungeon;
 import me.zephyr.circube.content.vlobby.dungeons.Arena;
@@ -16,26 +18,37 @@ import me.zephyr.circube.event.HealthAmplifier;
 import me.zephyr.circube.event.PasswordCrackingEvents;
 import me.zephyr.circube.worldgen.CirCubeFeatures;
 import net.createmod.catnip.lang.FontHelper;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.forgespi.language.IModFileInfo;
+import net.minecraftforge.forgespi.locating.IModFile;
 import org.slf4j.Logger;
 
+import static com.tacz.guns.api.resource.ResourceManager.EXTRA_ENTRIES;
 import static me.zephyr.circube.util.DataManager.addDungeonToList;
 import static me.zephyr.circube.util.Utils.generatePassword;
+import static net.lpcamors.optical.COMod.loc;
 
 @Mod(CirCube.MOD_ID)
 public class CirCube {
+    public static final String DEFAULT_GUN_PACK_NAME = "cgp";
     public static final String MOD_ID = "circube";
     public static final String MOD_NAME = "CirCube";
     public static final Logger LOGGER = LogUtils.getLogger();
@@ -60,8 +73,12 @@ public class CirCube {
         forgeEventBus.register(this);
 
         modEventBus.addListener(this::onCommonSetup);
-        if (FMLEnvironment.dist == Dist.DEDICATED_SERVER)
+        if (FMLEnvironment.dist == Dist.DEDICATED_SERVER) {
             modEventBus.addListener(this::onDedicatedServerSetup);
+        } else {
+            modEventBus.addListener(this::addPackFinders);
+        }
+
 
         REGISTRATE.registerEventListeners(modEventBus);
 
@@ -78,6 +95,8 @@ public class CirCube {
 
         modEventBus.addListener(EventPriority.LOWEST, CirCubeDataGen::gatherData);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CirCubeClient.onCirCubeClient(modEventBus, forgeEventBus));
+
+        registerDefaultExtraGunPack();
     }
 
     public static CreateRegistrate getRegistrate() {
@@ -105,5 +124,28 @@ public class CirCube {
             CirCubeContraptionMovementSettings.registerDefaults();
             HealthAmplifier.initBoss();
         });
+    }
+
+
+    public void addPackFinders(AddPackFindersEvent event) {
+        if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+            IModFileInfo modFileInfo = ModList.get().getModFileById(MOD_ID);
+            if (modFileInfo == null) {
+                LOGGER.error("Could not find CirCube mod file info; built-in resource packs will be missing!");
+                return;
+            }
+            IModFile modFile = modFileInfo.getFile();
+            event.addRepositorySource(consumer -> {
+                Pack pack = Pack.readMetaAndCreate(loc("circube_resource").toString(), Component.literal("CirCube Server Resource Pack"), false, id -> new ModFilePackResources(id, modFile, "resourcepacks/circube_resource"), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN);
+                if (pack != null) {
+                    consumer.accept(pack);
+                }
+            });
+        }
+    }
+
+    private static void registerDefaultExtraGunPack() {
+        String jarDefaultPackPath = String.format("/assets/%s/gunpack/%s", MOD_ID, DEFAULT_GUN_PACK_NAME);
+        ResourceManager.registerExportResource(CirCube.class, jarDefaultPackPath);
     }
 }

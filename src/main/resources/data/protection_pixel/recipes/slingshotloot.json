@@ -1,0 +1,34 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "B": {
+      "item": "create:andesite_alloy"
+    },
+    "C": {
+      "item": "protection_pixel:leggingslining"
+    },
+    "D": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "E": {
+      "item": "create:minecart_coupling"
+    },
+    "F": {
+      "item": "circube:reinforced_iron_sheet"
+    }
+  },
+  "pattern": [
+    " A A ",
+    "ABCBA",
+    "DE ED",
+    "AF FA"
+  ],
+  "result": {
+    "item": "protection_pixel:slingshot_leggings",
+    "count": 1
+  }
+}

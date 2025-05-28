@@ -64,10 +64,11 @@ public class Utils {
     }
 
     public static String generatePassword() {
-        long timestamp = System.currentTimeMillis();
-
-        String binary = Long.toBinaryString(timestamp);
-
-        return String.format("%12s", binary.substring(Math.max(0, binary.length() - 12))).replace(' ', '0');
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(12);
+        for (int i = 0; i < 12; i++) {
+            sb.append(random.nextBoolean() ? '1' : '0');
+        }
+        return sb.toString();
     }
 }

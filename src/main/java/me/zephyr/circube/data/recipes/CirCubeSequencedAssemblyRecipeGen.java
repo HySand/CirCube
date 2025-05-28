@@ -2,8 +2,10 @@ package me.zephyr.circube.data.recipes;
 
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.block.fluid.ACFluidRegistry;
+import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.content.fluids.potion.PotionFluidHandler;
 import com.simibubi.create.content.fluids.transfer.FillingRecipe;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.kinetics.press.PressingRecipe;
@@ -20,6 +22,7 @@ import net.lpcamors.optical.recipes.FocusingRecipe;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 
@@ -105,6 +108,18 @@ public class CirCubeSequencedAssemblyRecipeGen extends CirCubeRecipeProvider {
             .addStep(PressingRecipe::new, rb -> rb)
             .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.BLAZE_POWDER))
             .addStep(PressingRecipe::new, rb -> rb)),
+
+    STABILIZER = create("stabilizer", b -> b.require(CirCubeItems.STABILIZER)
+            .transitionTo(CirCubeItems.INCOMPLETE_STABILIZER.get())
+            .addOutput(CirCubeItems.STABILIZER, 85)
+            .addOutput(Items.AMETHYST_SHARD, 10)
+            .addOutput(Items.ENDER_EYE, 3)
+            .addOutput(ACItemRegistry.PURE_DARKNESS.get(), 2)
+            .loops(1)
+            .addStep(FillingRecipe::new, rb -> rb.require(PotionFluidHandler.potionIngredient(Potions.STRENGTH, 200)))
+            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.AMETHYST_SHARD))
+            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(CirCubeItems.PURIFIED_DARKNESS.get()))
+            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.AMETHYST_SHARD))),
 
     OPTICAL_DEVICE = createCO("optical_device", b -> b.require(Items.AMETHYST_SHARD)
             .transitionTo(COItems.INCOMPLETE_OPTICAL_DEVICE)

@@ -1,0 +1,33 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "create:cogwheel"
+    },
+    "B": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "C": {
+      "item": "create:precision_mechanism"
+    },
+    "D": {
+      "item": "create:propeller"
+    },
+    "E": {
+      "item": "create:andesite_alloy"
+    },
+    "F": {
+      "item": "create:chute"
+    }
+  },
+  "pattern": [
+    "ABCBA",
+    "BDEDB",
+    " F F "
+  ],
+  "result": {
+    "item": "protection_pixel:steambooster",
+    "count": 1
+  }
+}

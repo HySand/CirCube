@@ -1,0 +1,30 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "A": {
+      "item": "create:potato_cannon"
+    },
+    "B": {
+      "item": "circube:reinforced_iron_sheet"
+    },
+    "C": {
+      "item": "create:andesite_alloy"
+    },
+    "D": {
+      "item": "create:gantry_shaft"
+    },
+    "E": {
+      "item": "create:cogwheel"
+    }
+  },
+  "pattern": [
+    "A B A",
+    "BCDCB",
+    "EC CE"
+  ],
+  "result": {
+    "item": "protection_pixel:pneumaticgrenadelauncharm",
+    "count": 1
+  }
+}

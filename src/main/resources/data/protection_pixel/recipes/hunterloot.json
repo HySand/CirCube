@@ -1,0 +1,34 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": false,
+  "key": {
+    "A": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "B": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "C": {
+      "item": "circube:reinforced_brass_sheet"
+    },
+    "D": {
+      "item": "create:electron_tube"
+    },
+    "E": {
+      "item": "minecraft:iron_helmet"
+    },
+    "F": {
+      "item": "circube:reinforced_iron_sheet"
+    }
+  },
+  "pattern": [
+    "AB BA",
+    " ACA ",
+    " DEC ",
+    " FAF "
+  ],
+  "result": {
+    "item": "protection_pixel:hunter_helmet",
+    "count": 1
+  }
+}
