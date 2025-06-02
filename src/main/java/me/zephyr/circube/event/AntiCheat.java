@@ -17,7 +17,7 @@ import static me.zephyr.circube.CirCube.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
 public class AntiCheat {
-    private static final List<String> BANNED_MODS = Arrays.asList("xray", "atianxray", "forgeautofish", "tweakerge", "tweakeroo", "litematica");
+    private static final List<String> BANNED_MODS = Arrays.asList("xray", "atianxray", "forgeautofish", "tweakerge", "tweakeroo", "litematica", "baritone");
 
     @SubscribeEvent
     public static void onLoadComplete(FMLLoadCompleteEvent event) {

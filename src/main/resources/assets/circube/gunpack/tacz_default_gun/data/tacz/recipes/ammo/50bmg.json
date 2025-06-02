@@ -1,0 +1,98 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "circube:steel_shell"
+  },
+  "loops": 1,
+  "results": [
+    {
+      "chance": 90.0,
+      "item": "tacz:ammo",
+      "nbt": {
+        "AmmoId": "tacz:50bmg"
+      }
+    },
+    {
+      "chance": 3.0,
+      "item": "create:steel_sheet"
+    },
+    {
+      "chance": 3.0,
+      "item": "create:steel_nugget"
+    },
+    {
+      "chance": 3.0,
+      "item": "create:copper_nugget"
+    },
+    {
+      "chance": 1.0,
+      "item": "circube:gunpowder"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "circube:incomplete_massive_ammo"
+        },
+        {
+          "item": "create:copper_nugget"
+        }
+      ],
+      "results": [
+        {
+          "item": "circube:incomplete_massive_ammo"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "circube:incomplete_massive_ammo"
+        },
+        {
+          "item": "minecraft:gunpowder"
+        }
+      ],
+      "results": [
+        {
+          "item": "circube:incomplete_massive_ammo"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "circube:incomplete_massive_ammo"
+        },
+        {
+          "item": "minecraft:gunpowder"
+        }
+      ],
+      "results": [
+        {
+          "item": "circube:incomplete_massive_ammo"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "circube:incomplete_massive_ammo"
+        }
+      ],
+      "results": [
+        {
+          "item": "circube:incomplete_massive_ammo"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "circube:incomplete_massive_ammo"
+  }
+}

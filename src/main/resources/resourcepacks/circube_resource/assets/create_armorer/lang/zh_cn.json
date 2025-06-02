@@ -1,5 +1,5 @@
 {
     "create_armorer.ammo.gas_pistol_ammo.name": "§a手枪弹药",
-    "create_armorer.ammo.slap.name": "§6轻型弹药",
-    "create_armorer.ammo.rbapb.name": "§b重型弹药"
+    "create_armorer.ammo.slap.name": "§6小型弹药",
+    "create_armorer.ammo.rbapb.name": "§b大型弹药"
 }

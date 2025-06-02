@@ -48,7 +48,6 @@ import static net.lpcamors.optical.COMod.loc;
 
 @Mod(CirCube.MOD_ID)
 public class CirCube {
-    public static final String DEFAULT_GUN_PACK_NAME = "cgp";
     public static final String MOD_ID = "circube";
     public static final String MOD_NAME = "CirCube";
     public static final Logger LOGGER = LogUtils.getLogger();
@@ -96,7 +95,7 @@ public class CirCube {
         modEventBus.addListener(EventPriority.LOWEST, CirCubeDataGen::gatherData);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CirCubeClient.onCirCubeClient(modEventBus, forgeEventBus));
 
-        registerDefaultExtraGunPack();
+        registerExtraGunPack("cgp");
     }
 
     public static CreateRegistrate getRegistrate() {
@@ -144,8 +143,8 @@ public class CirCube {
         }
     }
 
-    private static void registerDefaultExtraGunPack() {
-        String jarDefaultPackPath = String.format("/assets/%s/gunpack/%s", MOD_ID, DEFAULT_GUN_PACK_NAME);
-        ResourceManager.registerExportResource(CirCube.class, jarDefaultPackPath);
+    private static void registerExtraGunPack(String packname) {
+        String jarPackPath = String.format("/assets/%s/gunpack/%s", MOD_ID, packname);
+        ResourceManager.registerExportResource(CirCube.class, jarPackPath);
     }
 }

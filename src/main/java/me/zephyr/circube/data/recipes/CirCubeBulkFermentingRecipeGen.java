@@ -12,7 +12,7 @@ public class CirCubeBulkFermentingRecipeGen extends CirCubeProcessingRecipeGen {
             Dirt = create(Blocks.DIRT.asItem().toString(), b -> b.require(Blocks.MOSSY_COBBLESTONE)
             .output(Blocks.DIRT)
             .requiresHeat(HeatCondition.HEATED)
-            .duration(3000));
+            .duration(1000));
 
     public CirCubeBulkFermentingRecipeGen(PackOutput generator) {
         super(generator);

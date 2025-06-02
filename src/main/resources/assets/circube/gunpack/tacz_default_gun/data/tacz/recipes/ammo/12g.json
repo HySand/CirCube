@@ -1,0 +1,114 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "circube:shell"
+  },
+  "loops": 1,
+  "results": [
+    {
+      "chance": 90.0,
+      "item": "tacz:ammo",
+      "nbt": {
+        "AmmoId": "tacz:12g"
+      }
+    },
+    {
+      "chance": 3.0,
+      "item": "create:plastic"
+    },
+    {
+      "chance": 3.0,
+      "item": "create:brass_nugget"
+    },
+    {
+      "chance": 3.0,
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "chance": 1.0,
+      "item": "circube:gunpowder"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "circube:incomplete_shotgun_ammo"
+        },
+        {
+          "item": "create:brass_nugget"
+        }
+      ],
+      "results": [
+        {
+          "item": "circube:incomplete_shotgun_ammo"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "circube:incomplete_shotgun_ammo"
+        },
+        {
+          "item": "minecraft:gunpowder"
+        }
+      ],
+      "results": [
+        {
+          "item": "circube:incomplete_shotgun_ammo"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "circube:incomplete_shotgun_ammo"
+        },
+        {
+          "item": "create:crushed_raw_iron"
+        }
+      ],
+      "results": [
+        {
+          "item": "circube:incomplete_shotgun_ammo"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "circube:incomplete_shotgun_ammo"
+        },
+        {
+          "item": "create:brass_nugget"
+        }
+      ],
+      "results": [
+        {
+          "item": "circube:incomplete_shotgun_ammo"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "circube:incomplete_shotgun_ammo"
+        }
+      ],
+      "results": [
+        {
+          "item": "circube:incomplete_shotgun_ammo"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "circube:incomplete_shotgun_ammo"
+  }
+}

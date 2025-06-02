@@ -109,14 +109,14 @@ public class CirCubeSequencedAssemblyRecipeGen extends CirCubeRecipeProvider {
             .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.BLAZE_POWDER))
             .addStep(PressingRecipe::new, rb -> rb)),
 
-    STABILIZER = create("stabilizer", b -> b.require(CirCubeItems.STABILIZER)
+    STABILIZER = create("stabilizer", b -> b.require(Items.ENDER_PEARL)
             .transitionTo(CirCubeItems.INCOMPLETE_STABILIZER.get())
             .addOutput(CirCubeItems.STABILIZER, 85)
             .addOutput(Items.AMETHYST_SHARD, 10)
             .addOutput(Items.ENDER_EYE, 3)
             .addOutput(ACItemRegistry.PURE_DARKNESS.get(), 2)
             .loops(1)
-            .addStep(FillingRecipe::new, rb -> rb.require(PotionFluidHandler.potionIngredient(Potions.STRENGTH, 200)))
+            .addStep(FillingRecipe::new, rb -> rb.require(PotionFluidHandler.potionIngredient(Potions.REGENERATION, 200)))
             .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.AMETHYST_SHARD))
             .addStep(DeployerApplicationRecipe::new, rb -> rb.require(CirCubeItems.PURIFIED_DARKNESS.get()))
             .addStep(DeployerApplicationRecipe::new, rb -> rb.require(Items.AMETHYST_SHARD))),

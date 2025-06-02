@@ -433,6 +433,8 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("B")
                     .pattern("A")
                     .pattern("C"));
+
+
     private final Marker MISC = enterFolder("misc");
     GeneratedRecipe
 
