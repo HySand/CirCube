@@ -1,4 +1,4 @@
-package me.zephyr.circube.content.teleport.item;
+package me.zephyr.circube.content.teleport.stabilizer;
 
 import me.zephyr.circube.content.teleport.beacon.PositionControl;
 import net.minecraft.core.BlockPos;

@@ -10,8 +10,7 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.MenuEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import me.zephyr.circube.content.dice.DiceItem;
-import me.zephyr.circube.content.teleport.item.PureLightEffect;
-import me.zephyr.circube.content.teleport.item.StabilizerItem;
+import me.zephyr.circube.content.teleport.stabilizer.StabilizerItem;
 import me.zephyr.circube.content.treasure.PitBoxItem;
 import me.zephyr.circube.content.treasure.WorkshopBoxItem;
 import net.minecraft.client.gui.screens.Screen;
@@ -109,15 +108,27 @@ public class CirCubeItems {
             .item("graphite_powder", CombustibleItem::new)
             .onRegister(i -> i.setBurnTime(600))
             .register();
+    public static final ItemEntry<Item> RAW_NEODYMIUM = REGISTRATE
+            .item("raw_neodymium", Item::new)
+            .register();
 
     public static final ItemEntry<Item> RED_KEY = REGISTRATE
             .item("red_key", Item::new)
-            .tag(AllTags.forgeItemTag("keys"))
+            .tag(AllTags.forgeItemTag("keys/simple"))
             .register();
     public static final ItemEntry<Item> BLUE_KEY = REGISTRATE
             .item("blue_key", Item::new)
-            .tag(AllTags.forgeItemTag("keys"))
+            .tag(AllTags.forgeItemTag("keys/simple"))
             .register();
+    public static final ItemEntry<Item> MAGNETIC_RED_KEY = REGISTRATE
+            .item("magnetic_red_key", Item::new)
+            .tag(AllTags.forgeItemTag("keys/magnetic"))
+            .register();
+    public static final ItemEntry<Item> MAGNETIC_BLUE_KEY = REGISTRATE
+            .item("magnetic_blue_key", Item::new)
+            .tag(AllTags.forgeItemTag("keys/magnetic"))
+            .register();
+
     public static final ItemEntry<Item> LOCKED_PIT_BOX = REGISTRATE
             .item("locked_pit_box", Item::new)
             .register();

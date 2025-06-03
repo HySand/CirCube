@@ -5,7 +5,7 @@ import me.zephyr.circube.content.teleport.beacon.MechanicalBeaconBlock;
 import me.zephyr.circube.content.teleport.beacon.MechanicalBeaconBlockEntity;
 import me.zephyr.circube.content.teleport.beacon.PositionControl;
 import me.zephyr.circube.content.teleport.beacon.packets.BeaconDataPacket;
-import me.zephyr.circube.content.teleport.item.StabilizerEntry;
+import me.zephyr.circube.content.teleport.stabilizer.StabilizerEntry;
 import me.zephyr.circube.content.vlobby.Dungeon;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;

@@ -1,4 +1,4 @@
-package me.zephyr.circube.content.teleport.item;
+package me.zephyr.circube.content.teleport.stabilizer;
 
 import java.util.ArrayList;
 import java.util.List;

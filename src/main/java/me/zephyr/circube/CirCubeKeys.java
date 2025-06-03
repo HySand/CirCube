@@ -24,6 +24,7 @@ public enum CirCubeKeys {
     private final int key;
     private final boolean modifiable;
     private KeyMapping keybind;
+
     CirCubeKeys(int defaultKey) {
         this("", defaultKey, "");
     }

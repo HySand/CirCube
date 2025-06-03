@@ -1,7 +1,7 @@
-package me.zephyr.circube.content.teleport.item.packets;
+package me.zephyr.circube.content.teleport.stabilizer.packets;
 
 import me.zephyr.circube.CirCubePackets;
-import me.zephyr.circube.content.teleport.item.StabilizerEntry;
+import me.zephyr.circube.content.teleport.stabilizer.StabilizerEntry;
 import me.zephyr.circube.util.DataManager;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;

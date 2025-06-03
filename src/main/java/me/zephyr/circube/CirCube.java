@@ -41,7 +41,6 @@ import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
 import org.slf4j.Logger;
 
-import static com.tacz.guns.api.resource.ResourceManager.EXTRA_ENTRIES;
 import static me.zephyr.circube.util.DataManager.addDungeonToList;
 import static me.zephyr.circube.util.Utils.generatePassword;
 import static net.lpcamors.optical.COMod.loc;
@@ -106,6 +105,11 @@ public class CirCube {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
+    private static void registerExtraGunPack(String packname) {
+        String jarPackPath = String.format("/assets/%s/gunpack/%s", MOD_ID, packname);
+        ResourceManager.registerExportResource(CirCube.class, jarPackPath);
+    }
+
     private void onDedicatedServerSetup(FMLDedicatedServerSetupEvent event) {
         int dungeonId = 0;
         Dungeon arena = new Arena(dungeonId++, "arena", 1, 3);
@@ -125,7 +129,6 @@ public class CirCube {
         });
     }
 
-
     public void addPackFinders(AddPackFindersEvent event) {
         if (event.getPackType() == PackType.CLIENT_RESOURCES) {
             IModFileInfo modFileInfo = ModList.get().getModFileById(MOD_ID);
@@ -141,10 +144,5 @@ public class CirCube {
                 }
             });
         }
-    }
-
-    private static void registerExtraGunPack(String packname) {
-        String jarPackPath = String.format("/assets/%s/gunpack/%s", MOD_ID, packname);
-        ResourceManager.registerExportResource(CirCube.class, jarPackPath);
     }
 }

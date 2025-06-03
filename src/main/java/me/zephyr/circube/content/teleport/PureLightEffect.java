@@ -1,4 +1,4 @@
-package me.zephyr.circube.content.teleport.item;
+package me.zephyr.circube.content.teleport;
 
 import me.zephyr.circube.CirCubeEffects;
 import net.minecraft.world.effect.MobEffect;

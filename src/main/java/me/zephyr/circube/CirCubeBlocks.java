@@ -1,6 +1,7 @@
 package me.zephyr.circube;
 
 
+import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.simibubi.create.content.kinetics.transmission.SplitShaftRenderer;
 import com.simibubi.create.content.kinetics.transmission.SplitShaftVisual;
 import com.simibubi.create.foundation.data.AssetLookup;
@@ -16,6 +17,8 @@ import me.zephyr.circube.content.light.AndesiteLightBlock;
 import me.zephyr.circube.content.light.AndesiteLightBlockEntity;
 import me.zephyr.circube.content.light.BrassLightBlock;
 import me.zephyr.circube.content.light.BrassLightBlockEntity;
+import me.zephyr.circube.content.neodymium.BuddingNeodymiumBlock;
+import me.zephyr.circube.content.neodymium.PaleNeodymiumNodeBlock;
 import me.zephyr.circube.content.teleport.beacon.MechanicalBeaconBlock;
 import me.zephyr.circube.content.teleport.beacon.MechanicalBeaconBlockEntity;
 import me.zephyr.circube.content.teleport.beacon.MechanicalBeaconRenderer;
@@ -185,6 +188,22 @@ public class CirCubeBlocks {
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
             .lang("Block of Steel")
+            .register();
+
+    public static final BlockEntry<BuddingNeodymiumBlock> BUDDING_NEODYMIUM_BLOCK = REGISTRATE
+            .block("budding_neodymium", BuddingNeodymiumBlock::new)
+            .initialProperties(ACBlockRegistry.GALENA::get)
+            .blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> AssetLookup.partialBaseModel(c, p)))
+            .item()
+            .transform(customItemModel())
+            .register();
+
+    public static final BlockEntry<PaleNeodymiumNodeBlock> PALE_NEODYMIUM_NODE = REGISTRATE
+            .block("pale_neodymium_node", props -> new PaleNeodymiumNodeBlock(false))
+            .initialProperties(ACBlockRegistry.AZURE_NEODYMIUM_NODE::get)
+            .blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> AssetLookup.partialBaseModel(c, p)))
+            .item()
+            .transform(customItemModel())
             .register();
 
     public static void register() {

@@ -1,4 +1,4 @@
-package me.zephyr.circube.content.teleport.item.packets;
+package me.zephyr.circube.content.teleport.stabilizer.packets;
 
 import me.zephyr.circube.util.DataManager;
 import net.minecraft.network.FriendlyByteBuf;

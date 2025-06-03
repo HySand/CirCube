@@ -1,4 +1,4 @@
-package me.zephyr.circube.content.teleport.item;
+package me.zephyr.circube.content.teleport.stabilizer;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -10,10 +10,10 @@ import me.zephyr.circube.CirCubeEffects;
 import me.zephyr.circube.CirCubeGuiTextures;
 import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.CirCubePackets;
-import me.zephyr.circube.content.teleport.item.packets.BeaconDeletePacket;
-import me.zephyr.circube.content.teleport.item.packets.BeaconOrderUpdatePacket;
-import me.zephyr.circube.content.teleport.item.packets.StabilizerEntriesRequestPacket;
-import me.zephyr.circube.content.teleport.item.packets.TeleportPacket;
+import me.zephyr.circube.content.teleport.stabilizer.packets.BeaconDeletePacket;
+import me.zephyr.circube.content.teleport.stabilizer.packets.BeaconOrderUpdatePacket;
+import me.zephyr.circube.content.teleport.stabilizer.packets.StabilizerEntriesRequestPacket;
+import me.zephyr.circube.content.teleport.stabilizer.packets.TeleportPacket;
 import me.zephyr.circube.util.DataManager;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Pair;

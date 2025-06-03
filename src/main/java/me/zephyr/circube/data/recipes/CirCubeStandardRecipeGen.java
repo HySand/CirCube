@@ -54,6 +54,10 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
     final List<GeneratedRecipe> all = new ArrayList<>();
     String currentFolder = "";
     private final Marker CRAFTING = enterFolder("/");
+    private final Marker KINETICS = enterFolder("kinetics");
+    private final Marker MATERIALS = enterFolder("materials");
+    private final Marker LOGISTICS = enterFolder("logistics");
+    private final Marker MISC = enterFolder("misc");
     GeneratedRecipe
 
             ENGINE_PISTON = create(CDGItems.ENGINE_PISTON).unlockedBy(() -> I.sealedMechanism()).withNamespace("createdieselgenerators")
@@ -153,8 +157,6 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern(" O ")
                     .pattern("ICI")
                     .pattern(" R "));
-
-    private final Marker KINETICS = enterFolder("kinetics");
     GeneratedRecipe
 
             ANDESITE_LIGHT = create(CirCubeBlocks.ANDESITE_LIGHT).unlockedBy(() -> Items.SOUL_TORCH)
@@ -372,8 +374,6 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("III")
                     .pattern("CRC")
                     .pattern("L L"));
-
-    private final Marker MATERIALS = enterFolder("materials");
     GeneratedRecipe
 
             STEEL_COMPACT = metalCompacting(ImmutableList.of(CirCubeItems.STEEL_NUGGET, CirCubeItems.STEEL_INGOT, CirCubeBlocks.STEEL_BLOCK),
@@ -413,9 +413,12 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .define('D', CirCubeItems.PURIFIED_DARKNESS)
                     .pattern(" D ")
                     .pattern("DFD")
-                    .pattern(" D "));
+                    .pattern(" D ")),
 
-    private final Marker LOGISTICS = enterFolder("logistics");
+    RAW_ = create(() -> ACItemRegistry.RAW_AZURE_NEODYMIUM.get())
+            .viaCooking(CirCubeItems.RAW_NEODYMIUM)
+            .rewardXP(.1f)
+            .inBlastFurnace();
     GeneratedRecipe
 
             REDSTONE_REQUESTER = create(AllBlocks.REDSTONE_REQUESTER).unlockedBy(I::cardboard).withNamespace("create")
@@ -433,9 +436,6 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("B")
                     .pattern("A")
                     .pattern("C"));
-
-
-    private final Marker MISC = enterFolder("misc");
     GeneratedRecipe
 
             D4 = create(CirCubeItems.D4).unlockedBy(() -> AllItems.COPPER_NUGGET)

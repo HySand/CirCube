@@ -1,6 +1,6 @@
 package me.zephyr.circube;
 
-import me.zephyr.circube.content.teleport.item.PureLightEffect;
+import me.zephyr.circube.content.teleport.PureLightEffect;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.eventbus.api.IEventBus;

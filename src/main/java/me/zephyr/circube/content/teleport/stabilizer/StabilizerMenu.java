@@ -1,4 +1,4 @@
-package me.zephyr.circube.content.teleport.item;
+package me.zephyr.circube.content.teleport.stabilizer;
 
 import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
 import net.minecraft.network.FriendlyByteBuf;

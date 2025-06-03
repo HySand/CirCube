@@ -1,8 +1,8 @@
-package me.zephyr.circube.content.teleport.item.packets;
+package me.zephyr.circube.content.teleport.stabilizer.packets;
 
 import me.zephyr.circube.content.teleport.beacon.PositionControl;
-import me.zephyr.circube.content.teleport.item.StabilizerEntry;
-import me.zephyr.circube.content.teleport.item.StabilizerScreen;
+import me.zephyr.circube.content.teleport.stabilizer.StabilizerEntry;
+import me.zephyr.circube.content.teleport.stabilizer.StabilizerScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

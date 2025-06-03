@@ -1,5 +1,5 @@
 // TeleportPacket.java
-package me.zephyr.circube.content.teleport.item.packets;
+package me.zephyr.circube.content.teleport.stabilizer.packets;
 
 import me.zephyr.circube.content.teleport.beacon.PositionControl;
 import net.minecraft.core.BlockPos;
