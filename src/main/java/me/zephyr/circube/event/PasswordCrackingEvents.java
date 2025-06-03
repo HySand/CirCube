@@ -92,8 +92,8 @@ public class PasswordCrackingEvents {
         ResourceLocation id = ForgeRegistries.ITEMS.getKey(stack.getItem());
         if (id == null) return "2";
         return switch (id.getPath()) {
-            case "red_key" -> "1";
-            case "blue_key" -> "0";
+            case "red_key", "magnetic_red_key" -> "1";
+            case "blue_key", "magnetic_blue_key" -> "0";
             default -> "2";
         };
     }

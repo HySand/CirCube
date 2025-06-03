@@ -401,6 +401,20 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern(" R ")
                     .pattern("L  ")),
 
+    MAGNETIC_RED_KEY = create(CirCubeItems.MAGNETIC_RED_KEY).unlockedByTag(I::steel)
+            .viaShaped(b -> b.define('L', I.steel())
+                    .define('R', ACItemRegistry.SCARLET_NEODYMIUM_INGOT.get())
+                    .pattern("  R")
+                    .pattern(" R ")
+                    .pattern("L  ")),
+
+    MAGNETIC_BLUE_KEY = create(CirCubeItems.MAGNETIC_BLUE_KEY).unlockedByTag(I::steel)
+            .viaShaped(b -> b.define('L', I.steel())
+                    .define('R', ACItemRegistry.AZURE_NEODYMIUM_INGOT.get())
+                    .pattern("  R")
+                    .pattern(" R ")
+                    .pattern("L  ")),
+
     TUFF = create(() -> Blocks.TUFF).unlockedBy(() -> CirCubeItems.GRAPHITE_POWDER).returns(5)
             .viaShaped(b -> b.define('#', Blocks.MUD)
                     .define('G', CirCubeItems.GRAPHITE_POWDER)
@@ -416,7 +430,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern(" D ")),
 
     RAW_ = create(() -> ACItemRegistry.RAW_AZURE_NEODYMIUM.get())
-            .viaCooking(CirCubeItems.RAW_NEODYMIUM)
+            .viaCooking(CirCubeItems.RAW_PALE_NEODYMIUM)
             .rewardXP(.1f)
             .inBlastFurnace();
     GeneratedRecipe

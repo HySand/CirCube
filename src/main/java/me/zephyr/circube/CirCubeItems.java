@@ -108,8 +108,8 @@ public class CirCubeItems {
             .item("graphite_powder", CombustibleItem::new)
             .onRegister(i -> i.setBurnTime(600))
             .register();
-    public static final ItemEntry<Item> RAW_NEODYMIUM = REGISTRATE
-            .item("raw_neodymium", Item::new)
+    public static final ItemEntry<Item> RAW_PALE_NEODYMIUM = REGISTRATE
+            .item("raw_pale_neodymium", Item::new)
             .register();
 
     public static final ItemEntry<Item> RED_KEY = REGISTRATE
@@ -141,8 +141,8 @@ public class CirCubeItems {
     public static final ItemEntry<WorkshopBoxItem> WORKSHOP_BOX = REGISTRATE
             .item("workshop_box", WorkshopBoxItem::new)
             .register();
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_TREASURE_BOX = REGISTRATE
-            .item("incomplete_treasure_box", SequencedAssemblyItem::new)
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_WOOD_BOX = REGISTRATE
+            .item("incomplete_wood_box", SequencedAssemblyItem::new)
             .register();
 
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_STEEL_INGOT = REGISTRATE

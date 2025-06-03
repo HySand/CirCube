@@ -147,16 +147,16 @@ public class CirCubeSequencedAssemblyRecipeGen extends CirCubeRecipeProvider {
                     FocusingRecipe::gamma, rb -> rb),
 
     CAVE_TREASURE = createCracking("cave_box", b -> b.require(CirCubeItems.LOCKED_PIT_BOX)
-            .transitionTo(CirCubeItems.INCOMPLETE_TREASURE_BOX)
+            .transitionTo(CirCubeItems.INCOMPLETE_WOOD_BOX)
             .addOutput(CirCubeItems.PIT_BOX, 100)
             .loops(12)
-            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.key()))),
+            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.simpleKey()))),
 
     WORKSHOP_TREASURE = createCracking("workshop_box", b -> b.require(CirCubeItems.LOCKED_WORKSHOP_BOX)
-            .transitionTo(CirCubeItems.INCOMPLETE_TREASURE_BOX)
+            .transitionTo(CirCubeItems.INCOMPLETE_WOOD_BOX)
             .addOutput(CirCubeItems.WORKSHOP_BOX, 100)
             .loops(12)
-            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.key())));
+            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.simpleKey())));
 
     public CirCubeSequencedAssemblyRecipeGen(PackOutput output) {
         super(output);

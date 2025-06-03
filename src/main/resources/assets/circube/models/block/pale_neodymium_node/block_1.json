@@ -1,0 +1,13 @@
+{
+  "parent": "alexscaves:block/neodymium_node_1",
+  "textures": {
+    "1": "circube:block/neodymium/pale_node_side_0",
+    "2": "circube:block/neodymium/pale_node_side_1",
+    "3": "circube:block/neodymium/pale_node_side_2",
+    "4": "circube:block/neodymium/pale_node_side_3",
+    "5": "circube:block/neodymium/pale_node_side_4",
+    "6": "circube:block/neodymium/pale_node_side_5",
+    "7": "circube:block/neodymium/pale_node_side_6",
+    "particle": "circube:block/neodymium/pale_node_side_0"
+  }
+}
