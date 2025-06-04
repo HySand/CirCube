@@ -1,5 +1,6 @@
 package me.zephyr.circube.data.recipes;
 
+import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
@@ -53,14 +54,11 @@ import static me.zephyr.circube.CirCube.MOD_ID;
 public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
     final List<GeneratedRecipe> all = new ArrayList<>();
     String currentFolder = "";
+
     private final Marker CRAFTING = enterFolder("/");
-    private final Marker KINETICS = enterFolder("kinetics");
-    private final Marker MATERIALS = enterFolder("materials");
-    private final Marker LOGISTICS = enterFolder("logistics");
-    private final Marker MISC = enterFolder("misc");
     GeneratedRecipe
 
-            ENGINE_PISTON = create(CDGItems.ENGINE_PISTON).unlockedBy(() -> I.sealedMechanism()).withNamespace("createdieselgenerators")
+            ENGINE_PISTON = create(CDGItems.ENGINE_PISTON).unlockedBy(I::sealedMechanism).withNamespace("createdieselgenerators")
             .viaShaped(b -> b.define('A', I.sealedMechanism())
                     .define('S', I.shaft())
                     .define('Z', I.zincNugget())
@@ -68,7 +66,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern(" S ")
                     .pattern("  Z")),
 
-    PUMPJACK_HOLE = create(CDGBlocks.PUMPJACK_HOLE).unlockedBy(() -> ACItemRegistry.TECTONIC_SHARD.get()).withNamespace("createdieselgenerators")
+    PUMPJACK_HOLE = create(CDGBlocks.PUMPJACK_HOLE).unlockedBy(ACItemRegistry.TECTONIC_SHARD::get).withNamespace("createdieselgenerators")
             .viaShaped(b -> b.define('T', ACItemRegistry.TECTONIC_SHARD.get())
                     .define('F', AllBlocks.FLUID_PIPE.get())
                     .define('C', Blocks.CHAIN)
@@ -157,6 +155,8 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern(" O ")
                     .pattern("ICI")
                     .pattern(" R "));
+
+    private final Marker KINETICS = enterFolder("kinetics");
     GeneratedRecipe
 
             ANDESITE_LIGHT = create(CirCubeBlocks.ANDESITE_LIGHT).unlockedBy(() -> Items.SOUL_TORCH)
@@ -374,6 +374,8 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("III")
                     .pattern("CRC")
                     .pattern("L L"));
+
+    private final Marker MATERIALS = enterFolder("materials");
     GeneratedRecipe
 
             STEEL_COMPACT = metalCompacting(ImmutableList.of(CirCubeItems.STEEL_NUGGET, CirCubeItems.STEEL_INGOT, CirCubeBlocks.STEEL_BLOCK),
@@ -429,10 +431,21 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("DFD")
                     .pattern(" D ")),
 
-    RAW_ = create(() -> ACItemRegistry.RAW_AZURE_NEODYMIUM.get())
+    RAW_SCARLET_NEODYMIUM = create(ACItemRegistry.RAW_SCARLET_NEODYMIUM::get)
             .viaCooking(CirCubeItems.RAW_PALE_NEODYMIUM)
             .rewardXP(.1f)
-            .inBlastFurnace();
+            .inBlastFurnace(),
+
+    BUDDING_NEODYMIUM = create(() -> CirCubeBlocks.BUDDING_NEODYMIUM_BLOCK).unlockedBy(ACItemRegistry.TELECORE::get).returns(2)
+            .viaShaped(b -> b.define('C', ACItemRegistry.TELECORE.get())
+                    .define('S', ACBlockRegistry.ENERGIZED_GALENA_SCARLET.get())
+                    .define('E', ACBlockRegistry.ENERGIZED_GALENA_NEUTRAL.get())
+                    .define('A', ACBlockRegistry.ENERGIZED_GALENA_AZURE.get())
+                    .pattern("SEA")
+                    .pattern("SCA")
+                    .pattern("SEA"));
+
+    private final Marker LOGISTICS = enterFolder("logistics");
     GeneratedRecipe
 
             REDSTONE_REQUESTER = create(AllBlocks.REDSTONE_REQUESTER).unlockedBy(I::cardboard).withNamespace("create")
@@ -450,6 +463,8 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("B")
                     .pattern("A")
                     .pattern("C"));
+
+    private final Marker MISC = enterFolder("misc");
     GeneratedRecipe
 
             D4 = create(CirCubeItems.D4).unlockedBy(() -> AllItems.COPPER_NUGGET)

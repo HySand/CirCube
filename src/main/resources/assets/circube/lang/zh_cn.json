@@ -87,7 +87,6 @@
   "item.circube.incomplete_special_ammo": "特殊弹药（半成品）",
   "item.circube.incomplete_stabilizer": "向导之眼（半成品）",
   "item.circube.incomplete_steel_ingot": "钢锭（半成品）",
-  "item.circube.incomplete_treasure_box": "箱子（破解中）",
   "item.circube.integrated_circuit": "集成电路",
   "item.circube.kinetic_mechanism": "动力构件",
   "item.circube.light_chorus_fruit": "光明果",
@@ -133,5 +132,15 @@
   "item.circube.twenty_sided_die.tooltip.condition1": "右击时",
   "item.circube.twenty_sided_die.tooltip.summary": "一枚有20个面的骰子",
   "item.circube.workshop_box": "工坊箱子",
-  "itemGroup.circube": "CirCube 附加"
+  "itemGroup.circube": "CirCube 附加",
+  "block.circube.budding_neodymium": "钕节点母岩",
+  "block.circube.pale_neodymium_node": "苍白钕节点",
+  "item.circube.knife_box": "近战武器箱",
+  "item.circube.locked_knife_box": "上锁的近战武器箱",
+  "item.circube.magnetic_blue_key": "磁力蓝钥匙",
+  "item.circube.magnetic_red_key": "磁力红钥匙",
+  "item.circube.raw_pale_neodymium": "粗苍钕",
+  "item.circube.incomplete_knife_box": "近战武器箱（破解中）",
+  "item.circube.incomplete_pit_box": "深坑箱子（破解中）",
+  "item.circube.incomplete_workshop_box": "工坊箱子（破解中）"
 }

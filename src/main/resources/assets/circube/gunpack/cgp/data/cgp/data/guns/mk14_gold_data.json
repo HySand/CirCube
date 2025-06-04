@@ -17,9 +17,18 @@
       "armor_ignore": 0.5,
       "head_shot_multiplier": 1.75,
       "damage_adjust": [
-        {"distance": 60, "damage": 16},
-        {"distance": 120, "damage": 13.5},
-        {"distance": "infinite", "damage": 10.5}
+        {
+          "distance": 60,
+          "damage": 16
+        },
+        {
+          "distance": 120,
+          "damage": 13.5
+        },
+        {
+          "distance": "infinite",
+          "damage": 10.5
+        }
       ]
     },
     "speed": 310,
@@ -77,18 +86,78 @@
   },
   "recoil": {
     "pitch": [
-      {"time": 0, "value": [1.75, 1.85]},
-      {"time": 0.05, "value": [1.25, 1.25]},
-      {"time": 0.12, "value": [1.5, 1.5]},
-      {"time": 0.25, "value": [-0.15, -0.1]},
-      {"time": 0.5, "value": [0, 0]},
-      {"time": 0.7, "value": [0.15, 0.25]},
-      {"time": 0.9, "value": [0, 0]}
+      {
+        "time": 0,
+        "value": [
+          1.75,
+          1.85
+        ]
+      },
+      {
+        "time": 0.05,
+        "value": [
+          1.25,
+          1.25
+        ]
+      },
+      {
+        "time": 0.12,
+        "value": [
+          1.5,
+          1.5
+        ]
+      },
+      {
+        "time": 0.25,
+        "value": [
+          -0.15,
+          -0.1
+        ]
+      },
+      {
+        "time": 0.5,
+        "value": [
+          0,
+          0
+        ]
+      },
+      {
+        "time": 0.7,
+        "value": [
+          0.15,
+          0.25
+        ]
+      },
+      {
+        "time": 0.9,
+        "value": [
+          0,
+          0
+        ]
+      }
     ],
     "yaw": [
-      {"time": 0, "value": [-0.5, 0.35]},
-      {"time": 0.05, "value": [-0.5, 0.35]},
-      {"time": 0.25, "value": [0, 0]}
+      {
+        "time": 0,
+        "value": [
+          -0.5,
+          0.35
+        ]
+      },
+      {
+        "time": 0.05,
+        "value": [
+          -0.5,
+          0.35
+        ]
+      },
+      {
+        "time": 0.25,
+        "value": [
+          0,
+          0
+        ]
+      }
     ]
   },
   "inaccuracy": {

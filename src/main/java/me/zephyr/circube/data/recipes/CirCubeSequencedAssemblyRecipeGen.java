@@ -146,17 +146,23 @@ public class CirCubeSequencedAssemblyRecipeGen extends CirCubeRecipeProvider {
             ROSE_QUARTZ_CATALYST_COIL = coil("rose_quartz_catalyst", COItems.ROSE_QUARTZ_CATALYST_COIL, 3,
                     FocusingRecipe::gamma, rb -> rb),
 
-    CAVE_TREASURE = createCracking("cave_box", b -> b.require(CirCubeItems.LOCKED_PIT_BOX)
-            .transitionTo(CirCubeItems.INCOMPLETE_WOOD_BOX)
+    PIT_TREASURE = createCracking("pit_box", b -> b.require(CirCubeItems.LOCKED_PIT_BOX)
+            .transitionTo(CirCubeItems.INCOMPLETE_PIT_BOX)
             .addOutput(CirCubeItems.PIT_BOX, 100)
             .loops(12)
             .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.simpleKey()))),
 
     WORKSHOP_TREASURE = createCracking("workshop_box", b -> b.require(CirCubeItems.LOCKED_WORKSHOP_BOX)
-            .transitionTo(CirCubeItems.INCOMPLETE_WOOD_BOX)
+            .transitionTo(CirCubeItems.INCOMPLETE_WORKSHOP_BOX)
             .addOutput(CirCubeItems.WORKSHOP_BOX, 100)
             .loops(12)
-            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.simpleKey())));
+            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.simpleKey()))),
+
+    KNIFE_TREASURE = createCracking("knife_box", b -> b.require(CirCubeItems.LOCKED_KNIFE_BOX)
+            .transitionTo(CirCubeItems.INCOMPLETE_KNIFE_BOX)
+            .addOutput(CirCubeItems.KNIFE_BOX, 100)
+            .loops(10)
+            .addStep(DeployerApplicationRecipe::new, rb -> rb.require(I.magneticKey())));
 
     public CirCubeSequencedAssemblyRecipeGen(PackOutput output) {
         super(output);

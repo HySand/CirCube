@@ -49,7 +49,7 @@ public class TeleportPacket {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();
             if (player != null) {
-                player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 80, 0));
+                player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 80, 0, true, false));
 
                 ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 

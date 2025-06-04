@@ -1,7 +1,6 @@
 {
   "pack.cgp.name": "CirCube 枪包",
   "pack.cgp.desc": "增加一些默认枪包的变种武器。",
-
   "cgp.gun.uzi_gold.name": "黄金 | 乌兹冲锋枪",
   "cgp.gun.m16a4_gold.name": "黄金 | M16A4 制式步枪",
   "cgp.gun.m700_gold.name": "黄金 | M700 狙击步枪",
@@ -17,6 +16,5 @@
   "cgp.gun.spr15hb_gold.name": "黄金 | SPR-15 HB “射手座” 反狙击步枪",
   "cgp.gun.ai_awp_gold.name": "黄金 | 精密国际 AWM 狙击步枪",
   "cgp.gun.qbz_95_gold.name": "黄金 | 95式 \"长弓\" 突击步枪",
-
   "cgp.attachment.scope_standard_8x.name": "标准 8x 光学瞄具"
 }

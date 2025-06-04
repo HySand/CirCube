@@ -19,7 +19,7 @@
     }
   ],
   "sequence": [
-   {
+    {
       "type": "create:deploying",
       "ingredients": [
         {
@@ -67,7 +67,7 @@
         }
       ]
     },
-  {
+    {
       "type": "create:pressing",
       "ingredients": [
         {
@@ -80,7 +80,7 @@
         }
       ]
     }
-    ],
+  ],
   "transitionalItem": {
     "item": "protection_pixel:incompleteheatoverlockmechanism"
   }

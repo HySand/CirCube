@@ -1,4 +1,4 @@
-package me.zephyr.circube.content.dice;
+package me.zephyr.circube.content;
 
 import me.zephyr.circube.CirCubeLang;
 import net.minecraft.ChatFormatting;

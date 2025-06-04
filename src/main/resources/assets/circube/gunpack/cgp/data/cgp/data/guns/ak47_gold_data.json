@@ -32,10 +32,19 @@
       "head_shot_multiplier": 1.5,
       // 距离-伤害分段常函数
       "damage_adjust": [
-        {"distance": 25, "damage": 9},
-        {"distance": 55, "damage": 7.5},
+        {
+          "distance": 25,
+          "damage": 9
+        },
+        {
+          "distance": 55,
+          "damage": 7.5
+        },
         // 如果你忘记写这个无穷，那么超过上述距离，我就认为是 0
-        {"distance": "infinite", "damage": 6}
+        {
+          "distance": "infinite",
+          "damage": 6
+        }
       ]
     },
     // 速度 m/s
@@ -60,18 +69,18 @@
     "pierce": 1
     // 储存爆炸的相关数据，如果没有的话会有一套默认的配置
     // "explosion": {
-      // 是否爆炸，默认为 false，如果希望默认爆炸则设置为 true
-      // "explode": false,
-      // 延时爆炸，单位：秒
-      // "delay": 30,
-      // 爆炸半径，单位：米（格）
-      // "radius": 5,
-      // 爆炸伤害
-      // "damage": 5,
-      // 爆炸导致的击退，默认为 false，需要服务器也开启爆炸击退才能使用
-      // "knockback": false
-      // 爆炸是否破坏方块，默认为 false，需要服务器也开启爆炸破坏方块才能使用
-      // "destroy_block": false
+    // 是否爆炸，默认为 false，如果希望默认爆炸则设置为 true
+    // "explode": false,
+    // 延时爆炸，单位：秒
+    // "delay": 30,
+    // 爆炸半径，单位：米（格）
+    // "radius": 5,
+    // 爆炸伤害
+    // "damage": 5,
+    // 爆炸导致的击退，默认为 false，需要服务器也开启爆炸击退才能使用
+    // "knockback": false
+    // 爆炸是否破坏方块，默认为 false，需要服务器也开启爆炸破坏方块才能使用
+    // "destroy_block": false
     // }
   },
   // 换弹相关
@@ -181,14 +190,50 @@
   // 后坐力
   "recoil": {
     "pitch": [
-      {"time": 0, "value": [0.7, 0.7]},
-      {"time": 0.25, "value": [0.7, 0.7]},
-      {"time": 0.45, "value": [-0.175, -0.175]},
-      {"time": 0.6, "value": [0, 0]}
+      {
+        "time": 0,
+        "value": [
+          0.7,
+          0.7
+        ]
+      },
+      {
+        "time": 0.25,
+        "value": [
+          0.7,
+          0.7
+        ]
+      },
+      {
+        "time": 0.45,
+        "value": [
+          -0.175,
+          -0.175
+        ]
+      },
+      {
+        "time": 0.6,
+        "value": [
+          0,
+          0
+        ]
+      }
     ],
     "yaw": [
-      {"time": 0, "value": [-0.35, 0.25]},
-      {"time": 0.45, "value": [0, 0]}
+      {
+        "time": 0,
+        "value": [
+          -0.35,
+          0.25
+        ]
+      },
+      {
+        "time": 0.45,
+        "value": [
+          0,
+          0
+        ]
+      }
     ]
   },
   // 受伤晃动幅度修改，乘数，1 为原版晃动程度，0 为完全不晃动，默认为 0.05
@@ -243,9 +288,9 @@
   // 配件槽的默认配件，当未安装配件时使用
   // 默认配件的data将不会被应用，仅仅有外观效果
   // 用于默认瞄具等特殊场合
-//  "builtin_attachments": {
-//    "scope": "tacz:scope_standard_8x"
-//  },
+  //  "builtin_attachments": {
+  //    "scope": "tacz:scope_standard_8x"
+  //  },
   // 指定枪械逻辑的脚本，调用的是 data/{命名空间}/scripts 下的脚本
   // "script": "tacz:default_gun_logic",
   // 指定枪械逻辑脚本的脚本参数，具体内容取决于脚本需要

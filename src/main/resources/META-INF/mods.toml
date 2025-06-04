@@ -2,13 +2,13 @@ modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
 license = "${mod_license}"
 
-issueTrackerURL="https://github.com/HySand/CirCube/issues"
+issueTrackerURL = "https://github.com/HySand/CirCube/issues"
 
 [[mods]]
 modId = "${mod_id}"
 version = "${mod_version}"
 displayName = "${mod_name}"
-displayURL="https://github.com/HySand/CirCube"
+displayURL = "https://github.com/HySand/CirCube"
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="circube.png" #optional
 # A text field displayed in the mod UI

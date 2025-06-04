@@ -17,9 +17,18 @@
       "armor_ignore": 0.60,
       "head_shot_multiplier": 2,
       "damage_adjust": [
-        {"distance": 80, "damage": 42},
-        {"distance": 160, "damage": 36},
-        {"distance": "infinite", "damage": 26}
+        {
+          "distance": 80,
+          "damage": 42
+        },
+        {
+          "distance": 160,
+          "damage": 36
+        },
+        {
+          "distance": "infinite",
+          "damage": 26
+        }
       ]
     },
     "speed": 575,
@@ -64,22 +73,106 @@
   ],
   "recoil": {
     "pitch": [
-      {"time": 0, "value": [3.5, 3.5]},
-      {"time": 0.07, "value": [2.5, 2.5]},
-      {"time": 0.16, "value": [3.25, 3.25]},
-      {"time": 0.24, "value": [2, 2]},
-      {"time": 0.6, "value": [-0.5, -0.5]},
-      {"time": 0.71, "value": [0.25, 0.25]},
-      {"time": 0.83, "value": [0, 0]},
-      {"time": 0.88, "value": [0, 0]}
+      {
+        "time": 0,
+        "value": [
+          3.5,
+          3.5
+        ]
+      },
+      {
+        "time": 0.07,
+        "value": [
+          2.5,
+          2.5
+        ]
+      },
+      {
+        "time": 0.16,
+        "value": [
+          3.25,
+          3.25
+        ]
+      },
+      {
+        "time": 0.24,
+        "value": [
+          2,
+          2
+        ]
+      },
+      {
+        "time": 0.6,
+        "value": [
+          -0.5,
+          -0.5
+        ]
+      },
+      {
+        "time": 0.71,
+        "value": [
+          0.25,
+          0.25
+        ]
+      },
+      {
+        "time": 0.83,
+        "value": [
+          0,
+          0
+        ]
+      },
+      {
+        "time": 0.88,
+        "value": [
+          0,
+          0
+        ]
+      }
     ],
     "yaw": [
-      {"time": 0, "value": [-0.75, -0.75]},
-      {"time": 0.08, "value": [0.6, 0.6]},
-      {"time": 0.17, "value": [-0.35, -0.35]},
-      {"time": 0.28, "value": [0.25, 0.25]},
-      {"time": 0.5, "value": [0, 0]},
-      {"time": 0.8, "value": [0, 0]}
+      {
+        "time": 0,
+        "value": [
+          -0.75,
+          -0.75
+        ]
+      },
+      {
+        "time": 0.08,
+        "value": [
+          0.6,
+          0.6
+        ]
+      },
+      {
+        "time": 0.17,
+        "value": [
+          -0.35,
+          -0.35
+        ]
+      },
+      {
+        "time": 0.28,
+        "value": [
+          0.25,
+          0.25
+        ]
+      },
+      {
+        "time": 0.5,
+        "value": [
+          0,
+          0
+        ]
+      },
+      {
+        "time": 0.8,
+        "value": [
+          0,
+          0
+        ]
+      }
     ]
   },
   "inaccuracy": {

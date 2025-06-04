@@ -4,21 +4,15 @@ import com.simibubi.create.AllTags;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.CombustibleItem;
-import com.tterrag.registrate.builders.MenuBuilder.ForgeMenuFactory;
-import com.tterrag.registrate.builders.MenuBuilder.ScreenFactory;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import com.tterrag.registrate.util.entry.MenuEntry;
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import me.zephyr.circube.content.dice.DiceItem;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
+import me.zephyr.circube.content.DiceItem;
 import me.zephyr.circube.content.teleport.stabilizer.StabilizerItem;
 import me.zephyr.circube.content.treasure.KnifeBoxItem;
 import me.zephyr.circube.content.treasure.PitBoxItem;
 import me.zephyr.circube.content.treasure.WorkshopBoxItem;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 
 public class CirCubeItems {
@@ -160,32 +154,17 @@ public class CirCubeItems {
             .tag(AllTags.forgeItemTag("keys/magnetic"))
             .register();
 
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_WOOD_BOX = REGISTRATE
-            .item("incomplete_wood_box", SequencedAssemblyItem::new)
-            .register();
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_STEEL_BOX = REGISTRATE
-            .item("incomplete_steel_box", SequencedAssemblyItem::new)
-            .register();
+    public static final ItemEntry<Item> LOCKED_PIT_BOX = locked_box("pit", "wood"),
+            LOCKED_WORKSHOP_BOX = locked_box("workshop", "wood"),
+            LOCKED_KNIFE_BOX = locked_box("knife", "steel");
 
-    public static final ItemEntry<Item> LOCKED_PIT_BOX = REGISTRATE
-            .item("locked_pit_box", Item::new)
-            .register();
-    public static final ItemEntry<PitBoxItem> PIT_BOX = REGISTRATE
-            .item("pit_box", PitBoxItem::new)
-            .register();
-    public static final ItemEntry<Item> LOCKED_WORKSHOP_BOX = REGISTRATE
-            .item("locked_workshop_box", Item::new)
-            .register();
-    public static final ItemEntry<WorkshopBoxItem> WORKSHOP_BOX = REGISTRATE
-            .item("workshop_box", WorkshopBoxItem::new)
-            .register();
-    public static final ItemEntry<Item> LOCKED_KNIFE_BOX = REGISTRATE
-            .item("locked_knife_box", Item::new)
-            .register();
-    public static final ItemEntry<KnifeBoxItem> KNIFE_BOX = REGISTRATE
-            .item("knife_box", KnifeBoxItem::new)
-            .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_PIT_BOX = incompleteBox("pit", "wood"),
+            INCOMPLETE_WORKSHOP_BOX = incompleteBox("workshop", "wood"),
+            INCOMPLETE_KNIFE_BOX = incompleteBox("knife", "steel");
 
+    public static final ItemEntry<PitBoxItem> PIT_BOX = box("pit", "wood", PitBoxItem::new);
+    public static final ItemEntry<WorkshopBoxItem> WORKSHOP_BOX = box("workshop", "wood", WorkshopBoxItem::new);
+    public static final ItemEntry<KnifeBoxItem> KNIFE_BOX = box("knife", "steel", KnifeBoxItem::new);
 
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_SMALL_AMMO = REGISTRATE
             .item("incomplete_small_ammo", SequencedAssemblyItem::new)
@@ -206,9 +185,27 @@ public class CirCubeItems {
             .item("incomplete_special_ammo", SequencedAssemblyItem::new)
             .register();
 
-    private static <C extends AbstractContainerMenu, S extends Screen & MenuAccess<C>> MenuEntry<C> register(String name, ForgeMenuFactory<C> factory, NonNullSupplier<ScreenFactory<C, S>> screenFactory) {
-        return REGISTRATE
-                .menu(name, factory, screenFactory)
+    private static ItemEntry<Item> locked_box(String name, String type) {
+        return REGISTRATE.item("locked_" + name + "_box", Item::new)
+                .model((ctx, prov) -> prov
+                        .withExistingParent(ctx.getName(), prov.mcLoc("item/generated"))
+                        .texture("layer0", prov.modLoc("item/locked_" + type + "_box")))
+                .register();
+    }
+
+    private static <T extends Item> ItemEntry<T> box(String name, String type, NonNullFunction<Item.Properties, T> factory) {
+        return REGISTRATE.item(name + "_box", factory)
+                .model((ctx, prov) -> prov
+                        .withExistingParent(ctx.getName(), prov.mcLoc("item/generated"))
+                        .texture("layer0", prov.modLoc("item/" + type + "_box")))
+                .register();
+    }
+
+    private static ItemEntry<SequencedAssemblyItem> incompleteBox(String name, String type) {
+        return REGISTRATE.item("incomplete_" + name + "_box", SequencedAssemblyItem::new)
+                .model((ctx, prov) -> prov
+                        .withExistingParent(ctx.getName(), prov.mcLoc("item/generated"))
+                        .texture("layer0", prov.modLoc("item/incomplete_" + type + "_box")))
                 .register();
     }
 

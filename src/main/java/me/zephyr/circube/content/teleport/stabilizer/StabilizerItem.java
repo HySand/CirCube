@@ -1,6 +1,8 @@
 package me.zephyr.circube.content.teleport.stabilizer;
 
+import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.CirCubeMenuTypes;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -41,7 +43,9 @@ public class StabilizerItem extends Item implements MenuProvider {
             if (player.isCrouching()) {
                 BlockPos spawnLocation = serverPlayer.getRespawnPosition();
                 if (spawnLocation != null) {
-                    return doTeleport(itemStack, world, serverPlayer, spawnLocation, true);
+                    return doTeleport(itemStack, world, serverPlayer, spawnLocation);
+                } else {
+                    player.displayClientMessage(Component.translatable("block.minecraft.spawn.not_valid").withStyle(ChatFormatting.YELLOW), true);
                 }
             } else {
                 ItemStack heldItem = player.getItemInHand(hand);
@@ -53,19 +57,15 @@ public class StabilizerItem extends Item implements MenuProvider {
         return InteractionResultHolder.sidedSuccess(itemStack, world.isClientSide());
     }
 
-    private InteractionResultHolder<ItemStack> doTeleport(ItemStack itemStack, Level world, ServerPlayer player, BlockPos pos, boolean consume) {
+    private InteractionResultHolder<ItemStack> doTeleport(ItemStack itemStack, Level world, ServerPlayer player, BlockPos pos) {
         scheduler.schedule(() -> {
             player.teleportTo(pos.getX(), pos.getY() + 0.5, pos.getZ());
             world.playSound(null, player.blockPosition(), SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 1.0F, 1.0F);
         }, 1500, TimeUnit.MILLISECONDS);
-        MobEffectInstance blind = new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, false, false);
+        MobEffectInstance blind = new MobEffectInstance(MobEffects.DARKNESS, 60, 0, true, false);
         player.addEffect(blind);
         world.playSound(null, player.blockPosition(), SoundEvents.ENDERMAN_AMBIENT, SoundSource.PLAYERS, 1.0F, 1.0F);
         player.getCooldowns().addCooldown(this, 100);
-        if (consume) {
-            itemStack.shrink(1);
-            Minecraft.getInstance().gameRenderer.displayItemActivation(itemStack);
-        }
         return InteractionResultHolder.success(itemStack);
     }
 
