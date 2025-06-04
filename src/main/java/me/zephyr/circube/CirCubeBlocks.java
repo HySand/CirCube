@@ -2,7 +2,6 @@ package me.zephyr.circube;
 
 
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.transmission.SplitShaftRenderer;
 import com.simibubi.create.content.kinetics.transmission.SplitShaftVisual;
 import com.simibubi.create.foundation.data.AssetLookup;
@@ -31,23 +30,17 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.common.Tags;
-
-import java.util.Arrays;
 
 import static com.simibubi.create.foundation.data.BlockStateGen.simpleCubeAll;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
@@ -219,7 +212,7 @@ public class CirCubeBlocks {
             .block("pale_neodymium_node", props -> new PaleNeodymiumNodeBlock(false))
             .initialProperties(ACBlockRegistry.AZURE_NEODYMIUM_NODE::get)
             .blockstate((c, p) -> {
-                ModelFile[] models = new ModelFile[] {
+                ModelFile[] models = new ModelFile[]{
                         p.models().getExistingFile(p.modLoc("block/pale_neodymium_node/block_0")),
                         p.models().getExistingFile(p.modLoc("block/pale_neodymium_node/block_1")),
                         p.models().getExistingFile(p.modLoc("block/pale_neodymium_node/block_2"))
@@ -233,9 +226,18 @@ public class CirCubeBlocks {
                         case DOWN -> xRot = 180;
                         case UP -> xRot = 0;
                         case NORTH -> xRot = 90;
-                        case SOUTH -> { xRot = 90; yRot = 180; }
-                        case WEST -> { xRot = 90; yRot = 270; }
-                        case EAST -> { xRot = 90; yRot = 90; }
+                        case SOUTH -> {
+                            xRot = 90;
+                            yRot = 180;
+                        }
+                        case WEST -> {
+                            xRot = 90;
+                            yRot = 270;
+                        }
+                        case EAST -> {
+                            xRot = 90;
+                            yRot = 90;
+                        }
                     }
 
                     for (ModelFile model : models) {

@@ -3,6 +3,7 @@ package me.zephyr.circube.content.treasure;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.compat.kubejs.util.TimelessItemType;
 import com.tacz.guns.resource.index.CommonGunIndex;
+import me.xjqsh.lrtactical.init.ModItems;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -64,24 +65,51 @@ public abstract class BaseTreasureItem extends Item {
         return ItemStack.EMPTY;
     }
 
-    protected void addGun(String gunId, int weight, int weightGold) {
+    protected void addMelee(String meleeId, int weight) {
+        ItemStack melee = new ItemStack(ModItems.MELEE.get());
+        melee.getOrCreateTag().putString("MeleeWeaponId", "cs2_wt:" + meleeId);
+
+        pool.add(Pair.of(melee, weight));
+    }
+
+    protected void addGun(String namespace, String gunId, int weight) {
         Optional<CommonGunIndex> optional = TimelessAPI.getCommonGunIndex(ResourceLocation.fromNamespaceAndPath("tacz", gunId));
-        String mode = "SEMI";
         if (optional.isPresent()) {
             CommonGunIndex index = optional.get();
-            mode = index.getGunData().getFireModeSet().get(0).name();
+            String mode = index.getGunData().getFireModeSet().get(0).name();
+
+            ItemStack normal = new ItemStack(TimelessItemType.MODERN_KINETIC_GUN.getItem());
+            normal.getOrCreateTag().putString("GunId", namespace + gunId);
+            normal.getOrCreateTag().putString("GunFireMode", mode);
+
+            pool.add(Pair.of(normal, weight));
         }
+    }
 
-        ItemStack normal = new ItemStack(TimelessItemType.MODERN_KINETIC_GUN.getItem());
-        normal.getOrCreateTag().putString("GunId", "tacz:" + gunId);
-        normal.getOrCreateTag().putString("GunFireMode", mode);
+    protected void addGun(String gunId, int weight, int weightGold) {
+        Optional<CommonGunIndex> optional = TimelessAPI.getCommonGunIndex(ResourceLocation.fromNamespaceAndPath("tacz", gunId));
+        if (optional.isPresent()) {
+            CommonGunIndex index = optional.get();
+            String mode = index.getGunData().getFireModeSet().get(0).name();
 
-        ItemStack gold = new ItemStack(TimelessItemType.MODERN_KINETIC_GUN.getItem());
-        gold.getOrCreateTag().putString("GunId", "cgp:" + gunId + "_gold");
-        gold.getOrCreateTag().putString("GunFireMode", mode);
+            ItemStack normal = new ItemStack(TimelessItemType.MODERN_KINETIC_GUN.getItem());
+            normal.getOrCreateTag().putString("GunId", "tacz:" + gunId);
+            normal.getOrCreateTag().putString("GunFireMode", mode);
+
+            ItemStack gold = new ItemStack(TimelessItemType.MODERN_KINETIC_GUN.getItem());
+            gold.getOrCreateTag().putString("GunId", "cgp:" + gunId + "_gold");
+            gold.getOrCreateTag().putString("GunFireMode", mode);
+
+            pool.add(Pair.of(normal, weight));
+            pool.add(Pair.of(gold, weightGold));
+        }
+    }
+
+    protected void addAttachment(String namespace, String attachmentId, int weight) {
+        ItemStack normal = new ItemStack(TimelessItemType.ATTACHMENT.getItem());
+        normal.getOrCreateTag().putString("AttachmentId", namespace + attachmentId);
 
         pool.add(Pair.of(normal, weight));
-        pool.add(Pair.of(gold, weightGold));
     }
 
     protected void addAttachment(String attachmentId, int weight, int weightGold) {

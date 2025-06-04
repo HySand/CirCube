@@ -2,7 +2,6 @@ package me.zephyr.circube.content.neodymium;
 
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexmodguy.alexscaves.server.block.NeodymiumNodeBlock;
-import me.zephyr.circube.CirCube;
 import me.zephyr.circube.CirCubeBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

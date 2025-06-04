@@ -11,6 +11,7 @@ import com.tterrag.registrate.util.entry.MenuEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import me.zephyr.circube.content.dice.DiceItem;
 import me.zephyr.circube.content.teleport.stabilizer.StabilizerItem;
+import me.zephyr.circube.content.treasure.KnifeBoxItem;
 import me.zephyr.circube.content.treasure.PitBoxItem;
 import me.zephyr.circube.content.treasure.WorkshopBoxItem;
 import net.minecraft.client.gui.screens.Screen;
@@ -112,38 +113,6 @@ public class CirCubeItems {
             .item("raw_pale_neodymium", Item::new)
             .register();
 
-    public static final ItemEntry<Item> RED_KEY = REGISTRATE
-            .item("red_key", Item::new)
-            .tag(AllTags.forgeItemTag("keys/simple"))
-            .register();
-    public static final ItemEntry<Item> BLUE_KEY = REGISTRATE
-            .item("blue_key", Item::new)
-            .tag(AllTags.forgeItemTag("keys/simple"))
-            .register();
-    public static final ItemEntry<Item> MAGNETIC_RED_KEY = REGISTRATE
-            .item("magnetic_red_key", Item::new)
-            .tag(AllTags.forgeItemTag("keys/magnetic"))
-            .register();
-    public static final ItemEntry<Item> MAGNETIC_BLUE_KEY = REGISTRATE
-            .item("magnetic_blue_key", Item::new)
-            .tag(AllTags.forgeItemTag("keys/magnetic"))
-            .register();
-
-    public static final ItemEntry<Item> LOCKED_PIT_BOX = REGISTRATE
-            .item("locked_pit_box", Item::new)
-            .register();
-    public static final ItemEntry<PitBoxItem> PIT_BOX = REGISTRATE
-            .item("pit_box", PitBoxItem::new)
-            .register();
-    public static final ItemEntry<Item> LOCKED_WORKSHOP_BOX = REGISTRATE
-            .item("locked_workshop_box", Item::new)
-            .register();
-    public static final ItemEntry<WorkshopBoxItem> WORKSHOP_BOX = REGISTRATE
-            .item("workshop_box", WorkshopBoxItem::new)
-            .register();
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_WOOD_BOX = REGISTRATE
-            .item("incomplete_wood_box", SequencedAssemblyItem::new)
-            .register();
 
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_STEEL_INGOT = REGISTRATE
             .item("incomplete_steel_ingot", SequencedAssemblyItem::new)
@@ -173,6 +142,50 @@ public class CirCubeItems {
     public static final ItemEntry<Item> SHELL = REGISTRATE
             .item("shell", Item::new)
             .register();
+
+    public static final ItemEntry<Item> RED_KEY = REGISTRATE
+            .item("red_key", Item::new)
+            .tag(AllTags.forgeItemTag("keys/simple"))
+            .register();
+    public static final ItemEntry<Item> BLUE_KEY = REGISTRATE
+            .item("blue_key", Item::new)
+            .tag(AllTags.forgeItemTag("keys/simple"))
+            .register();
+    public static final ItemEntry<Item> MAGNETIC_RED_KEY = REGISTRATE
+            .item("magnetic_red_key", Item::new)
+            .tag(AllTags.forgeItemTag("keys/magnetic"))
+            .register();
+    public static final ItemEntry<Item> MAGNETIC_BLUE_KEY = REGISTRATE
+            .item("magnetic_blue_key", Item::new)
+            .tag(AllTags.forgeItemTag("keys/magnetic"))
+            .register();
+
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_WOOD_BOX = REGISTRATE
+            .item("incomplete_wood_box", SequencedAssemblyItem::new)
+            .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_STEEL_BOX = REGISTRATE
+            .item("incomplete_steel_box", SequencedAssemblyItem::new)
+            .register();
+
+    public static final ItemEntry<Item> LOCKED_PIT_BOX = REGISTRATE
+            .item("locked_pit_box", Item::new)
+            .register();
+    public static final ItemEntry<PitBoxItem> PIT_BOX = REGISTRATE
+            .item("pit_box", PitBoxItem::new)
+            .register();
+    public static final ItemEntry<Item> LOCKED_WORKSHOP_BOX = REGISTRATE
+            .item("locked_workshop_box", Item::new)
+            .register();
+    public static final ItemEntry<WorkshopBoxItem> WORKSHOP_BOX = REGISTRATE
+            .item("workshop_box", WorkshopBoxItem::new)
+            .register();
+    public static final ItemEntry<Item> LOCKED_KNIFE_BOX = REGISTRATE
+            .item("locked_knife_box", Item::new)
+            .register();
+    public static final ItemEntry<KnifeBoxItem> KNIFE_BOX = REGISTRATE
+            .item("knife_box", KnifeBoxItem::new)
+            .register();
+
 
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_SMALL_AMMO = REGISTRATE
             .item("incomplete_small_ammo", SequencedAssemblyItem::new)
