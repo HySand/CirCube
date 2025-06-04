@@ -27,6 +27,10 @@ public class HardcoreReloadMixin {
         GunData gunData = gunIndex.getGunData();
         int maxAmmoCount = AttachmentDataUtils.getAmmoCountWithAttachment(itemStack, gunData);
         int currentAmmoCount = abstractGunItem.getCurrentAmmoCount(itemStack);
-        cir.setReturnValue(maxAmmoCount == 2 ? maxAmmoCount - currentAmmoCount : gunData.getScript() == null ? maxAmmoCount : maxAmmoCount - currentAmmoCount);
+        if ((gunData.getScriptParam() != null && gunData.getScriptParam().containsKey("loop")) || maxAmmoCount == 2) {
+            cir.setReturnValue(maxAmmoCount - currentAmmoCount);
+        } else {
+            cir.setReturnValue(maxAmmoCount);
+        }
     }
 }
