@@ -63,10 +63,10 @@ public class Utils {
         return sb.toString();
     }
 
-    public static String generatePassword() {
+    public static String generatePassword(int length) {
         Random random = new Random();
-        StringBuilder sb = new StringBuilder(12);
-        for (int i = 0; i < 12; i++) {
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
             sb.append(random.nextBoolean() ? '1' : '0');
         }
         return sb.toString();

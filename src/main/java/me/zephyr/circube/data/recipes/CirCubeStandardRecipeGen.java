@@ -159,21 +159,21 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
     private final Marker KINETICS = enterFolder("kinetics");
     GeneratedRecipe
 
-            ANDESITE_LIGHT = create(CirCubeBlocks.ANDESITE_LIGHT).unlockedBy(() -> Items.SOUL_TORCH)
+            ANDESITE_LIGHT = create(CirCubeBlocks.ANDESITE_LIGHT).unlockedBy(AllItems.POLISHED_ROSE_QUARTZ)
             .viaShaped(b -> b.define('C', AllBlocks.ANDESITE_CASING)
                     .define('R', AllItems.POLISHED_ROSE_QUARTZ)
-                    .define('S', Items.SOUL_TORCH)
-                    .pattern("RSR")
+                    .define('S', I.shaft())
+                    .pattern("RRR")
                     .pattern("SCS")
-                    .pattern("RSR")),
+                    .pattern("RRR")),
 
-    BRASS_LIGHT = create(CirCubeBlocks.BRASS_LIGHT).unlockedBy(() -> Items.SOUL_TORCH)
+    BRASS_LIGHT = create(CirCubeBlocks.BRASS_LIGHT).unlockedBy(AllItems.POLISHED_ROSE_QUARTZ)
             .viaShaped(b -> b.define('C', AllBlocks.BRASS_CASING)
                     .define('R', AllItems.POLISHED_ROSE_QUARTZ)
-                    .define('S', Items.SOUL_TORCH)
-                    .pattern("RSR")
+                    .define('S', I.shaft())
+                    .pattern("RRR")
                     .pattern("SCS")
-                    .pattern("RSR")),
+                    .pattern("RRR")),
 
     KINETIC_MECHANISM = create(CirCubeItems.KINETIC_MECHANISM).unlockedBy(() -> AllItems.COPPER_SHEET)
             .viaShaped(b -> b.define('S', AllItems.COPPER_SHEET)

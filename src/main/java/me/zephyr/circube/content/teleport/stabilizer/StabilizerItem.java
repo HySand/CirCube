@@ -1,9 +1,7 @@
 package me.zephyr.circube.content.teleport.stabilizer;
 
-import me.zephyr.circube.CirCubeLang;
 import me.zephyr.circube.CirCubeMenuTypes;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

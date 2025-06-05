@@ -14,10 +14,8 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import me.zephyr.circube.config.CStress;
 import me.zephyr.circube.content.ShadowBlock;
 import me.zephyr.circube.content.geyser.GeyserBlock;
-import me.zephyr.circube.content.light.AndesiteLightBlock;
-import me.zephyr.circube.content.light.AndesiteLightBlockEntity;
-import me.zephyr.circube.content.light.BrassLightBlock;
-import me.zephyr.circube.content.light.BrassLightBlockEntity;
+import me.zephyr.circube.content.light.MechanicalLightBlock;
+import me.zephyr.circube.content.light.MechanicalLightBlockEntity;
 import me.zephyr.circube.content.neodymium.BuddingNeodymiumBlock;
 import me.zephyr.circube.content.neodymium.PaleNeodymiumNodeBlock;
 import me.zephyr.circube.content.teleport.beacon.MechanicalBeaconBlock;
@@ -51,41 +49,34 @@ import static com.simibubi.create.foundation.data.TagGen.*;
 public class CirCubeBlocks {
     private static final CreateRegistrate REGISTRATE = CirCube.getRegistrate();
 
-    public static final BlockEntry<AndesiteLightBlock> ANDESITE_LIGHT = REGISTRATE
-            .block("andesite_light", AndesiteLightBlock::new)
+    public static final BlockEntry<MechanicalLightBlock> ANDESITE_LIGHT = REGISTRATE
+            .block("andesite_light", MechanicalLightBlock::new)
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.noOcclusion().mapColor(MapColor.PODZOL)
-                    .lightLevel(s -> s.getValue(AndesiteLightBlock.POWERED) ? 15 : 0))
+                    .lightLevel(s -> s.getValue(MechanicalLightBlock.POWERED) ? 15 : 0))
             .transform(axeOrPickaxe())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((c, p) -> BlockStateGen.axisBlock(c, p, AssetLookup.forPowered(c, p)))
-            .transform(CStress.setImpact(2.0))
+            .transform(CStress.setNoImpact())
             .item()
             .transform(customItemModel())
             .register();
-    public static final BlockEntityEntry<AndesiteLightBlockEntity> ANDESITE_LIGHT_ENTITY = REGISTRATE
-            .blockEntity("andesite_light", AndesiteLightBlockEntity::new)
-            .visual(() -> SplitShaftVisual::new, false)
-            .validBlocks(ANDESITE_LIGHT)
-            .renderer(() -> SplitShaftRenderer::new)
-            .register();
-
-    public static final BlockEntry<BrassLightBlock> BRASS_LIGHT = REGISTRATE
-            .block("brass_light", BrassLightBlock::new)
+    public static final BlockEntry<MechanicalLightBlock> BRASS_LIGHT = REGISTRATE
+            .block("brass_light", MechanicalLightBlock::new)
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.noOcclusion().mapColor(MapColor.TERRACOTTA_BROWN)
-                    .lightLevel(s -> s.getValue(BrassLightBlock.POWERED) ? 15 : 0))
+                    .lightLevel(s -> s.getValue(MechanicalLightBlock.POWERED) ? 15 : 0))
             .transform(axeOnly())
             .addLayer(() -> RenderType::cutoutMipped)
             .blockstate((c, p) -> BlockStateGen.axisBlock(c, p, AssetLookup.forPowered(c, p)))
-            .transform(CStress.setImpact(8.0))
+            .transform(CStress.setNoImpact())
             .item()
             .transform(customItemModel())
             .register();
-    public static final BlockEntityEntry<BrassLightBlockEntity> BRASS_LIGHT_ENTITY = REGISTRATE
-            .blockEntity("brass_light", BrassLightBlockEntity::new)
+    public static final BlockEntityEntry<MechanicalLightBlockEntity> LIGHT_ENTITY = REGISTRATE
+            .blockEntity("mechanical_light", MechanicalLightBlockEntity::new)
             .visual(() -> SplitShaftVisual::new, false)
-            .validBlocks(BRASS_LIGHT)
+            .validBlocks(ANDESITE_LIGHT, BRASS_LIGHT)
             .renderer(() -> SplitShaftRenderer::new)
             .register();
 
@@ -103,7 +94,7 @@ public class CirCubeBlocks {
                 p.getVariantBuilder(c.get()).forAllStatesExcept((state) -> {
                     boolean lower = state.getValue(MechanicalBeaconBlock.HALF) == DoubleBlockHalf.LOWER;
                     boolean active = state.getValue(MechanicalBeaconBlock.ACTIVE);
-                    ModelFile model = null;
+                    ModelFile model;
                     if (lower) {
                         if (active) {
                             model = bottom_on;
@@ -134,7 +125,7 @@ public class CirCubeBlocks {
                 p.getVariantBuilder(c.get()).forAllStatesExcept((state) -> {
                     boolean lower = state.getValue(MechanicalBeaconBlock.HALF) == DoubleBlockHalf.LOWER;
                     boolean active = state.getValue(MechanicalBeaconBlock.ACTIVE);
-                    ModelFile model = null;
+                    ModelFile model;
                     if (lower) {
                         if (active) {
                             model = bottom_on;

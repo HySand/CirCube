@@ -1,7 +1,7 @@
 {
   "parent": "create:block/gearshift/block",
   "textures": {
-    "0": "circube:block/andesite_light_powered",
-    "particle": "circube:block/andesite_light_powered"
+    "0": "circube:block/light/andesite_light_powered",
+    "particle": "circube:block/light/andesite_light_powered"
   }
 }
