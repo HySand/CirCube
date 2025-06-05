@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import com.simibubi.create.foundation.pack.ModFilePackResources;
 import com.tacz.guns.api.resource.ResourceManager;
+import com.tacz.guns.util.GetJarResources;
 import me.zephyr.circube.config.CirCubeConfigs;
 import me.zephyr.circube.content.vlobby.Dungeon;
 import me.zephyr.circube.content.vlobby.dungeons.Arena;
@@ -89,12 +90,14 @@ public class CirCube {
         CirCubeCreativeTabs.register(modEventBus);
         CirCubeConfigs.register(context);
 
-        PasswordCrackingEvents.PASSWORD = generatePassword();
+        PasswordCrackingEvents.PASSWORD = generatePassword(12);
 
         modEventBus.addListener(EventPriority.LOWEST, CirCubeDataGen::gatherData);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CirCubeClient.onCirCubeClient(modEventBus, forgeEventBus));
 
         registerExtraGunPack("cgp");
+        registerExtraGunPack("tacz_default_gun");
+        registerExtraGunPack("create_armorer");
     }
 
     public static CreateRegistrate getRegistrate() {

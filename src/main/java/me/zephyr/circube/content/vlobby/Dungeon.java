@@ -159,7 +159,7 @@ public abstract class Dungeon {
 
     protected abstract void initDungeon();
 
-    protected void missionComplete() throws IOException {
+    protected void missionComplete() {
         tracker.unregister();
         long elapsedSeconds = (System.currentTimeMillis() - startTime) / 1000;
         for (ServerPlayer player : players) {

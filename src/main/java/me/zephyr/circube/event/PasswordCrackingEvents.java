@@ -3,7 +3,6 @@ package me.zephyr.circube.event;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.kinetics.deployer.DeployerRecipeSearchEvent;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
-import me.zephyr.circube.CirCube;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -54,8 +53,6 @@ public class PasswordCrackingEvents {
         ItemStack victim = inv.getItem(0);
         ItemStack raper = inv.getItem(1);
         int step = getStep(victim);
-
-        CirCube.LOGGER.info(String.valueOf(step));
 
         String expected = PASSWORD.substring(step, step + 1);
         String actual = getItemKey(raper);
