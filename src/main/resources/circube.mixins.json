@@ -5,10 +5,10 @@
   "minVersion": "0.8",
   "refmap": "circube.refmap.json",
   "mixins": [
-    "HardcoreReloadMixin",
-    "UncrackedBoxMixin"
+    "HardcoreReloadMixin"
   ],
   "client": [
+    "UncrackedBoxMixin"
   ],
   "injectors": {
     "defaultRequire": 1

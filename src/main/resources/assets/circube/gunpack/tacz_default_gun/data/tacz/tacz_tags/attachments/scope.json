@@ -1,8 +1,19 @@
 [
-  "cgp:scope_acog_ta31_gold",
-  "cgp:scope_scout_gold",
-  "cgp:scope_standard_8x_gold",
-  "cgp:sight_uh1_gold",
-  "cgp:sight_deltapoint_rifle_gold",
-  "cgp:sight_coyote_gold"
+  "tacz:scope_elcan_4x",
+  "tacz:scope_standard_8x",
+  "tacz:scope_hamr",
+  "tacz:sight_552",
+  "tacz:sight_exp3",
+  "tacz:sight_uh1",
+  "tacz:sight_t2",
+  "tacz:scope_lpvo_1_6",
+  "tacz:scope_acog_ta31",
+  "tacz:sight_coyote",
+  "tacz:sight_acro_rifle",
+  "tacz:sight_deltapoint_rifle",
+  "tacz:sight_fastfire_rifle",
+  "tacz:sight_pk06_rifle",
+  "tacz:scope_vudu",
+  "tacz:scope_mk5hd",
+  "tacz:sight_srs_02"
 ]

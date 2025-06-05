@@ -65,7 +65,7 @@ public class AccountEvents {
     }
 
     private static String getIP(ServerPlayer player) {
-        return player.connection.connection.getRemoteAddress().toString().split(":")[0];
+        return player.connection.getRemoteAddress().toString().split(":")[0];
     }
 
 
