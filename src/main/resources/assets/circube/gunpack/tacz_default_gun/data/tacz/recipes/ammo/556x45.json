@@ -7,7 +7,10 @@
   "results": [
     {
       "chance": 90.0,
-      "item": "create_armorer:slap"
+      "item": "tacz:ammo",
+      "nbt": {
+        "AmmoId": "tacz:556x45"
+      }
     },
     {
       "chance": 3.0,

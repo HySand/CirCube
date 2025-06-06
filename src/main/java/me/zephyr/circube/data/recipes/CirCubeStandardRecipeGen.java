@@ -69,11 +69,12 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
     PUMPJACK_HOLE = create(CDGBlocks.PUMPJACK_HOLE).unlockedBy(ACItemRegistry.TECTONIC_SHARD::get).withNamespace("createdieselgenerators")
             .viaShaped(b -> b.define('T', ACItemRegistry.TECTONIC_SHARD.get())
                     .define('F', AllBlocks.FLUID_PIPE.get())
+                    .define('S', I.copperSheet())
                     .define('C', Blocks.CHAIN)
                     .define('G', I.copperCasing())
-                    .pattern(" F ")
+                    .pattern("SFS")
                     .pattern("CGC")
-                    .pattern(" T ")),
+                    .pattern("TTT")),
 
     BLAZE_BURNER = create(CDGBlocks.BURNER).unlockedBy(() -> CirCubeItems.REINFORCED_COPPER_SHEET).withNamespace("createdieselgenerators")
             .viaShaped(b -> b.define('B', AllBlocks.BLAZE_BURNER)
@@ -418,7 +419,7 @@ public class CirCubeStandardRecipeGen extends CirCubeRecipeProvider {
                     .pattern("L  ")),
 
     TUFF = create(() -> Blocks.TUFF).unlockedBy(() -> CirCubeItems.GRAPHITE_POWDER).returns(5)
-            .viaShaped(b -> b.define('#', Blocks.MUD)
+            .viaShaped(b -> b.define('#', Blocks.COARSE_DIRT)
                     .define('G', CirCubeItems.GRAPHITE_POWDER)
                     .pattern("#G#")
                     .pattern("G#G")

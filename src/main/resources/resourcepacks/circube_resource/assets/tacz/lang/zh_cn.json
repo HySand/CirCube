@@ -1,5 +1,8 @@
 {
   "tacz.ammo.12g.name": "§9霰弹",
   "tacz.ammo.40mm.name": "§d特殊弹药",
+  "tacz.ammo.9mm.name": "§a微型弹药",
+  "tacz.ammo.556x45.name": "§6小型弹药",
+  "tacz.ammo.762x39.name": "§b大型弹药",
   "tacz.ammo.50bmg.name": "§c巨型弹药"
 }

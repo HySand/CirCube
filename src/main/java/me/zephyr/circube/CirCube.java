@@ -98,6 +98,7 @@ public class CirCube {
         registerExtraGunPack("cgp");
         registerExtraGunPack("tacz_default_gun");
         registerExtraGunPack("create_armorer");
+        registerExtraGunPack("cs_knives");
     }
 
     public static CreateRegistrate getRegistrate() {

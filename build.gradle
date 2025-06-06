@@ -189,7 +189,7 @@ dependencies {
 
     implementation(fg.deobf("commoble.infiniverse:${infiniverse_branch}:${infiniverse_version}"))
 
-    runtimeOnly(fg.deobf('curse.maven:flowing-fluids-1108809:6494804'))
+    runtimeOnly(fg.deobf('curse.maven:flowing-fluids-1108809:6587878'))
     runtimeOnly(fg.deobf('curse.maven:jade-324717:6271651'))
 
     implementation(fg.deobf('curse.maven:create-diesel-generators-869316:6286179'))

@@ -6,24 +6,23 @@
   "loops": 1,
   "results": [
     {
-      "chance": 90.0,
-      "item": "create_armorer:rbapb"
+      "chance": 95.0,
+      "item": "tacz:ammo",
+      "nbt": {
+        "AmmoId": "tacz:9mm"
+      }
     },
     {
-      "chance": 3.0,
+      "chance": 2.0,
       "item": "create:brass_sheet"
     },
     {
-      "chance": 3.0,
+      "chance": 2.0,
       "item": "create:brass_nugget"
     },
     {
-      "chance": 3.0,
-      "item": "create:copper_nugget"
-    },
-    {
       "chance": 1.0,
-      "item": "circube:steel_nugget"
+      "item": "create:copper_nugget"
     }
   ],
   "sequence": [
@@ -31,23 +30,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "circube:incomplete_large_ammo"
-        },
-        {
-          "item": "circube:steel_nugget"
-        }
-      ],
-      "results": [
-        {
-          "item": "circube:incomplete_large_ammo"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "circube:incomplete_large_ammo"
+          "item": "circube:incomplete_micro_ammo"
         },
         {
           "item": "create:copper_nugget"
@@ -55,7 +38,7 @@
       ],
       "results": [
         {
-          "item": "circube:incomplete_large_ammo"
+          "item": "circube:incomplete_micro_ammo"
         }
       ]
     },
@@ -63,7 +46,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "circube:incomplete_large_ammo"
+          "item": "circube:incomplete_micro_ammo"
         },
         {
           "item": "minecraft:gunpowder"
@@ -71,7 +54,7 @@
       ],
       "results": [
         {
-          "item": "circube:incomplete_large_ammo"
+          "item": "circube:incomplete_micro_ammo"
         }
       ]
     },
@@ -79,17 +62,17 @@
       "type": "create:pressing",
       "ingredients": [
         {
-          "item": "circube:incomplete_large_ammo"
+          "item": "circube:incomplete_micro_ammo"
         }
       ],
       "results": [
         {
-          "item": "circube:incomplete_large_ammo"
+          "item": "circube:incomplete_micro_ammo"
         }
       ]
     }
   ],
   "transitionalItem": {
-    "item": "circube:incomplete_large_ammo"
+    "item": "circube:incomplete_micro_ammo"
   }
 }

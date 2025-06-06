@@ -25,7 +25,6 @@ public abstract class BaseTreasureItem extends Item {
 
     public BaseTreasureItem(Item.Properties builder) {
         super(builder);
-
     }
 
     @Override
